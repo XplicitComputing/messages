@@ -1,0 +1,194 @@
+#!/bin/bash
+
+
+filename="message_types.hpp"
+
+rm -f $filename
+
+function writeln() {
+
+    local ln=$1
+    if [ -z "$#" ]; then
+        echo '\n' >> $filename
+    else
+        echo "${ln}" >> $filename
+    fi
+}
+
+
+ARRAY=()
+spc2='  '
+spc4='    '
+spc8='        '
+spc35='                                   '
+
+for Item in `ls *.proto`; do
+    e=$(cat ${Item} | grep "^message " | cut -d'{' -f1 | cut -d' ' -f2)
+    ARRAY+=($e)
+done
+
+writeln "/* This is a generated file.  DO NOT EDIT! */"
+writeln
+writeln
+writeln "#pragma once"
+writeln
+writeln "#include <CORE/Common/mpl/at.hpp>"
+writeln "#include <CORE/Common/mpl/hash.hpp>"
+writeln "#include <CORE/Common/mpl/map.hpp>"
+writeln "#include <CORE/Common/mpl/pair.hpp>"
+writeln "#include <CORE/Common/mpl/uint.hpp>"
+writeln "#include <CORE/Common/type_traits/underlying.hpp>"
+writeln
+for Item in `ls *.proto`; do
+    item=`echo ${Item} | sed -e 's/\.proto$/\.pb\.h/g'`
+    writeln "#include <CORE/Messages/${item}>"
+done
+writeln
+#writeln "#include <cassert>"
+writeln "#include <cstdint>"
+#writeln "#include <cstring>"
+#writeln "#include <memory>"
+writeln "#include <ostream>"
+#writeln "#include <string>"
+#writeln "#include <type_traits>"
+#writeln "#include <utility>"
+#writeln
+#writeln "#include <arpa/inet.h>"
+#writeln "#include <endian.h>"
+
+
+writeln
+writeln
+writeln "namespace xc {"
+writeln "namespace messages {"
+writeln
+writeln "${spc4}enum struct MsgType : std::uint32_t"
+writeln "${spc4}{"
+for Item in ${ARRAY[*]}; do
+    writeln "${spc8}$Item = xc::mpl::hash(\"${Item}\") ,"
+done
+writeln "${spc4}};"
+
+
+writeln
+writeln
+writeln
+writeln "${spc4}// ----"
+writeln
+writeln
+writeln
+
+
+writeln "${spc4}template <typename xc::messages::MsgType M>"
+writeln "${spc4}struct message_tag"
+writeln "${spc4}{ };"
+writeln
+writeln
+writeln "${spc4}template <typename M>"
+writeln "${spc4}struct message_tag_t"
+writeln "${spc4}{ };"
+
+
+writeln
+writeln
+
+
+for Item in ${ARRAY[*]}; do
+    writeln "${spc4}// --"
+    writeln
+    writeln
+    writeln "${spc4}template < >"
+    writeln "${spc4}struct message_tag<xc::messages::MsgType::${Item}>"
+    writeln "${spc4}{"
+    writeln "${spc8}using type = Messages::${Item};"
+    writeln
+    writeln "${spc8}constexpr static const char* name = \"${Item}\";"
+    writeln "${spc8}constexpr static MsgType id = xc::messages::MsgType::${Item};"
+    writeln "${spc4}};"
+    writeln
+    writeln
+    writeln "${spc4}template < >"
+    writeln "${spc4}struct message_tag_t<Messages::${Item}> : message_tag<xc::messages::MsgType::${Item}>"
+    writeln "${spc4}{"
+    writeln "${spc8}using tag = message_tag<xc::messages::MsgType::${Item}>;"
+    writeln "${spc4}};"
+    writeln
+    writeln
+    writeln "${spc4}inline"
+    writeln "${spc4}std::ostream &"
+    writeln "${spc4}operator <<(std::ostream& os, const xc::messages::message_tag_t<Messages::${Item}> & /*msg*/)"
+    writeln "${spc4}{"
+    writeln "${spc8}os << \"${Item} \" << \" (\" << xc::underlying(xc::messages::MsgType::${Item}) << \")\";"
+    writeln "${spc8}return os;"
+    writeln "${spc4}}"
+    writeln
+    writeln
+done
+
+
+
+declare flag="false"
+
+writeln
+writeln "${spc4}// ----"
+writeln
+writeln
+writeln
+
+
+#
+# Map< Integer, Messages::X >
+#
+# alternatively, can go through:  message_tag<MsgType::X>
+#
+
+writeln "${spc4}template <typename xc::messages::MsgType M>"
+writeln "${spc4}struct msg_type"
+writeln "${spc4}{"
+for Item in ${ARRAY[*]}; do
+    if [ "$flag" == "false" ]; then
+        writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item})>, Messages::${Item}>"
+        flag="true"
+    else
+        writeln "${spc35}, xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item})>, Messages::${Item}>"
+    fi
+done
+writeln "${spc35}>;"
+writeln
+writeln "${spc8}using type = typename xc::mpl::at<typename xc::messages::msg_type<M>::m_type, xc::mpl::uint_<xc::underlying(M)> >::type;"
+writeln "${spc4}};"
+
+
+
+#
+# Map< Messages::X, Integer >
+#
+# alternatively, can go through:  message_tag_t<Messages::X>
+#
+
+flag="false"
+
+writeln
+writeln
+writeln
+writeln "${spc4}template <typename M>"
+writeln "${spc4}struct type_msg"
+writeln "${spc4}{"
+for Item in ${ARRAY[*]}; do
+    if [ "$flag" == "false" ]; then
+        writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<Messages::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item})> >"
+        flag="true"
+    else
+        writeln "${spc35}, xc::mpl::pair<Messages::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item})> >"
+    fi
+done
+writeln "${spc35}>;"
+writeln
+writeln "${spc8}using type = typename xc::mpl::at<typename xc::messages::type_msg<M>::m_type, M>::type;"
+writeln "${spc4}};"
+
+
+flag="false"
+
+writeln
+writeln "} }${spc2}// namespace xc::messages"

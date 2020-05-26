@@ -1,0 +1,117 @@
+#!/bin/bash
+
+
+filename="message_readers.hpp"
+
+rm -f $filename
+
+function writeln() {
+
+    local ln=$1
+    if [ -z "$#" ]; then
+        echo '\n' >> $filename
+    else
+        echo "${ln}" >> $filename
+    fi
+}
+
+
+ARRAY=()
+spc2='  '
+spc4='    '
+spc8='        '
+spc12='            '
+spc19='                   '
+spc35='                                   '
+spc46='                                              '
+
+for Item in `ls *.proto`; do
+    e=$(cat ${Item} | grep "^message " | cut -d'{' -f1 | cut -d' ' -f2)
+    ARRAY+=($e)
+done
+
+writeln "/* This is a generated file.  DO NOT EDIT! */"
+writeln
+writeln
+writeln "#pragma once"
+writeln
+writeln "#include <CORE/Messages/message_types.hpp>"
+writeln
+for Item in `ls *.proto`; do
+    item=`echo ${Item} | sed -e 's/\.proto/\.pb\.h/g'`
+    writeln "#include <CORE/Messages/${item}>"
+done
+writeln
+writeln "#include <cassert>"
+writeln "#include <cstdint>"
+writeln "#include <memory>"
+writeln
+writeln
+writeln "namespace xc {"
+writeln "namespace messages {"
+writeln
+writeln "#define MESSAGE_READER_T(name, support)                                                             \\"
+writeln "                                                                                                    \\"
+writeln "${spc4}/* Client & Server -side messaging */                                                           \\"
+writeln "                                                                                                    \\"
+writeln "${spc4}template <typename Handler>                                                                     \\"
+writeln "${spc4}class message_reader_ ## name                                                                   \\"
+writeln "${spc4}{                                                                                               \\"
+writeln "${spc4}public:                                                                                         \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}using support_t = support;                                                                  \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}message_reader_ ## name()                                                                   \\"
+writeln "${spc8}{                                                                                           \\"
+writeln "${spc12}/* Constructor */                                                                       \\"
+writeln "${spc8}}                                                                                           \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}void                                                                                        \\"
+writeln "${spc8}operator ()(std::shared_ptr<Handler> handler)                                               \\"
+writeln "${spc8}{                                                                                           \\"
+writeln "${spc12}this->handler_ = handler;                                                               \\"
+writeln "${spc8}}                                                                                           \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}template <typename Context = void>                                                          \\"
+writeln "${spc8}bool                                                                                        \\"
+writeln "${spc8}operator()(std::uint16_t version,                                                           \\"
+writeln "${spc19}std::uint64_t timestamp,                                                         \\"
+writeln "${spc19}const std::uint8_t* payload,                                                     \\"
+writeln "${spc19}std::uint64_t size,                                                              \\"
+writeln "${spc19}Context* context = nullptr)                                                      \\"
+writeln "${spc8}{                                                                                           \\"
+writeln "${spc12}/* forward payload to Handler::on_message */                                            \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc12}assert(payload);                                                                        \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc12}/* call the overload */                                                                 \\"
+writeln "${spc12}return this->handler_->on_message(xc::messages::message_tag<support_t::id>(),           \\"
+writeln "${spc46}version,                                              \\"
+writeln "${spc46}timestamp,                                            \\"
+writeln "${spc46}payload,                                              \\"
+writeln "${spc46}size,                                                 \\"
+writeln "${spc46}context);                                             \\"
+writeln "${spc8}}                                                                                           \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc4}private:                                                                                        \\"
+writeln "${spc8}                                                                                            \\"
+writeln "${spc8}std::shared_ptr<Handler> handler_;                                                          \\"
+writeln "${spc4}};"
+writeln
+writeln "/**/"
+
+
+writeln
+writeln
+writeln "${spc4}// define message_reader_t 's"
+writeln
+for Item in ${ARRAY[*]}; do
+    writeln "${spc4}MESSAGE_READER_T(${Item}, xc::messages::message_tag_t<Messages::${Item}>);"
+done
+
+writeln
+writeln "} }${spc2}// namespace xc::messages"

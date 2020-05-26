@@ -1,0 +1,70 @@
+/* Do Not Remove this Comment:
+
+MESSAGES™ by XPLICIT COMPUTING, INC
+GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
+
+Please see file README.pdf for usage and license info. README.pdf must be copied along with these *.proto, unaltered as part of the fair-use license agreement. Direct questions or concerns to: info@xplicitcomputing.com
+
+Generally speaking, it is okay to customize these definitions by adding additional entries. To maintain xcompute-compatibility, please do not change existing entries but assign new ones with indexes as 100 or more.
+
+*/ 
+
+
+syntax = "proto3";
+package Messages;
+
+option cc_enable_arenas = true;//compact vectorized format
+
+message Revision{
+    int64 major_rev = 1;
+    int64 minor_rev = 2;
+}
+
+message Extrema{
+	int32 dims = 1;
+	repeated double min = 2[packed=true];
+	repeated double max = 3[packed=true];
+	bool is_set = 4;
+	}
+	
+message Vector32{
+	string name = 1;
+	int32 components = 2;
+    bool interleaved = 3;
+    Revision revision = 4;
+	string units = 5;//kg m s^2 and such string literals
+    repeated float values = 10[packed=true];
+	//reserved
+}
+
+message Vector64{
+	string name = 1;
+	int32 components = 2;
+    bool interleaved = 3;
+    Revision revision = 4;
+	string units = 5;//kg m s^2 and such string literals
+    repeated double values = 10[packed=true];
+	//reserved
+}
+
+message Indices{
+	string name = 1;
+	repeated int32 values = 2[packed=true];
+}
+
+message Elements{//defined here to take advantage of packed arena allocation (only enabled within this proto file)
+	repeated int32 indices = 1[packed=true];
+	repeated int32 strides = 2[packed=true];
+	repeated int32 offsets = 3[packed=true];
+	repeated int32 types = 4[packed=true];
+	repeated int32 ids = 5[packed=true];
+	repeated int32 id_offsets = 6[packed=true];
+	repeated int32 num_elements_with_id = 7[packed=true];
+	repeated int32 id_to_index = 8[packed=true];
+	//reserved
+	repeated double centers = 10[packed=true];//deprecated
+	repeated double lengths = 11[packed=true];//deprecated
+	repeated double areas = 12[packed=true];//deprecated
+	repeated double volumes = 13[packed=true];//deprecated
+}
+

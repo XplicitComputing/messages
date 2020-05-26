@@ -1,0 +1,114 @@
+/* Do Not Remove this Comment:
+
+MESSAGES™ by XPLICIT COMPUTING, INC
+GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
+
+Please see file README.html for usage and license info. README.html must be copied along with these *.proto, unaltered as part of the fair-use license agreement. Direct questions or concerns to: info@xplicitcomputing.com
+
+Generally speaking, it is okay to customize these definitions by adding additional entries. To maintain xcompute-compatibility, please do not change existing entries but assign new ones with indexes as 100 or more.
+
+*/ 
+
+
+
+syntax = "proto3";
+package Messages;
+import "vector.proto";
+
+
+message Zone{//compatible with xcompute Region
+	string name = 1;
+	int32 id = 2;
+	int32 dimensionality = 3;
+	//reserved
+	int64 num_elements = 5;
+	int64 offset = 6;
+	string comments = 7;
+	string info = 8;
+	//reserved
+	Extrema bounds = 10;
+	repeated float terminal_position = 11;
+	repeated int32 specific_elements = 12; //optional (if used, ignore offset)
+}
+
+//Note: message 'Elements' is defined in vector.proto to utilize arena/packed allocation
+
+message Topology{//compatible with xcompute Geometry
+	string name = 1;
+	int32 type = 2;
+	int32 ndim = 3;
+	int32 basis = 4;
+	//reserved
+	repeated double resolution = 8;
+	repeated Vector64 data = 9;
+	Elements nodes = 10;
+	Elements edges = 11;
+	Elements interior_edges = 12;
+	Elements faces = 13;
+	Elements interior_faces = 14;
+	Elements cells = 15; 
+	//reserveed
+	repeated Zone groups = 20;
+	repeated Zone loops = 21;
+	repeated Zone surfaces = 22;
+	repeated Zone volumes = 23;
+	//reserved
+	repeated int32 locations = 26;
+	//reserved
+	string filename = 30;
+	Revision revision = 31;
+}
+
+message GridControl{
+	int32 basis = 1;
+	repeated int32 size = 2;
+	repeated double spacing = 3;
+	repeated double grading = 4;
+	//reserved
+	Extrema bounds = 10;
+
+}
+
+message MeshControl{
+	int64 target_n = 1;
+	int32 max_iterations = 2;
+	double size_ratio = 3;
+	double size_decay = 4;
+	double size_exponent = 5;
+	double curv_ratio = 6;
+	double curv_decay = 7;
+	double curv_exponent = 8;
+	double node_radius = 9;
+	Extrema bounds = 10;
+	//reserved
+	bool interior = 12;
+	bool exterior = 13;
+	bool shell = 14;
+	bool equalize = 15;
+	bool smooth = 16;
+	//reserved
+	bool include_background = 18;
+	bool keep_existing_points = 19;
+	//reserved
+	bool x_symmetry = 24;
+	bool y_symmetry = 25;
+	bool z_symmetry = 26;
+	//reserved
+	int64 background_n = 30;
+}
+
+message TreeControl{
+	int32 min_depth = 1;
+	int32 max_depth = 2;
+	int64 max_size = 3;
+	//reserved
+	Extrema bounds = 10;
+	
+}
+
+message NetworkControl{
+
+}
+
+
+
