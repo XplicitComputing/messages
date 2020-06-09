@@ -17,99 +17,99 @@ import "spatial.proto";
 
 
 message Representation{
-	string property_key = 1;
-	int32 color_map = 2;
-	int32 component = 3;
-	bool auto_range = 4;
-	bool use_default_key = 5;
-	bool color_out_of_range = 6;
-	bool use_magnitude = 7;
-	bool show_displacement = 8;
-	//reserved
-	repeated float range = 10;
-	repeated float displacement_scale = 11;
+    string property_key = 1;
+    int32 color_map = 2;
+    int32 component = 3;
+    bool auto_range = 4;
+    bool use_default_key = 5;
+    bool color_out_of_range = 6;
+    bool use_magnitude = 7;
+    bool show_displacement = 8;
+    //reserved
+    repeated float range = 10;
+    repeated float displacement_scale = 11;
 }
 
 message Visual{
-	Zone region = 1;
-	Representation representation = 2;
-	int32 style = 3;
-	repeated int32 points = 4;
-	repeated int32 lines = 5;
-	repeated int32 triangles = 6;
-	//reserved
-	repeated int32 indices_per_element = 8;//only used on composite elements (e.g. QUAD4 represented using triangles)
-	repeated int32 elements_to_indices = 9;//only used on composite elements (e.g. QUAD4 represented using triangles)
-	repeated int32 indices_to_elements = 10;//only used on composite elements (e.g. QUAD4 represented using triangles)
-	//reserved
+    Zone region = 1;
+    Representation representation = 2;
+    int32 style = 3;
+    repeated int32 points = 4;
+    repeated int32 lines = 5;
+    repeated int32 triangles = 6;
+    //reserved
+    repeated int32 indices_per_element = 8;//only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated int32 elements_to_indices = 9;//only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated int32 indices_to_elements = 10;//only used on composite elements (e.g. QUAD4 represented using triangles)
+    //reserved
 }
 
 message GraphicsControl{
-	int32 style = 1;
+    int32 style = 1;
     int32 encoding = 2;
-	//reserved
-	repeated float color = 4;
-	float alpha = 5;
-	float point_width = 6;
-	float line_width = 7;	
-	//reserved
-	bool visible = 10;
-	bool overlay = 11;
+    //reserved
+    repeated float color = 4;
+    float alpha = 5;
+    float point_width = 6;
+    float line_width = 7;   
+    //reserved
+    bool visible = 10;
+    bool overlay = 11;
 }
 
 message SliceControl{
-	Visual visual = 1;
-	//reserved
-	bool intersect = 3;
-	bool negative = 4;
-	bool positive = 5;
-	//reserved
-	repeated double center = 8;
-	repeated double normal = 9;
-	//reserved
-	}
+    Visual visual = 1;
+    //reserved
+    bool intersect = 3;
+    bool negative = 4;
+    bool positive = 5;
+    //reserved
+    repeated double center = 8;
+    repeated double normal = 9;
+    //reserved
+    }
 
 message TracersControl{
-	Visual visual = 1;
-	//reserved
-	int64 particle_count = 3;
-	int64 seed = 4;	
-	repeated int32 spawn_region = 5;
-	repeated int32 regen_region = 6;
-	//reserved
-	repeated float user_defined_positions = 8;
+    Visual visual = 1;
+    //reserved
+    int64 particle_count = 3;
+    int64 seed = 4; 
+    repeated int32 spawn_region = 5;
+    repeated int32 regen_region = 6;
+    //reserved
+    repeated float user_defined_positions = 8;
 }
 
 message Meta{//metaobject backbone -- created and staged in server visuals (for transmission) to populate client metaobjects
-	string name = 1;//unique identifier that persists between sessions
-	string icon = 2;	
-	string owner = 3;
-	string comments = 4;
-	string series = 5;
-	string sys_info = 6;
-	string geom_info = 7;
-	string directory = 8;
-	int64 uid = 9;//universal id for each system assigned, valid only within a given session
-	int64 parent = 10;
-	int64 created = 11;//unix time 
+    string name = 1;//unique identifier that persists between sessions
+    string icon = 2;    
+    string owner = 3;
+    string comments = 4;
+    string series = 5;
+    string sys_info = 6;
+    string geom_info = 7;
+    string directory = 8;
+    int64 uid = 9;//universal id for each system assigned, valid only within a given session
+    int64 parent = 10;
+    int64 created = 11;//unix time 
     int64 saved = 12;
     int64 modified = 13;
-	int64 iteration = 14;
-	int64 save_interval = 15;
-	bool enabled = 16;
+    int64 iteration = 14;
+    int64 save_interval = 15;
+    bool enabled = 16;
     bool locked = 17;
     bool auto_save = 18;
-	//reserved
-	Revision revision = 20;
-	Revision version = 21;	
-	Extrema bounds = 22;
-	GraphicsControl appearance = 24;
-	repeated int64 children = 25;//uid's (only good within a given session. see system.proto for persistent relationships)
-	repeated int32 groups = 26;
-	repeated int32 loops = 27;
-	repeated int32 surfaces = 28;
-	repeated int32 volumes = 29;
-	repeated double model_transform = 30;//dmat4 (aka MAT4 transformation matrix)
-	repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
+    //reserved
+    Revision revision = 20;
+    Revision version = 21;  
+    Extrema bounds = 22;
+    GraphicsControl appearance = 24;
+    repeated int64 children = 25;//uid's (only good within a given session. see system.proto for persistent relationships)
+    repeated int32 groups = 26;
+    repeated int32 loops = 27;
+    repeated int32 surfaces = 28;
+    repeated int32 volumes = 29;
+    repeated double model_transform = 30;//dmat4 (aka MAT4 transformation matrix)
+    repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
 }
 

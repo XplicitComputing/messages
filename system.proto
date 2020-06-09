@@ -16,122 +16,122 @@ import "vector.proto";
 import "meta.proto";
 
 message Variables{//compatible with xcompute *.cfg files via machinery defined in config.hpp/config.cpp
-	//reserved
-	repeated string int_names = 2;
-	repeated int32 int_values = 3;
-	repeated string int_descriptions = 4;
-	//reserved
-	repeated string bool_names = 6;
-	repeated bool bool_values = 7;
-	repeated string bool_descriptions = 8;
-	//reserved
-	repeated string double_names = 10;
-	repeated double double_values = 11;
-	repeated string double_descriptions = 12;
-	//reserved
-	repeated string string_names = 14;
-	repeated string string_values = 15;
-	repeated string string_descriptions = 16;
-	//reserved
+    //reserved
+    repeated string int_names = 2;
+    repeated int32 int_values = 3;
+    repeated string int_descriptions = 4;
+    //reserved
+    repeated string bool_names = 6;
+    repeated bool bool_values = 7;
+    repeated string bool_descriptions = 8;
+    //reserved
+    repeated string double_names = 10;
+    repeated double double_values = 11;
+    repeated string double_descriptions = 12;
+    //reserved
+    repeated string string_names = 14;
+    repeated string string_values = 15;
+    repeated string string_descriptions = 16;
+    //reserved
 }
 
 
 message Function{//compatible with xcompute algorithm (operation/code that has not been bound yet)
-	string name = 1;
-	//argument object binding requirements:
-	repeated string argument_types = 2;//required types to operate (name of class or type)
-	repeated string argument_descriptions = 3;//matching argument descriptions (used by UI)
-	repeated string inputs = 4;//PK's required for algorithm inputs (user inputs)
-	repeated string outputs = 5;//PK's required for algorithm outputs
-	repeated string constants = 6;//PK's for uniform values across all nodes
-	repeated string to_be_defined = 7;//PK's for to be set by user in UI (end-user inputs)
-	repeated Vector64 data = 8;//local data relevant to this algorithm (coefficients, etc)
-	//reserved	
-	bool cpu_capable = 10;
-	bool gpu_capable = 11;
-	bool include_as_preprocessor = 12;
-	bool omit_from_main_loop = 13;
-	bool include_as_postprocessor = 14;
-	bool mutually_exclusive = 15;
-	bool only_once = 16;
-	bool push_front = 17;
-	bool dont_flatten = 18;
-	//reserved
+    string name = 1;
+    //argument object binding requirements:
+    repeated string argument_types = 2;//required types to operate (name of class or type)
+    repeated string argument_descriptions = 3;//matching argument descriptions (used by UI)
+    repeated string inputs = 4;//PK's required for algorithm inputs (user inputs)
+    repeated string outputs = 5;//PK's required for algorithm outputs
+    repeated string constants = 6;//PK's for uniform values across all nodes
+    repeated string to_be_defined = 7;//PK's for to be set by user in UI (end-user inputs)
+    repeated Vector64 data = 8;//local data relevant to this algorithm (coefficients, etc)
+    //reserved  
+    bool cpu_capable = 10;
+    bool gpu_capable = 11;
+    bool include_as_preprocessor = 12;
+    bool omit_from_main_loop = 13;
+    bool include_as_postprocessor = 14;
+    bool mutually_exclusive = 15;
+    bool only_once = 16;
+    bool push_front = 17;
+    bool dont_flatten = 18;
+    //reserved
 }
 
 
 message Command{//compatible with xcompute instruction  (a function instance bound to arguments... data, regions, etc)
-	Function function = 1;
-	bool args_are_set = 2;
-	bool kernel_ready = 3;
-	int64 exec_count = 4;
-	int64 effective_size = 5;
-	int64 version = 6;
-	int64 id = 7;//unique runtime identifier (assigned and only valid within a server session)
-	int64 n_kernel = 8;
-	float progress = 9;
-	string msg = 10;
-	//reserved	
-	repeated Vector64 data = 12;
-	repeated Command before = 13;//optional, to be called from within bound function
-	repeated Command after = 14;//optional, to be called from within bound function
-	repeated int32 region_type = 15;//if assigned, used to indentify specific zones for conditions, etc
-	repeated int32 region_id = 16;//if assigned, used to indentify specific zones for conditions, etc
-	repeated string argument_types = 17;//bound argument type names to operate (name of class or type)
-	repeated string argument_descriptions = 18;//matching argument type descriptions (used by UI)
+    Function function = 1;
+    bool args_are_set = 2;
+    bool kernel_ready = 3;
+    int64 exec_count = 4;
+    int64 effective_size = 5;
+    int64 version = 6;
+    int64 id = 7;//unique runtime identifier (assigned and only valid within a server session)
+    int64 n_kernel = 8;
+    float progress = 9;
+    string msg = 10;
+    //reserved  
+    repeated Vector64 data = 12;
+    repeated Command before = 13;//optional, to be called from within bound function
+    repeated Command after = 14;//optional, to be called from within bound function
+    repeated int32 region_type = 15;//if assigned, used to indentify specific zones for conditions, etc
+    repeated int32 region_id = 16;//if assigned, used to indentify specific zones for conditions, etc
+    repeated string argument_types = 17;//bound argument type names to operate (name of class or type)
+    repeated string argument_descriptions = 18;//matching argument type descriptions (used by UI)
 
 }
 
 message Script{//compatible with xcompute solver
-	string name = 1;
-	string msg = 2;
-	string source_code = 3;
-	int64 uid = 4;//same as system uid, if assigned
-	int32 device = 5;
-	int32 status = 6;
-	int32 order = 7;
-	float progress = 8;
-	//reserved
-	Variables variables = 10;
-	//reserved	
-	repeated Command sequence = 12;
-	//reserved
-	Script before = 14;
-	Script after = 15;
+    string name = 1;
+    string msg = 2;
+    string source_code = 3;
+    int64 uid = 4;//same as system uid, if assigned
+    int32 device = 5;
+    int32 status = 6;
+    int32 order = 7;
+    float progress = 8;
+    //reserved
+    Variables variables = 10;
+    //reserved  
+    repeated Command sequence = 12;
+    //reserved
+    Script before = 14;
+    Script after = 15;
 }
 
 message Rule{
-	string pk = 1;//serialized property-key <property \t modifier \t ...>
-	repeated string algorithms = 2; //names of algorithms to be associated
-	repeated int32 priority = 3;//optional - larger numbers are more important
+    string pk = 1;//serialized property-key <property \t modifier \t ...>
+    repeated string algorithms = 2; //names of algorithms to be associated
+    repeated int32 priority = 3;//optional - larger numbers are more important
 }
 
 message Model{//compatible with xcompute model
-	string name = 1;
-	//reserved
+    string name = 1;
+    //reserved
     repeated string dofs = 3;
-	repeated string algorithms = 4;//ordered algorithms (by name)
-	repeated string available_outputs = 5;//serialized property-keys 
-	repeated string extra_properties = 6;//some pk's are not recorded by default as an optimization. they can be added
+    repeated string algorithms = 4;//ordered algorithms (by name)
+    repeated string available_outputs = 5;//serialized property-keys 
+    repeated string extra_properties = 6;//some pk's are not recorded by default as an optimization. they can be added
     repeated string compatible_conditions = 7;
-	repeated string compatible_scripts = 8;
-	repeated Model sub_models = 9;//
-	repeated Vector64 data = 10;//high-level constants manpulated by user
-	repeated Rule rules = 11;
-	repeated Rule mutex_stack = 12;
+    repeated string compatible_scripts = 8;
+    repeated Model sub_models = 9;//
+    repeated Vector64 data = 10;//high-level constants manpulated by user
+    repeated Rule rules = 11;
+    repeated Rule mutex_stack = 12;
 }
 
 message System{//compatible with xcompute system
-	Meta meta = 1;//name and other basic info, some of which is non-persistent 
-	Script script = 2;//serialized solver
-	//reserved
-	string geometry = 8;//external file reference
-	//reserved
-	repeated Model models = 10;//physical / mathematical models (groups of algorithms)
-	repeated Vector64 constants = 11;//physics.data
+    Meta meta = 1;//name and other basic info, some of which is non-persistent 
+    Script script = 2;//serialized solver
+    //reserved
+    string geometry = 8;//external file reference
+    //reserved
+    repeated Model models = 10;//physical / mathematical models (groups of algorithms)
+    repeated Vector64 constants = 11;//physics.data
     repeated Command conditions = 12;//special commands applied as contraints and conditions
-	repeated string children = 13;//sub-system names (exact matches)
-	repeated string references = 14;
-	repeated string attachments = 15;//external files such as pdf that users can attach to each system
+    repeated string children = 13;//sub-system names (exact matches)
+    repeated string references = 14;
+    repeated string attachments = 15;//external files such as pdf that users can attach to each system
 }
 

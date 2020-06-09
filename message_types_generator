@@ -1,9 +1,40 @@
 #!/bin/bash
 
 
-filename="message_types.hpp"
+project_root="../.."
+srcpath="${project_root}"
+dstpath="${project_root}"
+filename="${dstpath}/message_types.hpp"
 
 rm -f $filename
+
+
+# ---- 8>< ----------------------------------------------------------- 8>< ----
+
+
+spc2='  '
+spc4='    '
+spc8='        '
+spc12='            '
+spc16='                '
+spc20='                    '
+spc24='                        '
+spc28='                            '
+spc32='                                '
+spc35='                                   '
+spc36='                                    '
+
+
+FT_ARRAY=(Log Data Callable FunctionName MsgType noval_t bool int16_t uint16_t int32_t uint32_t int64_t uint64_t string float double)
+
+
+PBM_ARRAY=()
+for Item in `ls ${srcpath}/*.proto`; do
+    e=$(cat ${Item} | grep "^message " | cut -d'{' -f1 | cut -d' ' -f2)
+    PBM_ARRAY+=($e)
+done
+
+
 
 function writeln() {
 
@@ -16,16 +47,950 @@ function writeln() {
 }
 
 
-ARRAY=()
-spc2='  '
-spc4='    '
-spc8='        '
-spc35='                                   '
+# ---- 8>< ----------------------------------------------------------- 8>< ----
 
-for Item in `ls *.proto`; do
-    e=$(cat ${Item} | grep "^message " | cut -d'{' -f1 | cut -d' ' -f2)
-    ARRAY+=($e)
-done
+
+
+function bsp_log() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(std::uint16_t) + this->value_.size();"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::uint16_t e(htons(xc::underlying(this->severity_)));"
+    writeln "${spc12}auto offset = sizeof(this->severity_);"
+    writeln "${spc12}::memcpy(buf, &e, sizeof(this->severity_));"
+    writeln
+    writeln "${spc12}std::uint8_t* buffer = reinterpret_cast<std::uint8_t *> (buf) + offset;"
+    writeln "${spc12}::memcpy(buffer, (std::uint8_t *)this->value_.c_str(), this->value_.size());"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}std::uint16_t e;"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::uint16_t));"
+    writeln "${spc12}offset += sizeof(std::uint16_t);"
+    writeln "${spc12}this->severity_ = static_cast<xc::utilities::severity> (ntohs(e));"
+    writeln
+    writeln "${spc12}this->value_ = reinterpret_cast<const char *> (begin + offset);"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::messages::Log>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}xc::utilities::severity severity_{ };"
+    writeln "${spc8}std::string value_{ };"
+}
+
+
+function bsp_data() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<xc::messages::Data>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}std::uint8_t* buffer = reinterpret_cast<std::uint8_t *> (buf);"
+    writeln "${spc12}::memcpy(buffer, (std::uint8_t *)&this->value_, sizeof(this->value_));"
+    writeln "${spc12}offset += sizeof(this->value_);"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}this->value_ = *reinterpret_cast<const std::uint8_t *> (begin + offset);"
+    writeln "${spc12}offset += sizeof(this->value_);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::messages::Data>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}char value_{ };"
+}
+
+
+function bsp_callable() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<xc::messages::Callable>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}std::uint8_t* buffer = reinterpret_cast<std::uint8_t *> (buf);"
+    writeln "${spc12}::memcpy(buffer, (std::uint8_t *)&this->value_, sizeof(this->value_));"
+    writeln "${spc12}offset += sizeof(this->value_);"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}this->value_ = *reinterpret_cast<const std::uint8_t *> (begin + offset);"
+    writeln "${spc12}offset += sizeof(this->value_);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::messages::Callable>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}char value_{ };"
+}
+
+
+function bsp_FunctionName() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<xc::messages::FunctionName>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::uint32_t e(htonl(xc::underlying(this->value_)));"
+    writeln "${spc12}auto offset = sizeof(decltype(xc::underlying(this->value_)));"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::uint32_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(decltype(xc::underlying(this->value_))));"
+    writeln "${spc12}offset += sizeof(decltype(xc::underlying(this->value_)));"
+    writeln "${spc12}this->value_ = static_cast<xc::messages::FunctionName> (ntohl(e));"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::messages::FunctionName>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}xc::messages::FunctionName value_{ };"
+}
+
+
+function bsp_MsgType() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<xc::messages::MsgType>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::uint32_t e(htonl(xc::underlying(this->value_)));"
+    writeln "${spc12}auto offset = sizeof(decltype(xc::underlying(this->value_)));"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::uint32_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(decltype(xc::underlying(this->value_))));"
+    writeln "${spc12}offset += sizeof(decltype(xc::underlying(this->value_)));"
+    writeln "${spc12}this->value_ = static_cast<xc::messages::MsgType> (ntohl(e));"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::messages::MsgType>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}xc::messages::MsgType value_{ };"
+}
+
+
+function bsp_noval_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<xc::utilities::noval_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::utilities::noval_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}xc::utilities::noval_t value_{ };"
+}
+
+
+function bsp_bool() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<bool>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}std::uint8_t* buffer = reinterpret_cast<std::uint8_t *> (buf);"
+    writeln "${spc12}::memcpy(buffer, (std::uint8_t *)&this->value_, sizeof(this->value_));"
+    writeln "${spc12}offset += sizeof(this->value_);"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}this->value_ = *reinterpret_cast<const std::uint8_t *> (begin + offset);"
+    writeln "${spc12}offset += sizeof(this->value_);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<bool>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}char value_{ };"
+}
+
+
+function bsp_int16_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::int16_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int16_t e(htons(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::int16_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::int16_t));"
+    writeln "${spc12}offset += sizeof(std::int16_t);"
+    writeln "${spc12}this->value_ = ntohs(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::int16_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::int16_t value_{ };"
+}
+
+
+function bsp_uint16_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::uint16_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::uint16_t e(htons(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::uint16_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::uint16_t));"
+    writeln "${spc12}offset += sizeof(std::uint16_t);"
+    writeln "${spc12}this->value_ = ntohs(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::uint16_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::uint16_t value_{ };"
+}
+
+
+function bsp_int32_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::int32_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int32_t e(htonl(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::int32_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::int32_t));"
+    writeln "${spc12}offset += sizeof(std::int32_t);"
+    writeln "${spc12}this->value_ = ntohl(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::int32_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::int32_t value_{ };"
+}
+
+
+function bsp_uint32_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::uint32_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::uint32_t e(htonl(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::uint32_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::uint32_t));"
+    writeln "${spc12}offset += sizeof(std::uint32_t);"
+    writeln "${spc12}this->value_ = ntohl(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::uint32_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::uint32_t value_{ };"
+}
+
+
+function bsp_int64_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::int64_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int64_t e(htobe64(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::int64_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::int64_t));"
+    writeln "${spc12}offset += sizeof(std::int64_t);"
+    writeln "${spc12}this->value_ = be64toh(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::int64_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::int64_t value_{ };"
+}
+
+
+function bsp_uint64_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::uint64_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::uint64_t e(htobe64(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == static_cast<std::size_t> (size) && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::uint64_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::uint64_t));"
+    writeln "${spc12}offset += sizeof(std::uint64_t);"
+    writeln "${spc12}this->value_ = be64toh(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::uint64_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::uint64_t value_{ };"
+}
+
+
+function bsp_size_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::size_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::size_t e(htobe64(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::size_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::size_t));"
+    writeln "${spc12}offset += sizeof(std::size_t);"
+    writeln "${spc12}this->value_ = be64toh(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::size_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::size_t value_{ };"
+}
+
+
+function bsp_string() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return this->value_.size();"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}std::uint8_t* buffer = reinterpret_cast<std::uint8_t *> (buf) + offset;"
+    writeln "${spc12}::memcpy(buffer, (std::uint8_t *)this->value_.c_str(), this->value_.size());"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}this->value_ = reinterpret_cast<const char *> (begin + offset);"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::string>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::string value_{ };"
+}
+
+
+function bsp_float() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return this->value_.size();"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}std::uint8_t* buffer = reinterpret_cast<std::uint8_t *> (buf) + offset;"
+    writeln "${spc12}::memcpy(buffer, (std::uint8_t *)this->value_.c_str(), this->value_.size());"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}this->value_ = reinterpret_cast<const char *> (begin + offset);"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<float>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::string value_{ };"
+}
+
+
+function bsp_double() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return this->value_.size();"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}std::uint8_t* buffer = reinterpret_cast<std::uint8_t *> (buf) + offset;"
+    writeln "${spc12}::memcpy(buffer, (std::uint8_t *)this->value_.c_str(), this->value_.size());"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}this->value_ = reinterpret_cast<const char *> (begin + offset);"
+    writeln "${spc12}offset += this->value_.size();"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<double>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::string value_{ };"
+}
+
+
+function bsp_time_t() {
+
+    writeln "${spc8}std::size_t"
+    writeln "${spc8}ByteSizeLong() const noexcept"
+    writeln "${spc8}{"
+    writeln "${spc12}return sizeof(xc::messages::message_tag_t<std::time_t>);"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}SerializeToArray(void* buf, std::int32_t size) const"
+    writeln "${spc8}{"
+    writeln "${spc12}// serialize.."
+    writeln
+    writeln "${spc12}std::time_t e(htobe64(this->value_));"
+    writeln "${spc12}auto offset = sizeof(this->value_);"
+    writeln "${spc12}::memcpy(buf, &e, offset);"
+    writeln
+    writeln "${spc12}assert(offset == size && \"serialization failure\");"
+    writeln
+    writeln "${spc12}return true;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc8}bool"
+    writeln "${spc8}ParseFromArray(void* buf, std::int32_t size)"
+    writeln "${spc8}{"
+    writeln "${spc12}// deserialize.."
+    writeln
+    writeln "${spc12}const std::uint8_t* begin = &reinterpret_cast<const std::uint8_t *> (buf)[0];"
+    writeln "${spc12}const std::uint8_t* end   = &reinterpret_cast<const std::uint8_t *> (buf)[size];"
+    writeln
+    writeln "${spc12}// loop over buffer and re-populate.."
+    writeln "${spc12}std::time_t e;"
+    writeln "${spc12}std::int32_t offset(0);"
+    writeln "${spc12}::memcpy(reinterpret_cast<std::uint8_t *> (&e), begin + offset, sizeof(std::time_t));"
+    writeln "${spc12}offset += sizeof(std::time_t);"
+    writeln "${spc12}this->value_ = be64toh(e);"
+    writeln
+    writeln "${spc12}return (begin + offset) == end;"
+    writeln "${spc8}}"
+    writeln
+    writeln
+    writeln "${spc4}private:"
+    writeln
+    writeln "${spc8}friend"
+    writeln "${spc8}std::ostream &"
+    writeln "${spc8}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::time_t>& msg);"
+    writeln
+    writeln
+    writeln "${spc8}std::time_t value_{ };"
+}
+
+
+# ---- 8>< ----------------------------------------------------------- 8>< ----
+
+
 
 writeln "/* This is a generated file.  DO NOT EDIT! */"
 writeln
@@ -38,23 +1003,22 @@ writeln "#include <CORE/Common/mpl/map.hpp>"
 writeln "#include <CORE/Common/mpl/pair.hpp>"
 writeln "#include <CORE/Common/mpl/uint.hpp>"
 writeln "#include <CORE/Common/type_traits/underlying.hpp>"
-writeln
+writeln "#include <CORE/Common/utilities/noval.hpp>"
+writeln "#include <CORE/Common/utilities/severity.hpp>"
+writeln "#include <CORE/Messages/function_enumerants.hpp>"
 for Item in `ls *.proto`; do
     item=`echo ${Item} | sed -e 's/\.proto$/\.pb\.h/g'`
     writeln "#include <CORE/Messages/${item}>"
 done
 writeln
-#writeln "#include <cassert>"
+writeln "#include <cassert>"
 writeln "#include <cstdint>"
-#writeln "#include <cstring>"
-#writeln "#include <memory>"
+writeln "#include <cstring>"
+#writeln "#include <ctime>"
 writeln "#include <ostream>"
-#writeln "#include <string>"
-#writeln "#include <type_traits>"
-#writeln "#include <utility>"
-#writeln
-#writeln "#include <arpa/inet.h>"
-#writeln "#include <endian.h>"
+writeln "#include <sstream>"
+writeln "#include <string>"
+writeln "#include <utility>"
 
 
 writeln
@@ -64,10 +1028,26 @@ writeln "namespace messages {"
 writeln
 writeln "${spc4}enum struct MsgType : std::uint32_t"
 writeln "${spc4}{"
-for Item in ${ARRAY[*]}; do
+for Item in ${FT_ARRAY[*]}; do
+    writeln "${spc8}${Item}_ = xc::mpl::hash(\"${Item}\") ,"
+
+    if [[ "${Item}" == "Callable" ]]; then
+        writeln
+        writeln
+    fi
+    if [[ "${Item}" == "FunctionName" ]]; then
+        writeln
+    fi
+    if [[ "${Item}" == "noval_t" ]]; then
+        writeln
+    fi
+done
+writeln
+for Item in ${PBM_ARRAY[*]}; do
     writeln "${spc8}$Item = xc::mpl::hash(\"${Item}\") ,"
 done
 writeln "${spc4}};"
+
 
 
 writeln
@@ -75,6 +1055,12 @@ writeln
 writeln
 writeln "${spc4}// ----"
 writeln
+writeln
+writeln
+
+writeln "#pragma pack(push, 1)"
+
+
 writeln
 writeln
 
@@ -91,9 +1077,277 @@ writeln "${spc4}{ };"
 
 writeln
 writeln
+writeln "${spc4}// --"
+writeln
+writeln
+
+writeln "${spc4}struct Log"
+writeln "${spc4}{"
+writeln "${spc8}Log()"
+writeln "${spc8}{ }"
+writeln
+writeln "${spc8}Log(xc::utilities::severity e, const std::string& s)"
+writeln "${spc8}: severity(e)"
+writeln "${spc8}, text(s)"
+writeln "${spc8}{ }"
+writeln
+writeln "${spc8}std::pair<std::string, xc::utilities::severity>"
+writeln "${spc8}operator()() const"
+writeln "${spc8}{"
+writeln "${spc12}return std::make_pair(this->text, this->severity);"
+writeln "${spc8}}"
+writeln
+writeln "${spc8}xc::utilities::severity severity = xc::utilities::severity::debug;"
+writeln "${spc8}std::string text{ };"
+writeln "${spc4}};"
+writeln 
+writeln 
+writeln "${spc4}struct Data"
+writeln "${spc4}{ };"
+writeln
+writeln
+writeln "${spc4}struct Callable"
+writeln "${spc4}{ };"
+writeln
+writeln
 
 
-for Item in ${ARRAY[*]}; do
+for Item in ${FT_ARRAY[*]}; do
+    writeln "${spc4}// --"
+    writeln
+    writeln
+    writeln "${spc4}template < >"
+    writeln "${spc4}struct message_tag<xc::messages::MsgType::${Item}_>"
+    writeln "${spc4}{"
+    if [[ "${Item}" == "Log" ]] || [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]] || [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+        writeln "${spc8}using type = xc::messages::${Item};"
+    elif [[ "${Item}" == "noval_t" ]]; then
+        writeln "${spc8}using type = xc::utilities::${Item};"
+    elif [[ "${Item}" == "bool" ]] || [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+        writeln "${spc8}using type = ${Item};"
+    else
+        writeln "${spc8}using type = std::${Item};"
+    fi
+    writeln
+    writeln "${spc8}static constexpr const char* name = \"${Item}\";"
+    writeln "${spc8}static constexpr MsgType id = xc::messages::MsgType::${Item}_;"
+    writeln "${spc4}};"
+    writeln
+    writeln
+    writeln "${spc4}template < >"
+    if [[ "${Item}" == "Log" ]] || [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]] || [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+        writeln "${spc4}struct message_tag_t<typename xc::messages::${Item}>"
+    elif [[ "${Item}" == "noval_t" ]]; then
+        writeln "${spc4}struct message_tag_t<typename xc::utilities::${Item}>"
+    elif [[ "${Item}" == "bool" ]] || [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+        writeln "${spc4}struct message_tag_t<${Item}>"
+    else
+        writeln "${spc4}struct message_tag_t<std::${Item}>"
+    fi
+    writeln "${spc4}{"
+    writeln "${spc8}using tag = message_tag<xc::messages::MsgType::${Item}_>;"
+    writeln
+    writeln
+    writeln "${spc8}message_tag_t() = default;"
+    writeln
+    if [[ "${Item}" == "Log" ]]; then
+        writeln "${spc8}message_tag_t(const typename xc::messages::${Item}& e)"
+        writeln "${spc8}: severity_{ e.severity }"
+        writeln "${spc8}, value_{ e.text }"
+        writeln "${spc8}{ }"
+        writeln
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(xc::utilities::severity e, const std::string& text)"
+        writeln "${spc8}: severity_{ e }"
+        writeln "${spc8}, value_{ text }"
+        writeln "${spc8}{ }"
+    elif [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]]; then
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(const typename xc::messages::${Item}& /*e*/)"
+        writeln "${spc8}{ }"
+    elif [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(const typename xc::messages::${Item}& e)"
+        writeln "${spc8}: value_{ e }"
+        writeln "${spc8}{ }"
+    elif [[ "${Item}" == "noval_t" ]]; then
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(const typename xc::utilities::${Item}& /*e*/)"
+        writeln "${spc8}{ }"
+    elif [[ "${Item}" == "bool" ]]; then
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(${Item} e)"
+        writeln "${spc8}: value_{ e }"
+        writeln "${spc8}{ }"
+    elif [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(${Item} e)"
+        writeln "${spc8}: value_{ std::to_string(e) }"
+        writeln "${spc8}{ }"
+    elif [[ "${Item}" == "string" ]]; then
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(const std::${Item}& text)"
+        writeln "${spc8}: value_{ text }"
+        writeln "${spc8}{ }"
+    else
+        writeln "${spc8}explicit"
+        writeln "${spc8}message_tag_t(std::${Item} e)"
+        writeln "${spc8}:value_{ e }"
+        writeln "${spc8}{ }"
+    fi
+    writeln
+    writeln
+    if [[ "${Item}" == "Log" ]]; then
+        writeln "${spc8}${Item}"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return xc::messages::${Item}(this->severity_, this->value_);"
+        writeln "${spc8}}"
+    elif [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]]; then
+        writeln "${spc8}${Item}"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return xc::messages::${Item}{ };"
+        writeln "${spc8}}"
+    elif [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+        writeln "${spc8}xc::messages::${Item} &"
+        writeln "${spc8}operator()()"
+        writeln "${spc8}{"
+        writeln "${spc12}return this->value_;"
+        writeln "${spc8}}"
+        writeln
+        writeln "${spc8}const xc::messages::${Item} &"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return this->value_;"
+        writeln "${spc8}}"
+    elif [[ "${Item}" == "noval_t" ]]; then
+        writeln "${spc8}xc::utilities::${Item} &"
+        writeln "${spc8}operator()()"
+        writeln "${spc8}{"
+        writeln "${spc12}return this->value_;"
+        writeln "${spc8}}"
+        writeln
+        writeln "${spc8}const xc::utilities::${Item} &"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return this->value_;"
+        writeln "${spc8}}"
+    elif [[ "${Item}" == "bool" ]]; then
+        writeln "${spc8}${Item} &"
+        writeln "${spc8}operator()()"
+        writeln "${spc8}{"
+        writeln "${spc12}return *reinterpret_cast<${Item} *> (&this->value_);"
+        writeln "${spc8}}"
+        writeln
+        writeln "${spc8}const ${Item} &"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return *reinterpret_cast<const ${Item} *> (&this->value_);"
+        writeln "${spc8}}"
+    elif [[ "${Item}" == "float" ]]; then
+        writeln "${spc8}${Item}"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return std::stof(this->value_);"
+        writeln "${spc8}}"
+    elif [[ "${Item}" == "double" ]]; then
+        writeln "${spc8}${Item}"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return std::stod(this->value_);"
+        writeln "${spc8}}"
+    else
+        writeln "${spc8}std::${Item} &"
+        writeln "${spc8}operator()()"
+        writeln "${spc8}{"
+        writeln "${spc12}return this->value_;"
+        writeln "${spc8}}"
+        writeln
+        writeln "${spc8}const std::${Item} &"
+        writeln "${spc8}operator()() const"
+        writeln "${spc8}{"
+        writeln "${spc12}return this->value_;"
+        writeln "${spc8}}"
+    fi
+    writeln
+    writeln
+    case ${Item} in
+        "Log"          )  bsp_log          ;;
+        "Data"         )  bsp_data         ;;
+        "Callable"     )  bsp_callable     ;;
+        "FunctionName" )  bsp_FunctionName ;;
+        "MsgType"      )  bsp_MsgType      ;;
+        "noval_t"      )  bsp_noval_t      ;;
+        "bool"         )  bsp_bool         ;;
+        "int16_t"      )  bsp_int16_t      ;;
+        "uint16_t"     )  bsp_uint16_t     ;;
+        "int32_t"      )  bsp_int32_t      ;;
+        "uint32_t"     )  bsp_uint32_t     ;;
+        "int64_t"      )  bsp_int64_t      ;;
+        "uint64_t"     )  bsp_uint64_t     ;;
+        "size_t"       )  bsp_size_t       ;;
+        "string"       )  bsp_string       ;;
+        "float"        )  bsp_float        ;;
+        "double"       )  bsp_double       ;;
+        "time_t"       )  bsp_time_t       ;;                                       # std::int64_t
+    esac
+    writeln "${spc4}};"
+    writeln
+    writeln
+    if [[ "${Item}" == "Log" ]]; then
+        writeln "${spc4}inline"
+        writeln "${spc4}std::ostream &"
+        writeln "${spc4}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::messages::${Item}>& msg)"
+        writeln "${spc4}{"
+        writeln "${spc8}const auto log = msg.operator()();"
+        writeln "${spc8}os << xc::messages::message_tag_t<${Item}>::tag::name << \" severity= \" << xc::underlying(log.severity) << \" value= \" << log.text;"
+        writeln "${spc8}return os;"
+        writeln "${spc4}}"
+    elif [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]] || [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+        writeln "${spc4}inline"
+        writeln "${spc4}std::ostream &"
+        writeln "${spc4}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::messages::${Item}>& /*msg*/)"
+        writeln "${spc4}{"
+        writeln "${spc8}os << xc::messages::message_tag_t<xc::messages::${Item}>::tag::name << \" (\" << xc::underlying(xc::messages::MsgType::${Item}_) << \")\";"
+        writeln "${spc8}return os;"
+        writeln "${spc4}}"
+    elif [[ "${Item}" == "noval_t" ]]; then
+        writeln "${spc4}inline"
+        writeln "${spc4}std::ostream &"
+        writeln "${spc4}operator <<(std::ostream& os, const xc::messages::message_tag_t<xc::utilities::${Item}>& /*msg*/)"
+        writeln "${spc4}{"
+        writeln "${spc8}os << xc::messages::message_tag_t<xc::utilities::${Item}>::tag::name << \" (\" << xc::underlying(xc::messages::MsgType::${Item}_) << \")\";"
+        writeln "${spc8}return os;"
+        writeln "${spc4}}"
+    elif [[ "${Item}" == "bool" ]] || [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+        writeln "${spc4}inline"
+        writeln "${spc4}std::ostream &"
+        writeln "${spc4}operator <<(std::ostream& os, const xc::messages::message_tag_t<${Item}>& msg)"
+        writeln "${spc4}{"
+        writeln "${spc8}os << xc::messages::message_tag_t<${Item}>::tag::name << \" value= \" << msg.operator()();"
+        writeln "${spc8}return os;"
+        writeln "${spc4}}"
+    else
+        writeln "${spc4}inline"
+        writeln "${spc4}std::ostream &"
+        writeln "${spc4}operator <<(std::ostream& os, const xc::messages::message_tag_t<std::${Item}>& msg)"
+        writeln "${spc4}{"
+        writeln "${spc8}os << xc::messages::message_tag_t<std::${Item}>::tag::name << \", value= \" << msg.operator()();"
+        writeln "${spc8}return os;"
+        writeln "${spc4}}"
+    fi
+
+    writeln
+    writeln
+done
+
+
+writeln
+writeln
+
+
+for Item in ${PBM_ARRAY[*]}; do
     writeln "${spc4}// --"
     writeln
     writeln
@@ -102,15 +1356,37 @@ for Item in ${ARRAY[*]}; do
     writeln "${spc4}{"
     writeln "${spc8}using type = Messages::${Item};"
     writeln
-    writeln "${spc8}constexpr static const char* name = \"${Item}\";"
-    writeln "${spc8}constexpr static MsgType id = xc::messages::MsgType::${Item};"
+    writeln "${spc8}static constexpr const char* name = \"${Item}\";"
+    writeln "${spc8}static constexpr MsgType id = xc::messages::MsgType::${Item};"
     writeln "${spc4}};"
     writeln
     writeln
     writeln "${spc4}template < >"
-    writeln "${spc4}struct message_tag_t<Messages::${Item}> : message_tag<xc::messages::MsgType::${Item}>"
+    writeln "${spc4}struct message_tag_t<Messages::${Item}> : Messages::${Item}"
     writeln "${spc4}{"
     writeln "${spc8}using tag = message_tag<xc::messages::MsgType::${Item}>;"
+    writeln
+    writeln "${spc8}using Messages::${Item}::${Item};"
+    writeln
+    writeln
+    writeln "${spc8}message_tag_t() = default;"
+    writeln
+    writeln "${spc8}message_tag_t(const Messages::${Item}& e)"
+    writeln "${spc8}: Messages::${Item}(e)"
+    writeln "${spc8}{ }"
+    writeln
+    writeln
+    writeln "${spc8}Messages::${Item} &"
+    writeln "${spc8}operator()()"
+    writeln "${spc8}{"
+    writeln "${spc12}return *reinterpret_cast<Messages::${Item} *> (this);"
+    writeln "${spc8}}"
+    writeln
+    writeln "${spc8}const Messages::${Item} &"
+    writeln "${spc8}operator()() const"
+    writeln "${spc8}{"
+    writeln "${spc12}return *reinterpret_cast<const Messages::${Item} *> (this);"
+    writeln "${spc8}}"
     writeln "${spc4}};"
     writeln
     writeln
@@ -126,6 +1402,11 @@ for Item in ${ARRAY[*]}; do
 done
 
 
+writeln "#pragma pack(pop)"
+
+writeln
+writeln
+
 
 declare flag="false"
 
@@ -134,6 +1415,48 @@ writeln "${spc4}// ----"
 writeln
 writeln
 writeln
+
+
+writeln "${spc4}inline"
+writeln "${spc4}std::string"
+writeln "${spc4}msgtype_name(std::uint32_t e)"
+writeln "${spc4}{"
+writeln "${spc8}switch (e)"
+writeln "${spc8}{"
+for Item in ${FT_ARRAY[*]}; do
+    writeln "${spc12}case xc::underlying(xc::messages::MsgType::${Item}_) :"
+    writeln "${spc12}{"
+    writeln "${spc16}return xc::messages::template message_tag<xc::messages::MsgType::${Item}_>::name;"
+    writeln "${spc12}}"
+    writeln
+done
+for Item in ${PBM_ARRAY[*]}; do
+    writeln "${spc12}case xc::underlying(xc::messages::MsgType::${Item}) :"
+    writeln "${spc12}{"
+    writeln "${spc16}return xc::messages::template message_tag<xc::messages::MsgType::${Item}>::name;"
+    writeln "${spc12}}"
+    writeln
+done
+writeln "${spc12}default :"
+writeln "${spc12}{"
+writeln "${spc16}std::stringstream ss;"
+writeln "${spc16}ss << \"Error[\" << e << \"]: no known type\";"
+writeln "${spc16}return ss.str();"
+writeln "${spc12}}"
+writeln "${spc8}}"
+writeln "${spc4}}"
+
+
+
+writeln
+writeln
+writeln
+writeln "${spc4}// ----"
+writeln
+writeln
+writeln
+
+
 
 
 #
@@ -145,7 +1468,31 @@ writeln
 writeln "${spc4}template <typename xc::messages::MsgType M>"
 writeln "${spc4}struct msg_type"
 writeln "${spc4}{"
-for Item in ${ARRAY[*]}; do
+for Item in ${FT_ARRAY[*]}; do
+    if [ "$flag" == "false" ]; then
+        if [[ "${Item}" == "Log" ]] || [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]] || [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, xc::messages::${Item}>"
+        elif [[ "${Item}" == "noval_t" ]]; then
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, xc::utilities::${Item}>"
+        elif [[ "${Item}" == "bool" ]] || [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, ${Item}>"
+        else
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, std::${Item}>"
+        fi
+        flag="true"
+    else
+        if [[ "${Item}" == "Log" ]] || [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]] || [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+            writeln "${spc35}, xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, xc::messages::${Item}>"
+        elif [[ "${Item}" == "noval_t" ]]; then
+            writeln "${spc35}, xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, xc::utilities::${Item}>"
+        elif [[ "${Item}" == "bool" ]] || [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+            writeln "${spc35}, xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, ${Item}>"
+        else
+            writeln "${spc35}, xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)>, std::${Item}>"
+        fi
+    fi
+done
+for Item in ${PBM_ARRAY[*]}; do
     if [ "$flag" == "false" ]; then
         writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item})>, Messages::${Item}>"
         flag="true"
@@ -174,7 +1521,31 @@ writeln
 writeln "${spc4}template <typename M>"
 writeln "${spc4}struct type_msg"
 writeln "${spc4}{"
-for Item in ${ARRAY[*]}; do
+for Item in ${FT_ARRAY[*]}; do
+    if [ "$flag" == "false" ]; then
+        if [[ "${Item}" == "Log" ]] || [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]] || [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::messages::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        elif [[ "${Item}" == "noval_t" ]]; then
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<xc::utilities::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        elif [[ "${Item}" == "bool" ]] || [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        else
+            writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<std::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        fi
+        flag="true"
+    else
+        if [[ "${Item}" == "Log" ]] || [[ "${Item}" == "Data" ]] || [[ "${Item}" == "Callable" ]] || [[ "${Item}" == "FunctionName" ]] || [[ "${Item}" == "MsgType" ]]; then
+            writeln "${spc35}, xc::mpl::pair<xc::messages::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        elif [[ "${Item}" == "noval_t" ]]; then
+            writeln "${spc35}, xc::mpl::pair<xc::utilities::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        elif [[ "${Item}" == "bool" ]] || [[ "${Item}" == "float" ]] || [[ "${Item}" == "double" ]]; then
+            writeln "${spc35}, xc::mpl::pair<${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        else
+            writeln "${spc35}, xc::mpl::pair<std::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item}_)> >"
+        fi
+    fi
+done
+for Item in ${PBM_ARRAY[*]}; do
     if [ "$flag" == "false" ]; then
         writeln "${spc8}using m_type = xc::mpl::map< xc::mpl::pair<Messages::${Item}, xc::mpl::uint_<xc::underlying(xc::messages::MsgType::${Item})> >"
         flag="true"

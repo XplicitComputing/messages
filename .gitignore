@@ -1,0 +1,61 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.a
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Generated Code
+*.pb.h
+*.pb.cc
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*_test
+
+
+# Files
+*~
+Makefile
+CMakeCache.txt
+cmake_install.cmake
+.DS_Store
+
+
+# Directories
+bindings
+build
+CMakeFiles
+cmake-build-debug
+cmake-build-release
+*_autogen
+debug
+release
+
+
+# Build properties
+.buildopts
+.idea/
+*.cbp
+

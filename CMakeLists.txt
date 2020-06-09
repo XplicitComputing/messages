@@ -69,7 +69,7 @@ endif()
 
 add_custom_target( msg_generators
     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/message_types_generator
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/message_readers_generator
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/function_enum_generator
 )
 
 

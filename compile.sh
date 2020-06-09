@@ -31,6 +31,7 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+cmake .
 # keep CPU in reserve for non-build
 ncpu=$(nproc)
 nrs=1           # CPUs reserved for non-build
