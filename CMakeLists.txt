@@ -67,11 +67,6 @@ if(NOT "${pb_incl} " STREQUAL " ")
 endif()
 
 
-add_custom_target( msg_generators
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/message_types_generator
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/function_enum_generator
-)
-
 
 find_package(Protobuf REQUIRED)
 set(CMAKE_CXX_STANDARD 14)
