@@ -95,7 +95,6 @@ protobuf_generate_cpp(ProtoSources ProtoHeaders ${ProtoFiles})
 
 add_library(xcmessages STATIC ${ProtoSources} ${ProtoHeaders})
 target_link_libraries(xcmessages ${PB_STATIC_LIB_PATH})
-add_dependencies(xcmessages msg_generators)
 
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
