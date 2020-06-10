@@ -1,7 +1,7 @@
 message("* * * * * * * *  generating xcompute protocol buffers * * * * * * * * ")
 cmake_minimum_required(VERSION 2.8)
 project(xcmessages)
-set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}/../..")
+set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 
 execute_process(
     COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:FILEPATH= | cut -d'=' -f2"
