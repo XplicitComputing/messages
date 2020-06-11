@@ -4,25 +4,25 @@ project(xcmessages)
 set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 
 execute_process(
-    COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:FILEPATH= | cut -d'=' -f2"
+    COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:FILEPATH= | cut -d'=' -f2"
     OUTPUT_VARIABLE pb_lib
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 if("${pb_lib} " STREQUAL " ")
     execute_process(
-        COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
+        COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
         OUTPUT_VARIABLE pb_lib
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     if("${pb_lib} " STREQUAL " ")
         execute_process(
-            COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:FILEPATH= | cut -d'=' -f2"
+            COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:FILEPATH= | cut -d'=' -f2"
             OUTPUT_VARIABLE pb_lib
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
         if("${pb_lib} " STREQUAL " ")
             execute_process(
-                COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
+                COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
                 OUTPUT_VARIABLE pb_lib
                 OUTPUT_STRIP_TRAILING_WHITESPACE
             )
@@ -31,25 +31,25 @@ if("${pb_lib} " STREQUAL " ")
 endif()
 
 execute_process(
-    COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:PATH= | cut -d'=' -f2"
+    COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:PATH= | cut -d'=' -f2"
     OUTPUT_VARIABLE pb_incl
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 if("${pb_incl} " STREQUAL " ")
     execute_process(
-        COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
+        COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
         OUTPUT_VARIABLE pb_incl
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     if("${pb_incl} " STREQUAL " ")
         execute_process(
-            COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:FILE= | cut -d'=' -f2"
+            COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:FILE= | cut -d'=' -f2"
             OUTPUT_VARIABLE pb_incl
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
         if("${pb_incl} " STREQUAL " ")
             execute_process(
-                COMMAND bash -c "cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
+                COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
                 OUTPUT_VARIABLE pb_incl
                 OUTPUT_STRIP_TRAILING_WHITESPACE
             )
