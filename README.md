@@ -1,5 +1,5 @@
 # libxcmessages
-Messages is a schema designed for engineers and scientists that simply and efficiently enables numerical and related data to be shared across high-performance computers and programming languages.
+Messages is a schema designed for engineers and scientists that efficiently enables numerical and related data to be shared across high-performance computers and programming languages.
 
 ## 0. getting started
 
@@ -49,9 +49,7 @@ There should be a corresponding set of `libprotobuf` in `/usr/local/lib/` and he
 
 ### 3. generating bindings
 
-Pre-built bindings are distributed and can be used out-of-the-box. 
-
-However, you may wish to generate linkable static library libmessages.a for your platform. Invoke the protoc compiler for the desired output language (by defining the name of the output folder following equals sign) against proto files to yield libmessages.a and bindings. For instance, to generate only c++ accessors for vector.proto:
+Invoke the protoc compiler for the desired output language (by defining the name of the output folder following equals sign) against proto files to yield libmessages.a and bindings. For instance, to generate only c++ accessors for vector.proto:
 
 ```
 protoc --cpp_out=cpp vector.proto 
