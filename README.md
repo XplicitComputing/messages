@@ -14,7 +14,7 @@ Messages is a schema designed for engineers and scientists that simply and effic
 - `meta.proto` - meta-data and user-graphics for a specific system (compatible with xcm files) 
 
 
-These definitions are then fed into a protoc compiler to generate bindings for the following languages: C++, Objective-C, C#, PHP, Python, Java, Javascript, Ruby, Dart, and Go. 
+These definitions are then fed into a protoc compiler to generate a linkable static library and bindings for the following languages: C++, Objective-C, C#, PHP, Python, Java, Javascript, Ruby, Dart, and Go. 
 
 
 ### 1. installing dependencies
@@ -29,16 +29,13 @@ sudo sh install/install-protobuf-offline.sh
 ```
 
 For special installation, see: https://github.com/protocolbuffers/protobuf/blob/master/src/README.md
-. If compiling manually, remember to set the location to /usr/local (after
-running ./autogen.sh ):
+. If compiling manually, run `./autogen.sh`  and set the prefix path to `/usr/local` or desired location: 
 ```
 ./configure --prefix=/usr/local/xcompute
 ```
-Then follow with the standard: `make`, `make check`, `sudo make install`, `sudo ldconfig`. Make check may fail on some configurations, but may still work. 
+Then follow with the standard: `make`, `make check`, `sudo make install`, `sudo ldconfig`
 
 ### 2. checking dependencies
-
-
 
 Protobuf3 should have been installed in the previous step. Assure protocol buffer compiler has installed and is version 3+:
 ```
@@ -54,7 +51,7 @@ There should be a corresponding set of `libprotobuf` in `/usr/local/lib/` and he
 
 Pre-built bindings are distributed and can be used out-of-the-box. 
 
-If desired, invoke the protoc compiler for the desired output language (by defining the name of the output folder following equals sign) against proto files to yield libmessages.a and bindings. For instance, to generate only c++ accessors for vector.proto:
+However, you may wish to generate linkable static library libmessages.a for your platform. Invoke the protoc compiler for the desired output language (by defining the name of the output folder following equals sign) against proto files to yield libmessages.a and bindings. For instance, to generate only c++ accessors for vector.proto:
 
 ```
 protoc --cpp_out=cpp vector.proto 
