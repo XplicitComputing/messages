@@ -61,7 +61,7 @@ Header and source files with `*.pb.h` and `*.pb.cc` extensions are generated (to
 Multiple languages and proto files can be compiled at once, like so:
 
 ```
-protoc --cpp_out=cpp --csharp_out=csharp –objc_out=objc --ruby_out=ruby 		--python_out=python --java_out=java --js_out=javascript 		vector.proto system.proto spatial.proto meta.proto
+protoc --cpp_out=cpp --csharp_out=csharp –objc_out=objc --ruby_out=ruby --python_out=python --java_out=java --js_out=javascript vector.proto system.proto spatial.proto meta.proto
 ```
 
 ### 4. basic save & load
