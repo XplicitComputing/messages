@@ -44,7 +44,6 @@ cmake_install.cmake
 
 
 # Directories
-bindings
 build
 CMakeFiles
 cmake-build-debug
