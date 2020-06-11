@@ -1,4 +1,4 @@
-# libmessages
+# libxcmessages
 Messages is a schema designed for engineers and scientists that simply and efficiently enables numerical and related data to be shared across high-performance computers and programming languages.
 
 ## 0. getting started
@@ -19,7 +19,7 @@ These definitions are then fed into a protoc compiler to generate bindings for t
 
 ### 1. installing dependencies
 
-Try downlaoding and installing Google Protobuf 3 with the script:
+Try downloading and installing Google Protobuf 3 with the script:
 ```
 sudo sh install/install-protobuf-online.sh
 ```
