@@ -1,5 +1,5 @@
 # libxcmessages
-Messages is a schema designed for engineers and scientists that efficiently enables numerical and related data to be shared across high-performance computers and programming languages.
+Messages is a schema designed for engineers and scientists that efficiently enables numerical and related data to be shared across high-performance computing sessions and programming languages.
 
 ## 0. getting started
 
