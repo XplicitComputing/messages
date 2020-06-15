@@ -1,5 +1,10 @@
-# libxcmessages
-Messages is a schema designed for engineers and scientists that efficiently enables numerical and related data to be shared across high-performance computing sessions and programming languages.
+# Messages
+
+What is Messages? 
+
+Messages (libxcmessages) is a schema designed for engineers and scientists that enables numerical and related data to be shared across high-performance computing sessions and programming languages. It requires a <a href=https://developers.google.com/protocol-buffers/docs/downloads>protoc 3 compiler</a>.
+
+A message is defined to be some transmit-able idea, useful for a specific context (though actually quite flexible given how multiple messages can interact). Messages are a collection of 18 practical concepts for computer-aided engineering. It could be coalesced data for a particular property, the description of a physical model as its algorithms, the specific setup of a system, etc.. Ideally, each message concept is characteristic and orthogonal to other messages, constructing a basis set with a few practical message types (to-be-defined and learned). Messages permit embedding sub-message members, which makes complex obect-oriented concepts possible. In other cases, vectorized data takes advantage of packed repeated fields to permit parallel operations and direct copying. In order to communicate across a spectrum of programming languages/environments, the layout and names (and types) of the known data fields must be defined and convention maintained to promote high-performance interoperability. This schema leverages machine-generated code as the accessors (get/set functions) for integrated engineering environments such as xcompute-server and xcompute-client.
 
 ## 0. getting started
 
