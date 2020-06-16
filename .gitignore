@@ -34,6 +34,7 @@
 # Files
 *~
 Makefile
+makefile
 CMakeCache.txt
 cmakecache.txt
 cmakelists.txt
