@@ -35,6 +35,8 @@
 *~
 Makefile
 CMakeCache.txt
+cmakecache.txt
+cmakelists.txt
 cmake_install.cmake
 .DS_Store
 meta.pb.cc 
@@ -50,6 +52,7 @@ vector.pb.h
 # Directories
 build
 CMakeFiles
+cmakefiles
 cmake-build-debug
 cmake-build-release
 *_autogen
