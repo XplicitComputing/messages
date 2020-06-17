@@ -44,41 +44,6 @@ message Visual{
     //reserved
 }
 
-message GraphicsControl{
-    int32 style = 1;
-    int32 encoding = 2;
-    //reserved
-    repeated float color = 4;
-    float alpha = 5;
-    float point_width = 6;
-    float line_width = 7;   
-    //reserved
-    bool visible = 10;
-    bool overlay = 11;
-}
-
-message SliceControl{
-    Visual visual = 1;
-    //reserved
-    bool intersect = 3;
-    bool negative = 4;
-    bool positive = 5;
-    //reserved
-    repeated double center = 8;
-    repeated double normal = 9;
-    //reserved
-    }
-
-message TracersControl{
-    Visual visual = 1;
-    //reserved
-    int64 particle_count = 3;
-    int64 seed = 4; 
-    repeated int32 spawn_region = 5;
-    repeated int32 regen_region = 6;
-    //reserved
-    repeated float user_defined_positions = 8;
-}
 
 message Meta{//metaobject backbone -- created and staged in server visuals (for transmission) to populate client metaobjects
     string name = 1;//unique identifier that persists between sessions
@@ -111,5 +76,42 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     repeated int32 volumes = 29;
     repeated double model_transform = 30;//dmat4 (aka MAT4 transformation matrix)
     repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
+}
+
+
+message GraphicsControl{//deprecated - will utilize Variables message moving forward
+    int32 style = 1;
+    int32 encoding = 2;
+    //reserved
+    repeated float color = 4;
+    float alpha = 5;
+    float point_width = 6;
+    float line_width = 7;   
+    //reserved
+    bool visible = 10;
+    bool overlay = 11;
+}
+
+message SliceControl{//deprecated - will utilize Variables message moving forward
+    Visual visual = 1;
+    //reserved
+    bool intersect = 3;
+    bool negative = 4;
+    bool positive = 5;
+    //reserved
+    repeated double center = 8;
+    repeated double normal = 9;
+    //reserved
+    }
+
+message TracersControl{//deprecated - will utilize Variables message moving forward
+    Visual visual = 1;
+    //reserved
+    int64 particle_count = 3;
+    int64 seed = 4; 
+    repeated int32 spawn_region = 5;
+    repeated int32 regen_region = 6;
+    //reserved
+    repeated float user_defined_positions = 8;
 }
 

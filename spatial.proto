@@ -59,7 +59,7 @@ message Topology{//compatible with xcompute Geometry
     Revision revision = 31;
 }
 
-message GridControl{
+message GridControl{//deprecated - will utilize Variables message moving forward
     int32 basis = 1;
     repeated int32 size = 2;
     repeated double spacing = 3;
@@ -69,7 +69,7 @@ message GridControl{
 
 }
 
-message MeshControl{
+message MeshControl{//deprecated - will utilize Variables message moving forward
     int64 target_n = 1;
     int32 max_iterations = 2;
     double size_ratio = 3;
@@ -97,7 +97,7 @@ message MeshControl{
     int64 background_n = 30;
 }
 
-message TreeControl{
+message TreeControl{//deprecated - will utilize Variables message moving forward
     int32 min_depth = 1;
     int32 max_depth = 2;
     int64 max_size = 3;
@@ -106,7 +106,7 @@ message TreeControl{
     
 }
 
-message NetworkControl{
+message NetworkControl{//deprecated - will utilize Variables message moving forward
 
 }
 
