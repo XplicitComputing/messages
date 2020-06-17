@@ -24,13 +24,9 @@ These definitions are then fed into a protoc compiler to generate a linkable sta
 
 ### 1. installing dependencies
 
-Try downloading and installing Google Protobuf 3 with the script:
+Download and install Google Protobuf 3 with the script:
 ```
-sudo sh install/install-protobuf-online.sh
-```
-or alternately, build from provided static sources:
-```
-sudo sh install/install-protobuf-offline.sh
+sudo sh install/install-protobuf.sh
 ```
 
 For special installation, see: https://github.com/protocolbuffers/protobuf/blob/master/src/README.md
