@@ -15,10 +15,10 @@
 #
 
 PKG_PROTOBUFDEV=libprotobuf-dev                 # dev package on Ubuntu/Debian
-TAG=v3.11.4                                   # Known recent release tag
+TAG=3.8.0                                   # Known recent release tag
 PREFIX=/usr/local   # Install target prefix
 CLEANUP=1
-CFGARGS=""
+CFGARGS="CFLAGS=-fPIC CXXFLAGS=-fPIC"
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -53,17 +53,20 @@ echo Install target $PREFIX
 echo "---- Installing Protocol Buffers ----"
 sleep 1
 
-echo "It's best practice to first remove existing libprotobuf-dev..."
-dpkg -l ${PKG_PROTOBUFDEV}
-[ $? = 0 ] && sudo apt remove ${PKG_PROTOBUFDEV}
+#echo "It's best practice to first remove existing libprotobuf-dev..."
+#dpkg -l ${PKG_PROTOBUFDEV}
+#[ $? = 0 ] && sudo apt remove ${PKG_PROTOBUFDEV}
 echo "Done prepping. Now unzipping..."
 sleep 1
 
 #unzip protobuf*.zip
-[ -d protobuf ] || git clone https://github.com/protocolbuffers/protobuf.git
-cd protobuf
-[ "${TAG}" ] && git checkout ${TAG}
-git submodule update --init --recursive
+#[ -d protobuf ] || git clone https://github.com/protocolbuffers/protobuf.git
+wget https://github.com/protocolbuffers/protobuf/releases/download/v${TAG}/protobuf-all-${TAG}.tar.gz
+tar -xf protobuf-*.tar.gz
+cd protobuf-${TAG}
+#[ "${TAG}" ] && git checkout ${TAG}
+#git submodule update --init --recursive
+
 ./autogen.sh
 ./configure --prefix=${PREFIX} ${CFGARGS}
 make -j$(nproc)
