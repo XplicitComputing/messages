@@ -40,6 +40,10 @@ cmakecache.txt
 cmakelists.txt
 cmake_install.cmake
 .DS_Store
+.ninja_deps
+.ninja_log
+build.ninja
+rules.ninja
 meta.pb.cc 
 meta.pb.h 
 readme.md
