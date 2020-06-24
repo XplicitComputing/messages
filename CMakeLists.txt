@@ -70,7 +70,10 @@ endif()
 
 find_package(Protobuf REQUIRED)
 
-set(CMAKE_CXX_STANDARD 14)
+if(NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 14)
+endif()
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -fopenmp -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wall -Wextra -Werror -Wno-unknown-pragmas -Wno-pragmas -Wno-unknown-warning-option -Wno-unused-parameter")
 set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS} -g -Os")
