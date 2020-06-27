@@ -3,6 +3,9 @@
 
 BDIR=bindings
 LANGUAGES='cpp csharp java javascript objc python ruby php' # go dart julia perl c r rust scala swift
+if [ "${XC_BUILD_TREE}" = "" ]; then
+    XC_BUILD_TREE=.
+fi
 
 
 quiet=
@@ -68,7 +71,8 @@ fi
 # build the protobuf bindings that will be used by users and developers to integrate
 directories=`echo ${LANGUAGES} | sed -e "s/[^ ]* */${BDIR}\/&/g"`
 mkdir -p $directories
-protoc  --cpp_out=${BDIR}/cpp \
+protoc  --proto_path=${XC_BUILD_TREE} \
+        --cpp_out=${BDIR}/cpp \
         --python_out=${BDIR}/python \
         --java_out=${BDIR}/java \
         --js_out=${BDIR}/javascript,import_style=commonjs,binary:. \
