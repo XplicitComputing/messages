@@ -25,7 +25,7 @@ message Zone{//compatible with xcompute Region
     int64 offset = 6;
     string comments = 7;
     string info = 8;
-    //reserved
+    bool is_asbtract = 9; //if set, does not reference a geometry (typically 0d, maps to system data)
     Extrema bounds = 10;
     repeated float terminal_position = 11;
     repeated int32 specific_elements = 12; //optional (if used, ignore offset)
