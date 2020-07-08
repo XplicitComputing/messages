@@ -1,13 +1,15 @@
-/* Do Not Remove this Comment:
-
-MESSAGES™ by XPLICIT COMPUTING, INC
-GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
-
-Please see file README.html for usage and license info. README.html must be copied along with these *.proto, unaltered as part of the fair-use license agreement. Direct questions or concerns to: info@xplicitcomputing.com
-
-Generally speaking, it is okay to customize these definitions by adding additional entries. To maintain xcompute-compatibility, please do not change existing entries but assign new ones with indexes as 100 or more.
-
-*/ 
+// Do Not Remove this Comment:
+//
+// MESSAGES™ by XPLICIT COMPUTING, INC
+// GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
+//
+// Please see file README.html for usage and license info. README.html must be copied along with 
+// these *.proto, unaltered as part of the fair-use license agreement. Direct questions or 
+// concerns to: info@xplicitcomputing.com
+//
+// Generally speaking, it is okay to customize these definitions by adding additional entries. 
+// To maintain xcompute-compatibility, please do not change existing entries but assign new 
+// ones with indexes as 100 or more.
 
 
 
@@ -16,7 +18,8 @@ package Messages;
 import "vector.proto";
 
 
-message Zone{//compatible with xcompute Region
+
+message Zone{                                                                                           // compatible with xcompute Region
     string name = 1;
     int32 id = 2;
     int32 dimensionality = 3;
@@ -25,15 +28,16 @@ message Zone{//compatible with xcompute Region
     int64 offset = 6;
     string comments = 7;
     string info = 8;
-    bool is_asbtract = 9; //if set, does not reference a geometry (typically 0d, maps to system data)
+    bool is_abstract = 9;                                                                               // if set, does not reference a geometry (typically 0d, maps to system data)
     Extrema bounds = 10;
     repeated float terminal_position = 11;
-    repeated int32 specific_elements = 12; //optional (if used, ignore offset)
+    repeated int32 specific_elements = 12;                                                              // optional (if used, ignore offset)
 }
 
-//Note: message 'Elements' is defined in vector.proto to utilize arena/packed allocation
 
-message Topology{//compatible with xcompute Geometry
+// Note: message 'Elements' is defined in vector.proto to utilize arena/packed allocation
+
+message Topology{                                                                                       // compatible with xcompute Geometry
     string name = 1;
     int32 type = 2;
     int32 ndim = 3;
@@ -59,7 +63,8 @@ message Topology{//compatible with xcompute Geometry
     Revision revision = 31;
 }
 
-message GridControl{//deprecated - will utilize Variables message moving forward
+
+message GridControl{                                                                                    // deprecated - will utilize Variables message moving forward
     int32 basis = 1;
     repeated int32 size = 2;
     repeated double spacing = 3;
@@ -69,7 +74,7 @@ message GridControl{//deprecated - will utilize Variables message moving forward
 
 }
 
-message MeshControl{//deprecated - will utilize Variables message moving forward
+message MeshControl{                                                                                    // deprecated - will utilize Variables message moving forward
     int64 target_n = 1;
     int32 max_iterations = 2;
     double size_ratio = 3;
@@ -97,16 +102,15 @@ message MeshControl{//deprecated - will utilize Variables message moving forward
     int64 background_n = 30;
 }
 
-message TreeControl{//deprecated - will utilize Variables message moving forward
+message TreeControl{                                                                                    // deprecated - will utilize Variables message moving forward
     int32 min_depth = 1;
     int32 max_depth = 2;
     int64 max_size = 3;
     //reserved
     Extrema bounds = 10;
-    
 }
 
-message NetworkControl{//deprecated - will utilize Variables message moving forward
+message NetworkControl{                                                                                 // deprecated - will utilize Variables message moving forward
 
 }
 
