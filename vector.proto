@@ -15,6 +15,12 @@ package Messages;
 
 option cc_enable_arenas = true;//compact vectorized format
 
+
+message File{
+	string name = 1;
+	bytes content = 2;
+} 
+
 message Revision{
     int64 major_rev = 1;
     int64 minor_rev = 2;
