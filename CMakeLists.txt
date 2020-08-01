@@ -70,7 +70,7 @@ endif()
 
 find_package(Protobuf REQUIRED)
 
-if(NOT CMAKE_CXX_STANDARD)
+if(NOT "${CMAKE_CXX_STANDARD}")
     set(CMAKE_CXX_STANDARD 20)
 endif()
 
