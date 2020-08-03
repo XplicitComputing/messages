@@ -1,6 +1,15 @@
-message("* * * * * * * *  generating xcompute protocol buffers * * * * * * * * ")
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.16)
+##############################################
+#               XCOMPUTE-MESSAGES            #
+##############################################
+
 project(xcmessages)
+
+if(NOT "${CMAKE_CXX_STANDARD}")
+    set(CMAKE_CXX_STANDARD 20)
+endif()
+
+
 set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 
 execute_process(
@@ -70,15 +79,12 @@ endif()
 
 find_package(Protobuf REQUIRED)
 
-if(NOT "${CMAKE_CXX_STANDARD}")
-    set(CMAKE_CXX_STANDARD 20)
-endif()
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -mfpmath=sse -msse2 -march=native -fopenmp -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wall -Wextra -Werror -Wno-unknown-pragmas -Wno-pragmas -Wno-unknown-warning-option -Wno-unused-parameter -Wno-deprecated-declarations")
 set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS} -g -Os")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
 
+message("* * * * * * * *  generating xcompute protocol buffers * * * * * * * * ")
 message("include path: ${PROTOBUF_INCLUDE_DIR}")
 include_directories(${PROTOBUF_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
