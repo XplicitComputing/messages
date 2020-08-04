@@ -5,8 +5,13 @@ if [[ ! -z "${GOOGLE_ROOT}" ]]; then
 
     ln -fs ../../vector.pb.h
 
-    c++ save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
-    c++ load_msg.cpp -o load_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+    if [[ "$TOOLCHAIN" == "Clang" ]]; then
+        clang++ -stdlib=libc++ -lc++abi -lsupc++ save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        clang++ -stdlib=libc++ -lc++abi -lsupc++ load_msg.cpp -o load_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+    else
+        g++ save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        g++ load_msg.cpp -o load_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+    fi
 
 else
 
