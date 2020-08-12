@@ -113,8 +113,8 @@ message Model{//compatible with xcompute model
     repeated string algorithms = 4;//ordered algorithms (by name)
     repeated string available_outputs = 5;//serialized property-keys 
     repeated string extra_properties = 6;//some pk's are not recorded by default as an optimization. they can be added
-    repeated string compatible_conditions = 7;
-    repeated string compatible_scripts = 8;
+    repeated string compatible_conditions = 7;//relevant algorithm/function names that are applied to one ore more regions or initialize
+    //reserved
     repeated Model sub_models = 9;//
     repeated Vector64 data = 10;//high-level constants manpulated by user
     repeated Rule rules = 11;

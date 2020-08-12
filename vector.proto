@@ -41,6 +41,7 @@ message Vector32{
     string units = 5;//kg m s^2 and such string literals
     repeated float values = 10[packed=true];
     //reserved
+    string comment = 15;
 }
 
 message Vector64{
@@ -51,6 +52,7 @@ message Vector64{
     string units = 5;//kg m s^2 and such string literals
     repeated double values = 10[packed=true];
     //reserved
+    string comment = 15;
 }
 
 message Indices{

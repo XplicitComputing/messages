@@ -9,7 +9,7 @@
 
 
 
-std::string name{ "sine-sweep.xco" };                                               // file name
+std::string name{ "test.xco" };                                               // file name
 
 
 
