@@ -4,7 +4,12 @@
 if [[ ! -z "${GOOGLE_ROOT}" ]]; then
 
     ln -fs ../../vector.pb.h
-    c++ xco2csv.cpp -o xco2csv -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+
+    if [[ "$TOOLCHAIN" == "Clang" ]]; then
+        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs xco2csv.cpp -o xco2csv -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+    else
+        g++ xco2csv.cpp -o xco2csv -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+    fi
 
 else
 

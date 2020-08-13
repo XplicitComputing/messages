@@ -1,40 +1,43 @@
 #include "vector.pb.h"
 
 #include <cmath> 
+#include <ctime>
 #include <cstdint>
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <ctime>
+
+
 
 
 std::string name{ "sweep.xco" };        // file name
-std::size_t N{ 10000 };                // length of output (sample count)
-double w_max = 100.0; //w_max frequency end of sweep
-unsigned int C = 2; //number of channels to output
+std::size_t N{ 10000 };                 // length of output (sample count)
+double w_max = 100.0;                   // w_max frequency end of sweep
+unsigned int C = 2;                     // number of channels to output
 
 
-//prints current date/time in string
+
+// prints current date/time in string
 std::string
 current_time()
 {
-    // CUURENT TIME
     std::time_t rawtime;
     std::time (&rawtime);
     std::string txt = std::asctime(std::localtime(&rawtime));
+
     // remove invalid last character
     txt.pop_back();
     return txt;
 }
 
 
-//FILL DATA -- in this case we've added some example sine sweep functions
+// FILL DATA -- in this case we've added some example sine sweep functions
 void fill_data(Messages::Vector64& msg)
 {
     // CREATE DATA and fill protobuf msg
-	std::cout << "filling data..." << std::flush;
+    std::cout << "filling data..." << std::flush;
 
     // 2a. we're going to write directly into the msg buffer
     msg.set_name(name);
@@ -54,7 +57,8 @@ void fill_data(Messages::Vector64& msg)
         auto t = double(n) / double(N - 1);                                                         // parameterize t=0:1
         buffer_vals[C * n] = std::sin(w_max * t * t);                                               // chanenl 0
         buffer_vals[C * n + 1] = std::cos(w_max * t * t);                                           // channel 1
-        //add more if desired (change C)
+
+        // add more if desired (change C)
     }
 
     // 2b. one could load up more content in the messages...
@@ -92,38 +96,54 @@ bool save(Messages::Vector64& msg)
 
     // 3c. close the file when done
     outfile.close();
-	std::cout << "done." << std::endl;
+    std::cout << "done." << std::endl;
     return true;
 }
 
 
-//MAIN function - program starts here 
+
+// MAIN function - program starts here 
 int main(int argc, char** argv)
 {
     std::cout << "launching xco save app...(sweep generator)" << std::endl;
     
-    for (auto a=1; a<argc; a++){
-    	std::string arg(argv[a]);
-    	if (arg.size() < 2)
-    		break;
-  		if (argv[a][0] == '-'){//-X
-  			if (argv[a][1] == 'w')
-  				w_max = std::stod(arg.substr(2,arg.size()));
-  			else if (argv[a][1] == 'N')
-  				N = std::stoul(arg.substr(2,arg.size()));
-  			else if (argv[a][1] == '-') //--name
-  				name = arg;
-  			break;
-  		}
-    	
-	}
-	// 1. create a new protobuf message (see vector.proto for what's available):
+    for (auto a = 1; a < argc; a++)
+    {
+        std::string arg(argv[a]);
+        if (arg.size() < 2)
+        {
+            break;
+        }
+        if (argv[a][0] == '-')                                      // -X
+        {
+            if (argv[a][1] == 'w')
+            {
+                w_max = std::stod(arg.substr(2,arg.size()));
+            }
+            else if (argv[a][1] == 'N')
+            {
+                N = std::stoul(arg.substr(2,arg.size()));
+            }
+            else if (argv[a][1] == '-')                             // --name
+            {
+                name = arg;
+            }
+            break;
+        }
+        
+    }
+
+    // 1. create a new protobuf message (see vector.proto for what's available):
     Messages::Vector64 msg;
+
     // 2. fill buffer with data... in this case, sine sweeps
     fill_data(msg);
+
     // 3. when ready to save or transmit
     save(msg);
     std::cout << "closing xco save app." << std::endl;
+
     // message should be stored on file in this directory
+
     return 0;
 }

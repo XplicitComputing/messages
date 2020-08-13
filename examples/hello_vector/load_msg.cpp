@@ -9,7 +9,7 @@
 
 
 
-std::string name{ "test.xco" };                                               // file name
+std::string name{ "test.xco" };                                                 // file name
 
 
 
@@ -44,7 +44,7 @@ bool load(Messages::Vector64& msg)
 
 int main(int argc, char** argv)
 {
-    if (argc > 1)//can change name by passing in
+    if (argc > 1)                                                               // can change name by passing in
     {
         name = argv[1];
     }

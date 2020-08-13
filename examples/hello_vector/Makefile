@@ -6,7 +6,7 @@ save_app:
 	@if [ ! -z "${GOOGLE_ROOT}" ]; then \
 		ln -fs ../../vector.pb.h ; \
 		if [ "$(TOOLCHAIN)" = "Clang" ]; then \
-			clang++ -stdlib=libc++ -lc++abi -lsupc++ save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf ; \
+			clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf ; \
 		else \
 			g++ save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf ; \
 		fi; \
@@ -22,7 +22,7 @@ load_app:
 	@if [ ! -z "${GOOGLE_ROOT}" ]; then \
 		ln -fs ../../vector.pb.h ; \
 		if [ "$(TOOLCHAIN)" = "Clang" ]; then \
-			clang++ -stdlib=libc++ -lc++abi -lsupc++ load_msg.cpp -o load_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf ; \
+			clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs load_msg.cpp -o load_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf ; \
 		else \
 			g++ save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf ; \
 		fi; \
