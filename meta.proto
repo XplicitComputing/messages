@@ -16,6 +16,20 @@ import "vector.proto";
 import "spatial.proto";
 
 
+message GraphicsControl{//deprecated - will utilize Variables message moving forward
+    uint32 mode = 1;//render program enumeration: 0-explicit raster, 1-implicit raster, 2-explicit ray, 3-implicit ray
+    uint32 style = 2;//bitfield flags, see common/style.h
+    //reserved
+    repeated float color = 4;
+    float alpha = 5;
+    float point_width = 6;
+    float line_width = 7;   
+    //reserved
+    bool visible = 10;
+ 	//reserved
+}
+
+
 message Representation{
     string property_key = 1;
     int32 color_map = 2;
@@ -28,12 +42,15 @@ message Representation{
     //reserved
     repeated float range = 10;
     repeated float displacement_scale = 11;
+    //reserved
 }
+
+
 
 message Visual{
     Zone region = 1;
-    Representation representation = 2;
-    int32 style = 3;
+    GraphicsControl control = 2;
+    Representation representation = 3;
     repeated int32 points = 4;
     repeated int32 lines = 5;
     repeated int32 triangles = 6;
@@ -54,13 +71,13 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     string sys_info = 6;
     string geom_info = 7;
     string directory = 8;
-    int64 uid = 9;//universal id for each system assigned, valid only within a given session
-    int64 parent = 10;
-    int64 created = 11;//unix time 
-    int64 saved = 12;
-    int64 modified = 13;
-    int64 iteration = 14;
-    int64 save_interval = 15;
+    uint64 uid = 9;//universal id for each system assigned, valid only within a given session
+    uint64 parent = 10;
+    uint64 created = 11;//unix time 
+    uint64 saved = 12;
+    uint64 modified = 13;
+    uint64 iteration = 14;
+    uint64 save_interval = 15;
     bool enabled = 16;
     bool locked = 17;
     bool auto_save = 18;
@@ -69,28 +86,17 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     Revision version = 21;  
     Extrema bounds = 22;
     GraphicsControl appearance = 24;
-    repeated int64 children = 25;//uid's (only good within a given session. see system.proto for persistent relationships)
-    repeated int32 groups = 26;
-    repeated int32 loops = 27;
-    repeated int32 surfaces = 28;
-    repeated int32 volumes = 29;
+    repeated int64 children = 25;//uid's (only good within a given session. see setup.proto for persistent relationships)
+    repeated int32 groups = 26;//region id's
+    repeated int32 loops = 27;//region id's
+    repeated int32 surfaces = 28;//region id's
+    repeated int32 volumes = 29;//region id's
     repeated double model_transform = 30;//dmat4 (aka MAT4 transformation matrix)
     repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
 }
 
 
-message GraphicsControl{//deprecated - will utilize Variables message moving forward
-    int32 style = 1;
-    int32 encoding = 2;
-    //reserved
-    repeated float color = 4;
-    float alpha = 5;
-    float point_width = 6;
-    float line_width = 7;   
-    //reserved
-    bool visible = 10;
-    bool overlay = 11;
-}
+
 
 message SliceControl{//deprecated - will utilize Variables message moving forward
     Visual visual = 1;
@@ -103,15 +109,4 @@ message SliceControl{//deprecated - will utilize Variables message moving forwar
     repeated double normal = 9;
     //reserved
     }
-
-message TracersControl{//deprecated - will utilize Variables message moving forward
-    Visual visual = 1;
-    //reserved
-    int64 particle_count = 3;
-    int64 seed = 4; 
-    repeated int32 spawn_region = 5;
-    repeated int32 regen_region = 6;
-    //reserved
-    repeated float user_defined_positions = 8;
-}
 

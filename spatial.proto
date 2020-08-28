@@ -21,17 +21,17 @@ import "vector.proto";
 
 message Zone{                                                                                           // compatible with xcompute Region
     string name = 1;
-    int32 id = 2;
-    int32 dimensionality = 3;
+    uint32 id = 2;
+    uint32 dimensionality = 3;
     //reserved
-    int64 num_elements = 5;
-    int64 offset = 6;
+    uint64 num_elements = 5;
+    uint64 offset = 6;
     string comments = 7;
     string info = 8;
     bool is_abstract = 9;                                                                               // if set, does not reference a geometry (typically 0d, maps to system data)
     Extrema bounds = 10;
     repeated float terminal_position = 11;
-    repeated int32 specific_elements = 12;                                                              // optional (if used, ignore offset)
+    repeated uint32 specific_elements = 12;                                                              // optional (if used, ignore offset)
 }
 
 
@@ -39,9 +39,9 @@ message Zone{                                                                   
 
 message Topology{                                                                                       // compatible with xcompute Geometry
     string name = 1;
-    int32 type = 2;
-    int32 ndim = 3;
-    int32 basis = 4;
+    uint32 type = 2;
+    uint32 ndim = 3;
+    uint32 basis = 4;
     //reserved
     repeated double resolution = 8;
     repeated Vector64 data = 9;
@@ -57,16 +57,29 @@ message Topology{                                                               
     repeated Zone surfaces = 22;
     repeated Zone volumes = 23;
     //reserved
-    repeated int32 locations = 26;
+    repeated uint32 locations = 26;
     //reserved
     string filename = 30;
     Revision revision = 31;
 }
 
+message Link{
+    string source_system = 1;
+    string target_system = 2;
+    Zone source = 3;
+    Zone target = 4;
+    bool enabled = 5;
+    bool source_to_target = 6;
+    bool target_to_source = 7;
+    //reserved
+    string color_property = 11;
+    repeated float way_points = 10;
+}
+
 
 message GridControl{                                                                                    // deprecated - will utilize Variables message moving forward
-    int32 basis = 1;
-    repeated int32 size = 2;
+    uint32 basis = 1;
+    repeated uint32 size = 2;
     repeated double spacing = 3;
     repeated double grading = 4;
     //reserved
@@ -75,8 +88,8 @@ message GridControl{                                                            
 }
 
 message MeshControl{                                                                                    // deprecated - will utilize Variables message moving forward
-    int64 target_n = 1;
-    int32 max_iterations = 2;
+    uint64 target_n = 1;
+    uint32 max_iterations = 2;
     double size_ratio = 3;
     double size_decay = 4;
     double size_exponent = 5;
@@ -99,13 +112,13 @@ message MeshControl{                                                            
     bool y_symmetry = 25;
     bool z_symmetry = 26;
     //reserved
-    int64 background_n = 30;
+    uint64 background_n = 30;
 }
 
 message TreeControl{                                                                                    // deprecated - will utilize Variables message moving forward
-    int32 min_depth = 1;
-    int32 max_depth = 2;
-    int64 max_size = 3;
+    uint32 min_depth = 1;
+    uint32 max_depth = 2;
+    uint64 max_size = 3;
     //reserved
     Extrema bounds = 10;
 }

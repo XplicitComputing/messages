@@ -14,7 +14,7 @@ A message is defined to be some transmit-able idea, useful for a specific contex
 
 - `spatial.proto` - elements and regions for a geometry (compatible with xcg files) 
 
-- `system.proto` - domain setup, models, parameters, associations (compatible with xcs files)  
+- `setup.proto` - domain setup, models, parameters, associations (compatible with xcs files)  
 
 - `meta.proto` - meta-data and user-graphics for a specific system (compatible with xcm files) 
 
@@ -60,7 +60,7 @@ Header and source files with `*.pb.h` and `*.pb.cc` extensions are generated (to
 Multiple languages and proto files can be compiled at once, like so:
 
 ```
-protoc --cpp_out=cpp --csharp_out=csharp –objc_out=objc --ruby_out=ruby --python_out=python --java_out=java --js_out=javascript vector.proto system.proto spatial.proto meta.proto
+protoc --cpp_out=cpp --csharp_out=csharp –objc_out=objc --ruby_out=ruby --python_out=python --java_out=java --js_out=javascript vector.proto setup.proto spatial.proto meta.proto
 ```
 
 ### 4. basic save & load
@@ -81,7 +81,7 @@ Messages::Vector64 msg; // create an empty message container
 msg.ParseFromIStream(&infile); // de-serialize binary file to fill message
 infile.close(); // finish the file and release resource
 ```
-Please see `README.pdf` for thorough introduction and examples.
+Please see `xcmessages.pdf` for thorough introduction and examples.
 
 ### 5. license and fair-use agreement
 

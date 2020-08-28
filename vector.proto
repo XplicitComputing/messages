@@ -23,57 +23,65 @@ message File{
 } 
 
 message Revision{
-    int64 major_rev = 1;
-    int64 minor_rev = 2;
+    uint64 major_rev = 1;
+    uint64 minor_rev = 2;
 }
 
-message Extrema{
-    int32 dims = 1;
+message Extrema{//domain bounds 
+    uint32 dims = 1;
     repeated double min = 2[packed=true];
     repeated double max = 3[packed=true];
     bool is_set = 4;
     }
     
-message Vector32{
+message Vector32{//IEEE-754-compliant FP32 vector with embedded info, used extensively on client-side (and server visuals staging)
     string name = 1;
-    int32 components = 2;
+    uint32 components = 2;
     bool interleaved = 3;
     Revision revision = 4;
     string units = 5;//kg m s^2 and such string literals
+    string comment = 6;
+    //reserved
+    uint64 offset = 9;//use to append (insert location to prior entries)
     repeated float values = 10[packed=true];
     //reserved
-    string comment = 15;
+    
 }
 
-message Vector64{
+message Vector64{//IEEE-754-compliant FP64 vector with embedded info, used extensively on server-side (and client input forms)
     string name = 1;
-    int32 components = 2;
+    uint32 components = 2;
     bool interleaved = 3;
     Revision revision = 4;
     string units = 5;//kg m s^2 and such string literals
+    string comment = 6;
+    //reserved
+    uint64 offset = 9;//use to append (insert location to prior entries)
     repeated double values = 10[packed=true];
     //reserved
-    string comment = 15;
 }
 
 message Indices{
     string name = 1;
-    repeated int32 values = 2[packed=true];
+    //reserved
+    uint64 offset = 9;//use to append (insert location to prior entries)
+    repeated int32 values = 10[packed=true];
 }
 
 message Elements{//defined here to take advantage of packed arena allocation (only enabled within this proto file)
-    repeated int32 indices = 1[packed=true];
-    repeated int32 strides = 2[packed=true];
-    repeated int32 offsets = 3[packed=true];
-    repeated int32 types = 4[packed=true];
-    repeated int32 ids = 5[packed=true];
-    repeated int32 id_offsets = 6[packed=true];
-    repeated int32 num_elements_with_id = 7[packed=true];
-    repeated int32 id_to_index = 8[packed=true];
-    repeated int32 flags = 9[packed=true];
-    repeated double centers = 10[packed=true];//deprecated
-    repeated double lengths = 11[packed=true];//deprecated
-    repeated double areas = 12[packed=true];//deprecated
-    repeated double volumes = 13[packed=true];//deprecated
+    uint64 offset = 1;//use to append (insert location to prior entries)
+    repeated int32 types = 2[packed=true];//type convention (see xcompute-server documentation, enums for tri3, tet4, quad4, ... , tet 10, ...)
+    repeated int32 strides = 3[packed=true];//the number of nodes in this specific element type 
+    repeated int32 offsets = 4[packed=true];//accumulated strides for all nodes that constitute the elements
+    repeated int32 indices = 5[packed=true];//node identifier (unique within this region, e.g. nodes 0, 1, 3, 5, 7 , 11, 13, 17 ... 41 ...)
+    repeated int32 ids = 6[packed=true];//region identifier (unique within a type of region, e.g. surface 0, surface 1, ..., volume 0, ... )
+    repeated int32 id_offsets = 7[packed=true];
+    repeated int32 num_elements_with_id = 8[packed=true];
+    repeated int32 id_to_index = 9[packed=true];
+    repeated Vector64 attributes = 10;
+    repeated double centers = 11[packed=true];//deprecated
+    repeated double lengths = 12[packed=true];//deprecated
+    repeated double areas = 13[packed=true];//deprecated
+    repeated double volumes = 14[packed=true];//deprecated
 }
 

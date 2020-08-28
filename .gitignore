@@ -44,16 +44,9 @@ cmake_install.cmake
 .ninja_log
 build.ninja
 rules.ninja
-meta.pb.cc 
-meta.pb.h 
-readme.md
-readme.pdf
-spatial.pb.cc 
-spatial.pb.h 
-system.pb.cc 
-system.pb.h 
-vector.pb.cc 
-vector.pb.h
+*.pb.cc 
+*.pb.h 
+
 
 
 # Directories

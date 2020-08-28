@@ -81,7 +81,7 @@ protoc  --proto_path=. \
         --objc_out=${BDIR}/objc \
         --csharp_out=${BDIR}/csharp \
         --php_out=${BDIR}/php \
-        vector.proto system.proto spatial.proto meta.proto
+        vector.proto setup.proto spatial.proto meta.proto
 
 
 [ "$iact" = off ] || read -p "Press [enter] to continue."

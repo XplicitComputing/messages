@@ -64,19 +64,19 @@ message Command{//compatible with xcompute instruction  (a function instance bou
     Function function = 1;
     bool args_are_set = 2;
     bool kernel_ready = 3;
-    int64 exec_count = 4;
-    int64 effective_size = 5;
-    int64 version = 6;
-    int64 id = 7;//unique runtime identifier (assigned and only valid within a server session)
-    int64 n_kernel = 8;
+    uint64 exec_count = 4;
+    uint64 effective_size = 5;
+    uint64 version = 6;
+    uint64 id = 7;//unique runtime identifier (assigned and only valid within a server session)
+    uint64 n_kernel = 8;
     float progress = 9;
     string msg = 10;
     //reserved  
     repeated Vector64 data = 12;
     repeated Command before = 13;//optional, to be called from within bound function
     repeated Command after = 14;//optional, to be called from within bound function
-    repeated int32 region_type = 15;//if assigned, used to indentify specific zones for conditions, etc
-    repeated int32 region_id = 16;//if assigned, used to indentify specific zones for conditions, etc
+    repeated uint32 region_type = 15;//if assigned, used to indentify specific zones for conditions, etc
+    repeated uint32 region_id = 16;//if assigned, used to indentify specific zones for conditions, etc
     repeated string argument_types = 17;//bound argument type names to operate (name of class or type)
     repeated string argument_descriptions = 18;//matching argument type descriptions (used by UI)
 
@@ -86,10 +86,10 @@ message Script{//compatible with xcompute solver
     string name = 1;
     string msg = 2;
     string source_code = 3;
-    int64 uid = 4;//same as system uid, if assigned
-    int32 device = 5;
-    int32 status = 6;
-    int32 order = 7;
+    uint64 uid = 4;//same as system uid, if assigned
+    uint32 device = 5;
+    uint32 status = 6;
+    uint32 order = 7;
     float progress = 8;
     //reserved
     Variables variables = 10;
@@ -103,7 +103,7 @@ message Script{//compatible with xcompute solver
 message Rule{
     string pk = 1;//serialized property-key <property \t modifier \t ...>
     repeated string algorithms = 2; //names of algorithms to be associated
-    repeated int32 priority = 3;//optional - larger numbers are more important
+    repeated uint32 priority = 3;//optional - larger numbers are more important
 }
 
 message Model{//compatible with xcompute model
@@ -121,17 +121,18 @@ message Model{//compatible with xcompute model
     repeated Rule mutex_stack = 12;
 }
 
+
 message System{//compatible with xcompute system
     Meta meta = 1;//name and other basic info, some of which is non-persistent 
     Script script = 2;//serialized solver
     //reserved
-    string geometry = 8;//external file reference
+    string geometry = 8;//external file reference, typically *.xcg format
     //reserved
     repeated Model models = 10;//physical / mathematical models (groups of algorithms)
     repeated Vector64 constants = 11;//physics.data
     repeated Command conditions = 12;//special commands applied as contraints and conditions
     repeated string children = 13;//sub-system names (exact matches)
     repeated string references = 14;
-    repeated string attachments = 15;//external files such as pdf that users can attach to each system
+    repeated File embedded_files = 15;//external files such as symbol and geometry that users can attach to each system
 }
 
