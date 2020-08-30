@@ -18,7 +18,6 @@ package Messages;
 import "vector.proto";
 
 
-
 message Zone{                                                                                           // compatible with xcompute Region
     string name = 1;
     uint32 id = 2;
@@ -63,18 +62,6 @@ message Topology{                                                               
     Revision revision = 31;
 }
 
-message Link{
-    string source_system = 1;
-    string target_system = 2;
-    Zone source = 3;
-    Zone target = 4;
-    bool enabled = 5;
-    bool source_to_target = 6;
-    bool target_to_source = 7;
-    uint32 sampling_mode = 8;
-    Representation representation = 9;
-    repeated float way_points = 10;
-}
 
 
 message GridControl{                                                                                    // deprecated - will utilize Variables message moving forward

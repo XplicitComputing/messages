@@ -137,3 +137,18 @@ message System{//compatible with xcompute system
     repeated File embedded_files = 15;//external files such as symbol and geometry that users can attach to each system
 }
 
+
+message Link{
+    string source_system = 1;
+    string target_system = 2;
+    Zone source = 3;
+    Zone target = 4;
+    bool enabled = 5;
+    bool source_to_target = 6;
+    bool target_to_source = 7;
+    uint32 sampling_mode = 8;
+    Representation representation = 9;
+    repeated float way_points = 10;
+}
+
+
