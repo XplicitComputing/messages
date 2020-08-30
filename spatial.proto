@@ -71,8 +71,8 @@ message Link{
     bool enabled = 5;
     bool source_to_target = 6;
     bool target_to_source = 7;
-    //reserved
-    string color_property = 11;
+    uint32 sampling_mode = 8;
+    Representation representation = 9;
     repeated float way_points = 10;
 }
 

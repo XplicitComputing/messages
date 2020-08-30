@@ -13,6 +13,7 @@ Generally, it is okay to customize these definitions by adding additional entrie
 syntax = "proto3";
 package Messages;
 import "vector.proto";
+import "spatial.proto";
 import "meta.proto";
 
 message Variables{//compatible with xcompute *.cfg files via machinery defined in config.hpp/config.cpp
@@ -127,7 +128,7 @@ message System{//compatible with xcompute system
     Script script = 2;//serialized solver
     //reserved
     string geometry = 8;//external file reference, typically *.xcg format
-    //reserved
+    repeated Link links = 9;//couplings between regons
     repeated Model models = 10;//physical / mathematical models (groups of algorithms)
     repeated Vector64 constants = 11;//physics.data
     repeated Command conditions = 12;//special commands applied as contraints and conditions
