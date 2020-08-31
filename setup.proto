@@ -128,7 +128,7 @@ message System{//compatible with xcompute system
     Script script = 2;//serialized solver
     //reserved
     string geometry = 8;//external file reference, typically *.xcg format
-    repeated Link links = 9;//couplings between regons
+    repeated Link links = 9;//manual user-defined couplings between regions
     repeated Model models = 10;//physical / mathematical models (groups of algorithms)
     repeated Vector64 constants = 11;//physics.data
     repeated Command conditions = 12;//special commands applied as contraints and conditions
@@ -148,7 +148,12 @@ message Link{
     bool target_to_source = 7;
     uint32 sampling_mode = 8;
     Representation representation = 9;
-    repeated float way_points = 10;
+    repeated double way_points = 10;
+    repeated double contact_points = 11;
+    Revision source_last_rev = 12;
+    Revision target_last_rev = 13;
+    double alpha = 14;
+    double exponent = 15;
 }
 
 
