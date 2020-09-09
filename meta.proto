@@ -18,7 +18,7 @@ import "spatial.proto";
 
 message GraphicsControl{//deprecated - will utilize Variables message moving forward
     uint32 mode = 1;//render program enumeration: 0-explicit raster, 1-implicit raster, 2-explicit ray, 3-implicit ray
-    uint32 style = 2;//bitfield flags, see common/style.h
+    uint64 style = 2;//bitfield flags, see common/style.h
     //reserved
     repeated float color = 4;
     float alpha = 5;
@@ -93,6 +93,8 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     repeated int32 volumes = 29;//region id's
     repeated double model_transform = 30;//dmat4 (aka MAT4 transformation matrix)
     repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
+    repeated Visual media = 32;//optional visual media populated by server
+    
 }
 
 
