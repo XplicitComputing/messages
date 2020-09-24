@@ -142,17 +142,19 @@ message System{//compatible with xcompute system
 message Link{
     string source_system = 1;// s---
     string target_system = 2;// ---t
-    Zone source_region = 3;// s---
-    Zone target_region = 4;// ---t
-    bool enabled = 5;// s----Z Z----t
-    bool forward = 6;// s---------->t
-    bool reverse = 7;// s<----------t
-    uint32 sampling_mode = 8;
-    Representation representation = 9;
-    repeated double way_points = 10;// s---wo---w1---w2---t
-    repeated double contact_points = 11;
-    double alpha = 12;
-    double exponent = 13;
+    uint64 source_uid = 3;//uid is only valid within a given session 
+    uint64 target_uid = 4;//uid is only valid within a given session
+    Zone source_region = 5;// s---
+    Zone target_region = 6;// ---t
+    bool enabled = 7;// s----Z Z----t
+    bool forward = 8;// s---------->t
+    bool reverse = 9;// s<----------t
+    uint32 sampling_mode = 10;
+    Representation representation = 11;
+    repeated double way_points = 12;// s---wo---w1---w2---t
+    repeated double contact_points = 13;
+    double alpha = 14;
+    double exponent = 15;
 }
 
 
