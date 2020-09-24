@@ -140,17 +140,19 @@ message System{//compatible with xcompute system
 
 
 message Link{
-    Meta source = 1;// s---
-    Meta target = 2;// ---t
-    bool enabled = 3;// s----Z Z----t
-    bool forward = 4;// s---------->t
-    bool reverse = 5;// s<----------t
-    uint32 sampling_mode = 6;
-    Representation representation = 7;
-    repeated double way_points = 8;// s---wo---w1---w2---t
-    repeated double contact_points = 9;
-    double alpha = 10;
-    double exponent = 11;
+    string source_system = 1;// s---
+    string target_system = 2;// ---t
+    Zone source_region = 3;// s---
+    Zone target_region = 4;// ---t
+    bool enabled = 5;// s----Z Z----t
+    bool forward = 6;// s---------->t
+    bool reverse = 7;// s<----------t
+    uint32 sampling_mode = 8;
+    Representation representation = 9;
+    repeated double way_points = 10;// s---wo---w1---w2---t
+    repeated double contact_points = 11;
+    double alpha = 12;
+    double exponent = 13;
 }
 
 
