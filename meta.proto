@@ -18,7 +18,7 @@ import "spatial.proto";
 
 message GraphicsControl{//deprecated - will utilize Variables message moving forward
     uint32 mode = 1;//render program enumeration: 0-explicit raster, 1-implicit raster, 2-explicit ray, 3-implicit ray
-    uint64 style = 2;//bitfield flags, see common/style.h
+    uint32 style = 2;//bitfield flags, see common/style.h
     //reserved
     repeated float color = 4;
     float alpha = 5;

@@ -116,7 +116,7 @@ message Model{//compatible with xcompute model
     repeated string extra_properties = 6;//some pk's are not recorded by default as an optimization. they can be added
     repeated string compatible_conditions = 7;//relevant algorithm/function names that are applied to one ore more regions or initialize
     //reserved
-    repeated Model sub_models = 9;//
+    repeated Model sub_models = 9;
     repeated Vector64 data = 10;//high-level constants manpulated by user
     repeated Rule rules = 11;
     repeated Rule mutex_stack = 12;
@@ -125,35 +125,32 @@ message Model{//compatible with xcompute model
 
 message System{//compatible with xcompute system
     Meta meta = 1;//name and other basic info, some of which is non-persistent 
-    Script script = 2;//serialized solver
+    Script script = 2;//serialized solver defined by a sequence of instructions
     //reserved
-    string geometry = 8;//external file reference, typically *.xcg format
-    repeated Link links = 9;//manual user-defined couplings between regions
-    repeated Model models = 10;//physical / mathematical models (groups of algorithms)
-    repeated Vector64 constants = 11;//physics.data
-    repeated Command conditions = 12;//special commands applied as contraints and conditions
-    repeated string children = 13;//sub-system names (exact matches)
-    repeated string references = 14;
-    repeated File embedded_files = 15;//external files such as symbol and geometry that users can attach to each system
+    repeated Meta children = 5;//sub-system names (exact matches)
+    repeated string references = 6;//external file references, such as geometry (Messages::Topology)
+    repeated File embedded_files = 7;//files such as symbol and supporting documentation
+    //reserved
+    repeated Link links = 10;//manual user-defined couplings between regions
+    repeated Model models = 11;//physical / mathematical models (groups of algorithms)
+    repeated Vector64 constants = 12;//physics.data
+    repeated Command conditions = 13;//special commands applied as contraints and conditions
+    
 }
 
 
 message Link{
-    string source_system = 1;
-    string target_system = 2;
-    Zone source = 3;
-    Zone target = 4;
-    bool enabled = 5;
-    bool source_to_target = 6;
-    bool target_to_source = 7;
-    uint32 sampling_mode = 8;
-    Representation representation = 9;
-    repeated double way_points = 10;
-    repeated double contact_points = 11;
-    Revision source_last_rev = 12;
-    Revision target_last_rev = 13;
-    double alpha = 14;
-    double exponent = 15;
+    Meta source = 1;// s---
+    Meta target = 2;// ---t
+    bool enabled = 3;// s----Z Z----t
+    bool forward = 4;// s---------->t
+    bool reverse = 5;// s<----------t
+    uint32 sampling_mode = 6;
+    Representation representation = 7;
+    repeated double way_points = 8;// s---wo---w1---w2---t
+    repeated double contact_points = 9;
+    double alpha = 10;
+    double exponent = 11;
 }
 
 
