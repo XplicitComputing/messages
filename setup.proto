@@ -127,7 +127,7 @@ message System{//compatible with xcompute system
     Meta meta = 1;//name and other basic info, some of which is non-persistent 
     Script script = 2;//serialized solver defined by a sequence of instructions
     //reserved
-    repeated Meta children = 5;//sub-system names (exact matches)
+    repeated string children = 5;//sub-system names (exact matches)
     repeated string references = 6;//external file references, such as geometry (Messages::Topology)
     repeated File embedded_files = 7;//files such as symbol and supporting documentation
     //reserved
