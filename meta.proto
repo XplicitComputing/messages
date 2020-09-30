@@ -51,27 +51,28 @@ message Visual{
     Zone region = 1;
     GraphicsControl control = 2;
     Representation representation = 3;
-    repeated int32 points = 4;
-    repeated int32 lines = 5;
-    repeated int32 triangles = 6;
     //reserved
+    repeated int32 points = 5;
+    repeated int32 lines = 6;
+    repeated int32 triangles = 7;
     repeated int32 indices_per_element = 8;//only used on composite elements (e.g. QUAD4 represented using triangles)
     repeated int32 elements_to_indices = 9;//only used on composite elements (e.g. QUAD4 represented using triangles)
     repeated int32 indices_to_elements = 10;//only used on composite elements (e.g. QUAD4 represented using triangles)
     //reserved
+    repeated Vector32 extras = 15;//optional data such as displacement vectors and positions (if not nodal positions)
 }
 
 
 message Meta{//metaobject backbone -- created and staged in server visuals (for transmission) to populate client metaobjects
     string name = 1;//unique identifier that persists between sessions
-    string icon = 2;    
-    string owner = 3;
-    string comments = 4;
-    string series = 5;
-    string sys_info = 6;
-    string geom_info = 7;
-    string directory = 8;
-    uint64 uid = 9;//universal id for each system assigned, valid only within a given session
+    uint64 uid = 2;//unique id for each system assigned, valid only within a given session
+    string directory = 3;
+    string icon = 4;    
+    string owner = 5;
+    string comments = 6;
+    string series = 7;
+    string sys_info = 8;
+    string geom_info = 9;
     uint64 parent = 10;
     uint64 created = 11;//unix time 
     uint64 saved = 12;
@@ -81,7 +82,7 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     bool enabled = 16;
     bool locked = 17;
     bool auto_save = 18;
-    //reserved
+    bool lightweight = 19;
     Revision revision = 20;
     Revision version = 21;  
     Extrema bounds = 22;
@@ -91,24 +92,20 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     repeated int32 loops = 27;//region id's
     repeated int32 surfaces = 28;//region id's
     repeated int32 volumes = 29;//region id's
-    repeated double model_transform = 30;//dmat4 (aka MAT4 transformation matrix)
+    repeated double model_transform = 30;//double16 (glm::dmat4) transformation matrix
     repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
     repeated Visual media = 32;//optional visual media populated by server
-    
 }
 
 
 
 
 message SliceControl{//deprecated - will utilize Variables message moving forward
-    Visual visual = 1;
-    //reserved
-    bool intersect = 3;
-    bool negative = 4;
-    bool positive = 5;
-    //reserved
-    repeated double center = 8;
-    repeated double normal = 9;
-    //reserved
+	string name = 1;
+	repeated double center = 2;
+    repeated double normal = 3;
+    bool intersect = 4;
+    bool negative = 5;
+    bool positive = 6;
     }
 

@@ -27,7 +27,6 @@ message Zone{                                                                   
     uint64 offset = 6;
     string comments = 7;
     string info = 8;
-    bool is_abstract = 9;                                                                               // if set, does not reference a geometry (typically 0d, maps to system data)
     Extrema bounds = 10;
     repeated float terminal_position = 11;
     repeated uint32 specific_elements = 12;                                                              // optional (if used, ignore offset)
@@ -108,10 +107,6 @@ message TreeControl{                                                            
     uint64 max_size = 3;
     //reserved
     Extrema bounds = 10;
-}
-
-message NetworkControl{                                                                                 // deprecated - will utilize Variables message moving forward
-
 }
 
 
