@@ -13,7 +13,7 @@ Generally speaking, it is okay to customize these definitions by adding addition
 syntax = "proto3";
 package Messages;
 
-option cc_enable_arenas = true;//compact vectorized format
+option cc_enable_arenas = true;//faster memory allocation
 
 
 message File{
@@ -63,6 +63,9 @@ message Vector64{//IEEE-754-compliant FP64 vector with embedded info, used exten
 
 message Indices{
     string name = 1;
+    uint32 components = 2;
+    bool interleaved = 3;
+    Revision revision = 4;
     //reserved
     uint64 offset = 9;//use to append (insert location to prior entries)
     repeated int32 values = 10[packed=true];
@@ -78,10 +81,8 @@ message Elements{//defined here to take advantage of packed arena allocation (on
     repeated int32 id_offsets = 7[packed=true];
     repeated int32 num_elements_with_id = 8[packed=true];
     repeated int32 id_to_index = 9[packed=true];
-    repeated Vector64 attributes = 10;
-    repeated double centers = 11[packed=true];//deprecated
-    repeated double lengths = 12[packed=true];//deprecated
-    repeated double areas = 13[packed=true];//deprecated
-    repeated double volumes = 14[packed=true];//deprecated
+    //reserved
+    repeated double centers = 11[packed=true];//element barycenters, often computed as the average of node positions
+    repeated double measure = 12[packed=true];//element measure could be lengths (edges), areas (faces), or volumes(cells) values (scalar or nDim-component vector)
 }
 

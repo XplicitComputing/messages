@@ -95,6 +95,9 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     repeated double model_transform = 30;//double16 (glm::dmat4) transformation matrix
     repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
     repeated Visual media = 32;//optional visual media populated by server
+    repeated float symbol_translation = 33;
+    repeated float symbol_rotation = 34;
+    repeated float symbol_scaling = 35;
 }
 
 
