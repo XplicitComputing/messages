@@ -1,16 +1,17 @@
 #!/bin/bash
-
+echo "compiling messages example app: 'hello_vector' ..."
+read -p "Press [enter] to continue."
 
 if [[ ! -z "${GOOGLE_ROOT}" ]]; then
 
     ln -fs ../../vector.pb.h
 
     if [[ "$TOOLCHAIN" == "Clang" ]]; then
-        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
-        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs load_msg.cpp -o load_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs save_vector.cpp -o save_vector -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs load_vector.cpp -o load_vector -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
     else
-        g++ save_msg.cpp -o save_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
-        g++ load_msg.cpp -o load_app -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        g++ save_vector.cpp -o save_vector -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        g++ load_vector.cpp -o load_vector -L../.. -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
     fi
 
 else
@@ -20,10 +21,10 @@ else
     ln -f ../../vector.pb.h vector.pb.h
 
     # invoke c++ compiler on save source to create app:
-    c++ save_msg.cpp -o save_app libxcmessages.a -lprotobuf
+    c++ save_vector.cpp -o save_vector libxcmessages.a -lprotobuf
 
     # invoke c++ compiler on load source to create app:
-    c++ load_msg.cpp -o load_app libxcmessages.a -lprotobuf
+    c++ load_vector.cpp -o load_vector libxcmessages.a -lprotobuf
 
     read -p "Press [enter] to close."
 fi

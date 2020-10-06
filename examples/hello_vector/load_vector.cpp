@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     // 3. print some stats to show we've actually reconstructed it
     std::cout << "data name: " << msg.name() << std::endl;
     std::cout << "components: " << msg.components() << std::endl;
-    std::cout << "length: " << msg.values_size() / std::max(1,msg.components()) << std::endl;
+    std::cout << "length: " << msg.values_size() / fmax(1,msg.components()) << std::endl;
     std::cout << "size: " << msg.values_size() << std::endl;
     std::cout << "bytes: " << msg.values_size() * sizeof(double) << std::endl;
 

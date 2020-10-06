@@ -12,7 +12,7 @@
 
 
 
-std::string name{ "sweep.xco" };        // file name
+std::string name{ "test.xco" };        // file name
 std::size_t N{ 10000 };                 // length of output (sample count)
 double w_max = 100.0;                   // w_max frequency end of sweep
 unsigned int C = 2;                     // number of channels to output
@@ -124,12 +124,9 @@ int main(int argc, char** argv)
             {
                 N = std::stoul(arg.substr(2,arg.size()));
             }
-            else if (argv[a][1] == '-')                             // --name
-            {
-                name = arg;
-            }
             break;
         }
+        name = arg;
         
     }
 

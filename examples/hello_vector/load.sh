@@ -1,3 +1,3 @@
 #!/bin/bash
-./load_app
+./load_vector myData.xco 
 read -p "Press [enter] to close."
