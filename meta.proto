@@ -112,3 +112,25 @@ message SliceControl{//deprecated - will utilize Variables message moving forwar
     bool positive = 6;
     }
 
+
+message CameraControl
+{
+
+    repeated float subject = 1;
+    repeated float offset = 2;
+    repeated float angle = 3;
+
+    float magnification = 5;
+    float time_constant = 6;
+    float panSensitivity = 7;
+    float rotationSensitivity = 8;
+    float zoomSensitivity = 9;
+    float znear = 10;
+    float zfar = 11;
+    float aov = 12;//angle of view (perspective mode)
+    
+    bool perspective = 15;
+    bool smooth = 16;
+    bool orbit = 17;
+    bool follow = 18;
+}
