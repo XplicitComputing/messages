@@ -57,8 +57,13 @@ if [[ -z "${external_init}" ]]; then
 
     cmake .
 
-    # keep CPU in reserve for non-build
-    ncpu=$(nproc)
+    # parallel build make - find ncpu
+    ncpu=1 #default
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        ncpu=$(nproc)
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        ncpu=$(sysctl -n hw.ncpu)
+    fi
     nrs=1           # CPUs reserved for non-build
     ncpu=$(( (ncpu>nrs)? ncpu-nrs : 1 ))
 
