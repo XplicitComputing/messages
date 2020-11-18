@@ -42,7 +42,7 @@ message Topology{                                                               
     uint32 basis = 4;
     //reserved
     repeated double resolution = 8;
-    repeated Vector64 data = 9;
+    //reserved
     Elements nodes = 10;
     Elements edges = 11;
     Elements interior_edges = 12;

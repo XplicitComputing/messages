@@ -26,7 +26,7 @@ These definitions are then fed into a protoc compiler to generate a linkable sta
 
 Download and install Google Protobuf 3 with the script:
 ```
-sudo sh install/install-protobuf.sh
+sudo sh deps/install-protobuf.sh
 ```
 
 For special installation, see: https://github.com/protocolbuffers/protobuf/blob/master/src/README.md
