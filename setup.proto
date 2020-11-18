@@ -64,7 +64,7 @@ message Function{//compatible with xcompute algorithm (operation/code that has n
 message Command{//compatible with xcompute instruction  (a function instance bound to arguments... data, regions, etc)
     Function function = 1;
     bool args_are_set = 2;
-    bool kernel_ready = 3;
+    bool is_ready = 3;
     uint64 exec_count = 4;
     uint64 effective_size = 5;
     uint64 version = 6;

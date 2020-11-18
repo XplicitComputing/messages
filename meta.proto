@@ -122,9 +122,9 @@ message CameraControl
 
     float magnification = 5;
     float time_constant = 6;
-    float panSensitivity = 7;
-    float rotationSensitivity = 8;
-    float zoomSensitivity = 9;
+    float pan_sensitivity = 7;
+    float rotation_sensitivity = 8;
+    float zoom_sensitivity = 9;
     float znear = 10;
     float zfar = 11;
     float aov = 12;//angle of view (perspective mode)
