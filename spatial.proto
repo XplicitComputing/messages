@@ -20,7 +20,7 @@ import "vector.proto";
 
 message Zone{                                                                                           // compatible with xcompute Region
     string name = 1;
-    uint32 id = 2;
+    int32 id = 2;
     uint32 dimensionality = 3;
     //reserved
     uint64 num_elements = 5;
@@ -65,7 +65,7 @@ message Topology{                                                               
 
 message GridControl{                                                                                    // deprecated - will utilize Variables message moving forward
     uint32 basis = 1;
-    repeated int32 size = 2;
+    repeated uint32 size = 2;
     repeated double spacing = 3;
     repeated double grading = 4;
     //reserved
