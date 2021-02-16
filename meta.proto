@@ -32,8 +32,8 @@ message GraphicsControl{//deprecated - will utilize Variables message moving for
 
 message Representation{
     string property_key = 1;
-    uint32 color_map = 2;
-    uint32 component = 3;
+    int32 color_map = 2;
+    int32 component = 3;
     bool auto_range = 4;
     bool use_default_key = 5;
     bool color_out_of_range = 6;
@@ -52,12 +52,12 @@ message Visual{
     GraphicsControl control = 2;
     Representation representation = 3;
     //reserved
-    repeated uint32 points = 5;
-    repeated uint32 lines = 6;
-    repeated uint32 triangles = 7;
-    repeated uint32 indices_per_element = 8;//only used on composite elements (e.g. QUAD4 represented using triangles)
-    repeated uint32 elements_to_indices = 9;//only used on composite elements (e.g. QUAD4 represented using triangles)
-    repeated uint32 indices_to_elements = 10;//only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated int32 points = 5;
+    repeated int32 lines = 6;
+    repeated int32 triangles = 7;
+    repeated int32 indices_per_element = 8;//only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated int32 elements_to_indices = 9;//only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated int32 indices_to_elements = 10;//only used on composite elements (e.g. QUAD4 represented using triangles)
     //reserved
     repeated Vector32 extras = 15;//optional data such as displacement vectors and positions (if not nodal positions)
 }
