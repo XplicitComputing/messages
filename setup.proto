@@ -128,13 +128,13 @@ message System{//compatible with xcompute system
     Script script = 2;//serialized solver defined by a sequence of instructions
     //reserved
     repeated string children = 5;//sub-system names (exact matches)
-    repeated string references = 6;//external file references, such as geometry (Messages::Topology)
+    repeated string references = 6;//external file references, such as *.xcg geometry (Messages::Topology)
     repeated File embedded_files = 7;//files such as symbol and supporting documentation
     //reserved
     repeated Link links = 10;//manual user-defined couplings between regions
     repeated Model models = 11;//physical / mathematical models (groups of algorithms)
     repeated Vector64 constants = 12;//physics.data
-    repeated Command conditions = 13;//special commands applied as contraints and conditions
+    repeated Command conditions = 13;//special commands applied as constraints and conditions
     
 }
 
