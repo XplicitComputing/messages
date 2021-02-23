@@ -77,7 +77,7 @@ message Command{//compatible with xcompute instruction  (a function instance bou
     repeated Command before = 13;//optional, to be called from within bound function
     repeated Command after = 14;//optional, to be called from within bound function
     repeated uint32 region_type = 15;//if assigned, used to indentify specific zones for conditions, etc
-    repeated uint32 region_id = 16;//if assigned, used to indentify specific zones for conditions, etc
+    repeated int32 region_id = 16;//if assigned, used to indentify specific zones for conditions, etc
     repeated string argument_types = 17;//bound argument type names to operate (name of class or type)
     repeated string argument_descriptions = 18;//matching argument type descriptions (used by UI)
 

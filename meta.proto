@@ -32,8 +32,8 @@ message GraphicsControl{//deprecated - will utilize Variables message moving for
 
 message Representation{
     string property_key = 1;
-    int32 color_map = 2;
-    int32 component = 3;
+    uint32 color_map = 2;
+    uint32 component = 3;
     bool auto_range = 4;
     bool use_default_key = 5;
     bool color_out_of_range = 6;
