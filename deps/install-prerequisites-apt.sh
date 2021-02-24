@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Installing compiler and autotools..."
-sudo apt install clang++-10 cmake automake autoconf autogen libtool
+sudo apt install clang++-10 cmake automake autoconf autogen libtool checkinstall wget curl unzip
 echo "Your current C compiler is:"
 which cc
 cc --version
