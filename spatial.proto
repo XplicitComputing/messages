@@ -22,7 +22,7 @@ message Zone{                                                                   
     string name = 1;
     uint32 id = 2;
     uint32 dimensionality = 3;
-    //reserved
+    Revision revision = 4;
     uint64 num_elements = 5;
     uint64 offset = 6;
     string comments = 7;
