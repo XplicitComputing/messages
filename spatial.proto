@@ -20,7 +20,7 @@ import "vector.proto";
 
 message Zone{                                                                                           // compatible with xcompute Region
     string name = 1;
-    uint32 id = 2;
+    int32 id = 2;
     uint32 dimensionality = 3;
     Revision revision = 4;
     uint64 num_elements = 5;
