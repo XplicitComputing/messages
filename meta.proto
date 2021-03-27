@@ -1,24 +1,34 @@
-/* Do Not Remove this Comment:
-
-MESSAGES™ by XPLICIT COMPUTING, INC
-GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
-
-Please see file README.html for usage and license info. README.html must be copied along with these *.proto, unaltered as part of the fair-use license agreement. Direct questions or concerns to: info@xplicitcomputing.com
-
-Generally speaking, it is okay to customize these definitions by adding additional entries. To maintain xcompute-compatibility, please do not change existing entries but assign new ones with indexes as 100 or more.
-
+/*
+// Do Not Remove this Comment:
+//
+// MESSAGES™ by XPLICIT COMPUTING, INC
+// GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
+//
+// Please see file README.html for usage and license info. README.html must be copied along
+// with these *.proto, unaltered as part of the fair-use license agreement. Direct questions
+// or concerns to: info@xplicitcomputing.com
+//
+// Generally speaking, it is okay to customize these definitions by adding additional entries.
+// To maintain xcompute-compatibility, please do not change existing entries but assign new
+// ones with indexes as 100 or more.
 */ 
 
 
+
 syntax = "proto3";
+
 package Messages;
+
 import "vector.proto";
 import "spatial.proto";
 
 
-message GraphicsControl{//deprecated - will utilize Variables message moving forward
-    uint32 mode = 1;//render program enumeration: 0-explicit raster, 1-implicit raster, 2-explicit ray, 3-implicit ray
-    uint32 style = 2;//bitfield flags, see common/style.h
+
+
+message GraphicsControl                                                                                 // deprecated - will utilize Variables message moving forward
+{
+    uint32 mode = 1;                                                                                    // render program enumeration: 0-explicit raster, 1-implicit raster, 2-explicit ray, 3-implicit ray
+    uint32 style = 2;                                                                                   // bitfield flags, see common/style.h
     //reserved
     repeated float color = 4;
     float alpha = 5;
@@ -30,7 +40,9 @@ message GraphicsControl{//deprecated - will utilize Variables message moving for
 }
 
 
-message Representation{
+
+message Representation
+{
     string property_key = 1;
     uint32 color_map = 2;
     uint32 component = 3;
@@ -47,25 +59,28 @@ message Representation{
 
 
 
-message Visual{
+message Visual
+{
     Zone region = 1;
     GraphicsControl control = 2;
     Representation representation = 3;
     //reserved
-    repeated int32 points = 5;
-    repeated int32 lines = 6;
-    repeated int32 triangles = 7;
-    repeated int32 indices_per_element = 8;//only used on composite elements (e.g. QUAD4 represented using triangles)
-    repeated int32 elements_to_indices = 9;//only used on composite elements (e.g. QUAD4 represented using triangles)
-    repeated int32 indices_to_elements = 10;//only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated uint32 points = 5;
+    repeated uint32 lines = 6;
+    repeated uint32 triangles = 7;
+    repeated uint32 indices_per_element = 8;                                                            // only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated uint32 elements_to_indices = 9;                                                            // only used on composite elements (e.g. QUAD4 represented using triangles)
+    repeated uint32 indices_to_elements = 10;                                                           // only used on composite elements (e.g. QUAD4 represented using triangles)
     //reserved
-    repeated Vector32 extras = 15;//optional data such as displacement vectors and positions (if not nodal positions)
+    repeated Vector32 extras = 15;                                                                      // optional data such as displacement vectors and positions (if not nodal positions)
 }
 
 
-message Meta{//metaobject backbone -- created and staged in server visuals (for transmission) to populate client metaobjects
-    string name = 1;//unique identifier that persists between sessions
-    uint64 uid = 2;//unique id for each system assigned, valid only within a given session
+
+message Meta                                                                                            // metaobject backbone -- created and staged in server visuals (for transmission) to populate client metaobjects
+{
+    string name = 1;                                                                                    // unique identifier that persists between sessions
+    uint64 uid = 2;                                                                                     // unique id for each system assigned, valid only within a given session
     string directory = 3;
     string icon = 4;    
     string owner = 5;
@@ -74,7 +89,7 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     string sys_info = 8;
     string geom_info = 9;
     uint64 parent = 10;
-    uint64 created = 11;//unix time 
+    uint64 created = 11;                                                                                // unix time 
     uint64 saved = 12;
     uint64 modified = 13;
     uint64 iteration = 14;
@@ -87,14 +102,14 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
     Revision version = 21;  
     Extrema bounds = 22;
     GraphicsControl appearance = 24;
-    repeated int64 children = 25;//uid's (only good within a given session. see setup.proto for persistent relationships)
-    repeated int32 groups = 26;//region id's
-    repeated int32 loops = 27;//region id's
-    repeated int32 surfaces = 28;//region id's
-    repeated int32 volumes = 29;//region id's
-    repeated double model_transform = 30;//double16 (glm::dmat4) transformation matrix
-    repeated string properties = 31;//serialized property-keys, used to request Vector32 or Vector64 data
-    repeated Visual media = 32;//optional visual media populated by server
+    repeated int64 children = 25;                                                                       // uid's (only good within a given session. see setup.proto for persistent relationships)
+    repeated int32 groups = 26;                                                                         // region id's
+    repeated int32 loops = 27;                                                                          // region id's
+    repeated int32 surfaces = 28;                                                                       // region id's
+    repeated int32 volumes = 29;                                                                        // region id's
+    repeated double model_transform = 30;                                                               // double16 (glm::dmat4) transformation matrix
+    repeated string properties = 31;                                                                    // serialized property-keys, used to request Vector32 or Vector64 data
+    repeated Visual media = 32;                                                                         // optional visual media populated by server
     repeated float symbol_translation = 33;
     repeated float symbol_rotation = 34;
     repeated float symbol_scaling = 35;
@@ -102,20 +117,20 @@ message Meta{//metaobject backbone -- created and staged in server visuals (for 
 
 
 
-
-message SliceControl{//deprecated - will utilize Variables message moving forward
+message SliceControl                                                                                    // deprecated - will utilize Variables message moving forward
+{
 	string name = 1;
 	repeated double center = 2;
     repeated double normal = 3;
     bool intersect = 4;
     bool negative = 5;
     bool positive = 6;
-    }
+}
+
 
 
 message CameraControl
 {
-
     repeated float subject = 1;
     repeated float offset = 2;
     repeated float angle = 3;
@@ -127,7 +142,7 @@ message CameraControl
     float zoom_sensitivity = 9;
     float znear = 10;
     float zfar = 11;
-    float aov = 12;//angle of view (perspective mode)
+    float aov = 12;                                                                                     // angle of view (perspective mode)
     
     bool perspective = 15;
     bool smooth = 16;

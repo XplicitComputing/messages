@@ -1,22 +1,33 @@
-/* Do Not Remove this Comment:
-
-MESSAGES™ by XPLICIT COMPUTING, INC
-GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
-
-Please see file README.html for usage and license info. README.html must be copied along with these *.proto, unaltered as part of the fair-use license agreement. Direct questions or concerns to: info@xplicitcomputing.com
-
-Generally, it is okay to customize these definitions by adding additional entries. To maintain xcompute-compatibility, please do not change existing entries but assign new ones with indexes as 100 or more.
-
+/*
+// Do Not Remove this Comment:
+//
+// MESSAGES™ by XPLICIT COMPUTING, INC
+// GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
+//
+// Please see file README.html for usage and license info. README.html must be copied along
+// with these *.proto, unaltered as part of the fair-use license agreement. Direct questions
+// or concerns to: info@xplicitcomputing.com
+//
+// Generally speaking, it is okay to customize these definitions by adding additional entries.
+// To maintain xcompute-compatibility, please do not change existing entries but assign new
+// ones with indexes as 100 or more.
 */ 
 
 
+
 syntax = "proto3";
+
 package Messages;
+
 import "vector.proto";
 import "spatial.proto";
 import "meta.proto";
 
-message Variables{//compatible with xcompute *.cfg files via machinery defined in config.hpp/config.cpp
+
+
+
+message Variables                                                                                       // compatible with xcompute *.cfg files via machinery defined in config.hpp/config.cpp
+{
     //reserved
     repeated string int_names = 2;
     repeated int32 int_values = 3;
@@ -37,16 +48,18 @@ message Variables{//compatible with xcompute *.cfg files via machinery defined i
 }
 
 
-message Function{//compatible with xcompute algorithm (operation/code that has not been bound yet)
+
+message Function                                                                                        // compatible with xcompute algorithm (operation/code that has not been bound yet)
+{
     string name = 1;
-    //argument object binding requirements:
-    repeated string argument_types = 2;//required types to operate (name of class or type)
-    repeated string argument_descriptions = 3;//matching argument descriptions (used by UI)
-    repeated string inputs = 4;//PK's required for algorithm inputs (user inputs)
-    repeated string outputs = 5;//PK's required for algorithm outputs
-    repeated string constants = 6;//PK's for uniform values across all nodes
-    repeated string to_be_defined = 7;//PK's for to be set by user in UI (end-user inputs)
-    repeated Vector64 data = 8;//local data relevant to this algorithm (coefficients, etc)
+    // argument object binding requirements:
+    repeated string argument_types = 2;                                                                 // required types to operate (name of class or type)
+    repeated string argument_descriptions = 3;                                                          // matching argument descriptions (used by UI)
+    repeated string inputs = 4;                                                                         // PK's required for algorithm inputs (user inputs)
+    repeated string outputs = 5;                                                                        // PK's required for algorithm outputs
+    repeated string constants = 6;                                                                      // PK's for uniform values across all nodes
+    repeated string to_be_defined = 7;                                                                  // PK's for to be set by user in UI (end-user inputs)
+    repeated Vector64 data = 8;                                                                         // local data relevant to this algorithm (coefficients, etc)
     //reserved  
     bool cpu_capable = 10;
     bool gpu_capable = 11;
@@ -61,33 +74,38 @@ message Function{//compatible with xcompute algorithm (operation/code that has n
 }
 
 
-message Command{//compatible with xcompute instruction  (a function instance bound to arguments... data, regions, etc)
+
+message Command                                                                                         // compatible with xcompute instruction  (a function instance bound to arguments... data, regions, etc)
+{
     Function function = 1;
     bool args_are_set = 2;
     bool is_ready = 3;
     uint64 exec_count = 4;
     uint64 effective_size = 5;
     uint64 version = 6;
-    uint64 id = 7;//unique runtime identifier (assigned and only valid within a server session)
+    uint64 id = 7;                                                                                      // unique runtime identifier (assigned and only valid within a server session)
     uint64 n_kernel = 8;
     float progress = 9;
     string msg = 10;
     //reserved  
     repeated Vector64 data = 12;
-    repeated Command before = 13;//optional, to be called from within bound function
-    repeated Command after = 14;//optional, to be called from within bound function
-    repeated uint32 region_type = 15;//if assigned, used to indentify specific zones for conditions, etc
-    repeated int32 region_id = 16;//if assigned, used to indentify specific zones for conditions, etc
-    repeated string argument_types = 17;//bound argument type names to operate (name of class or type)
-    repeated string argument_descriptions = 18;//matching argument type descriptions (used by UI)
+    repeated Command before = 13;                                                                       // optional, to be called from within bound function
+    repeated Command after = 14;                                                                        // optional, to be called from within bound function
+    repeated uint32 region_type = 15;                                                                   // if assigned, used to identify specific zones for conditions, etc
+    repeated int32 region_id = 16;                                                                      // if assigned, used to identify specific zones for conditions, etc
+    repeated string argument_types = 17;                                                                // bound argument type names to operate (name of class or type)
+    repeated string argument_descriptions = 18;                                                         // matching argument type descriptions (used by UI)
 
 }
 
-message Script{//compatible with xcompute solver
+
+
+message Script                                                                                          // compatible with xcompute solver
+{
     string name = 1;
     string msg = 2;
     string source_code = 3;
-    uint64 uid = 4;//same as system uid, if assigned
+    uint64 uid = 4;                                                                                     // same as system uid, if assigned
     uint32 device = 5;
     uint32 status = 6;
     uint32 order = 7;
@@ -101,62 +119,70 @@ message Script{//compatible with xcompute solver
     Script after = 15;
 }
 
-message Rule{
-    string pk = 1;//serialized property-key <property \t modifier \t ...>
-    repeated string algorithms = 2; //names of algorithms to be associated
-    repeated uint32 priority = 3;//optional - larger numbers are more important
+
+
+message Rule
+{
+    string pk = 1;                                                                                      // serialized property-key <property \t modifier \t ...>
+    repeated string algorithms = 2;                                                                     // names of algorithms to be associated
+    repeated uint32 priority = 3;                                                                       // optional - larger numbers are more important
 }
 
-message Model{//compatible with xcompute model
+
+
+message Model                                                                                           // compatible with xcompute model
+{
     string name = 1;
     //reserved
     repeated string dofs = 3;
-    repeated string algorithms = 4;//ordered algorithms (by name)
-    repeated string available_outputs = 5;//serialized property-keys 
-    repeated string extra_properties = 6;//some pk's are not recorded by default as an optimization. they can be added
-    repeated string compatible_conditions = 7;//relevant algorithm/function names that are applied to one ore more regions or initialize
+    repeated string algorithms = 4;                                                                     // ordered algorithms (by name)
+    repeated string available_outputs = 5;                                                              // serialized property-keys
+    repeated string extra_properties = 6;                                                               // some pk's are not recorded by default as an optimization. they can be added
+    repeated string compatible_conditions = 7;                                                          // relevant algorithm/function names that are applied to one ore more regions or initialize
     //reserved
     repeated Model sub_models = 9;
-    repeated Vector64 data = 10;//high-level constants manpulated by user
+    repeated Vector64 data = 10;                                                                        // high-level constants manpulated by user
     repeated Rule rules = 11;
     repeated Rule mutex_stack = 12;
 }
 
 
-message System{//compatible with xcompute system
-    Meta meta = 1;//name and other basic info, some of which is non-persistent 
-    Script script = 2;//serialized solver defined by a sequence of instructions
+
+message System                                                                                          // compatible with xcompute system
+{
+    Meta meta = 1;                                                                                      // name and other basic info, some of which is non-persistent 
+    Script script = 2;                                                                                  // serialized solver defined by a sequence of instructions
     //reserved
-    repeated string children = 5;//sub-system names (exact matches)
-    repeated string references = 6;//external file references, such as *.xcg geometry (Messages::Topology)
-    repeated File embedded_files = 7;//files such as symbol and supporting documentation
+    repeated string children = 5;                                                                       // sub-system names (exact matches)
+    repeated string references = 6;                                                                     // external file references, such as *.xcg geometry (Messages::Topology)
+    repeated File embedded_files = 7;                                                                   // files such as symbol and supporting documentation
     //reserved
-    repeated Link links = 10;//manual user-defined couplings between regions
-    repeated Model models = 11;//physical / mathematical models (groups of algorithms)
-    repeated Vector64 constants = 12;//physics.data
-    repeated Command conditions = 13;//special commands applied as constraints and conditions
+    repeated Link links = 10;                                                                           // manual user-defined couplings between regions
+    repeated Model models = 11;                                                                         // physical / mathematical models (groups of algorithms)
+    repeated Vector64 constants = 12;                                                                   // physics.data
+    repeated Command conditions = 13;                                                                   // special commands applied as constraints and conditions
     
 }
 
 
-message Link{
-    string source_system = 1;// s---
-    string target_system = 2;// ---t
-    uint64 source_uid = 3;// uid is only valid within a given session 
-    uint64 target_uid = 4;// uid is only valid within a given session
-    Zone source_region = 5;// s---
-    Zone target_region = 6;// ---t
-    uint32 sampling_mode = 7;// enum(0:8): Unspecified, One-to-One, Nearest, Immersed, Pro
-    repeated double way_points = 8;// s---wo---w1---w2---t
+
+message Link
+{
+    string source_system = 1;                                                                           // s---
+    string target_system = 2;                                                                           // ---t
+    uint64 source_uid = 3;                                                                              // uid is only valid within a given session 
+    uint64 target_uid = 4;                                                                              // uid is only valid within a given session
+    Zone source_region = 5;                                                                             // s---
+    Zone target_region = 6;                                                                             // ---t
+    uint32 sampling_mode = 7;                                                                           // enum(0:8): Unspecified, One-to-One, Nearest, Immersed, Pro
+    repeated double way_points = 8;                                                                     // s---wo---w1---w2---t
     Representation representation = 9;
-    bool enabled = 10;// s----Z Z----t
-    bool forward = 11;// s---------->t
-    bool reverse = 12;// s<----------t
-    bool dofs = 13;// interpolate degrees-of-freedom?
-    bool constants = 14;// interpolate constants?
-    bool outputs = 15; // interpolate outputs?
-    bool extras = 16; // interpolate extras?
+    bool enabled = 10;                                                                                  // s----Z Z----t
+    bool forward = 11;                                                                                  // s---------->t
+    bool reverse = 12;                                                                                  // s<----------t
+    bool dofs = 13;                                                                                     // interpolate degrees-of-freedom?
+    bool constants = 14;                                                                                // interpolate constants?
+    bool outputs = 15;                                                                                  // interpolate outputs?
+    bool extras = 16;                                                                                   // interpolate extras?
 	//reserved
 }
-
-

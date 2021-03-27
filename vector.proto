@@ -1,88 +1,113 @@
-/* Do Not Remove this Comment:
+/*
+// Do Not Remove this Comment:
+//
+// MESSAGES™ by XPLICIT COMPUTING, INC
+// GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
+//
+// Please see file README.html for usage and license info. README.html must be copied along
+// with these *.proto, unaltered as part of the fair-use license agreement. Direct questions
+// or concerns to: info@xplicitcomputing.com
+//
+// Generally speaking, it is okay to customize these definitions by adding additional entries.
+// To maintain xcompute-compatibility, please do not change existing entries but assign new
+// ones with indexes as 100 or more.
+*/
 
-MESSAGES™ by XPLICIT COMPUTING, INC
-GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
-
-Please see file README.html for usage and license info. README.html must be copied along with these *.proto, unaltered as part of the fair-use license agreement. Direct questions or concerns to: info@xplicitcomputing.com
-
-Generally speaking, it is okay to customize these definitions by adding additional entries. To maintain xcompute-compatibility, please do not change existing entries but assign new ones with indexes as 100 or more.
-
-*/ 
 
 
 syntax = "proto3";
+
 package Messages;
 
-option cc_enable_arenas = true;//faster memory allocation
+option cc_enable_arenas = true;                                                                         // faster memory allocation
 
 
-message File{
+
+
+message File
+{
     string name = 1;
     bytes payload = 2;
     bool is_local = 3;
 } 
 
-message Revision{
+
+
+message Revision
+{
     uint64 major_rev = 1;
     uint64 minor_rev = 2;
 }
 
-message Extrema{//domain bounds 
+
+
+message Extrema                                                                                         // domain bounds 
+{
     uint32 dims = 1;
     repeated double min = 2[packed=true];
     repeated double max = 3[packed=true];
     bool is_set = 4;
-    }
-    
-message Vector32{//IEEE-754-compliant FP32 vector with embedded info, used extensively on client-side (and server visuals staging)
-    string name = 1;
-    uint32 components = 2;
-    bool interleaved = 3;
-    Revision revision = 4;
-    string units = 5;//kg m s^2 and such string literals
-    string comment = 6;
-    //reserved
-    uint64 offset = 9;//use to append (insert location to prior entries)
-    repeated float values = 10[packed=true];
-    //reserved
-    
 }
 
-message Vector64{//IEEE-754-compliant FP64 vector with embedded info, used extensively on server-side (and client input forms)
+
+    
+message Vector32                                                                                        // IEEE-754-compliant FP32 vector with embedded info, used extensively on client-side (and server visuals staging)
+{
     string name = 1;
     uint32 components = 2;
     bool interleaved = 3;
     Revision revision = 4;
-    string units = 5;//kg m s^2 and such string literals
+    string units = 5;                                                                                   // kg m s^2 and such string literals
     string comment = 6;
     //reserved
-    uint64 offset = 9;//use to append (insert location to prior entries)
+    uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
+    repeated float values = 10[packed=true];
+    //reserved
+}
+
+
+
+message Vector64                                                                                        // IEEE-754-compliant FP64 vector with embedded info, used extensively on server-side (and client input forms)
+{
+    string name = 1;
+    uint32 components = 2;
+    bool interleaved = 3;
+    Revision revision = 4;
+    string units = 5;                                                                                   // kg m s^2 and such string literals
+    string comment = 6;
+    //reserved
+    uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
     repeated double values = 10[packed=true];
     //reserved
 }
 
-message Indices{
+
+
+message Indices
+{
     string name = 1;
     uint32 components = 2;
     bool interleaved = 3;
     Revision revision = 4;
     //reserved
-    uint64 offset = 9;//use to append (insert location to prior entries)
-    repeated int32 values = 10[packed=true];
+    uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
+    repeated uint32 values = 10[packed=true];
 }
 
-message Elements{//defined here to take advantage of packed arena allocation (only enabled within this proto file)
-    uint64 offset = 1;//use to append (insert location to prior entries)
-    repeated int32 types = 2[packed=true];//type convention (see xcompute-server documentation, enums for tri3, tet4, quad4, ... , tet 10, ...)
-    repeated int32 strides = 3[packed=true];//the number of nodes in this specific element type 
-    repeated int32 offsets = 4[packed=true];//accumulated strides for all nodes that constitute the elements
-    repeated int32 indices = 5[packed=true];//node identifier (unique within this region, e.g. nodes 0, 1, 3, 5, 7 , 11, 13, 17 ... 41 ...)
-    repeated int32 ids = 6[packed=true];//region identifier (unique within a type of region, e.g. surface 0, surface 1, ..., volume 0, ... )
-    repeated int32 id_offsets = 7[packed=true];
-    repeated int32 num_elements_with_id = 8[packed=true];
-    repeated int32 id_to_index = 9[packed=true];
+
+
+message Elements                                                                                        // defined here to take advantage of packed arena allocation (only enabled within this proto file)
+{
+    uint64 offset = 1;                                                                                  // use to append (insert location to prior entries)
+    repeated int32 types = 2[packed=true];                                                              // type convention (see xcompute-server documentation, enums for tri3, tet4, quad4, ... , tet 10, ...)
+    repeated uint32 strides = 3[packed=true];                                                           // the number of nodes in this specific element type 
+    repeated uint32 offsets = 4[packed=true];                                                           // accumulated strides for all nodes that constitute the elements
+    repeated uint32 indices = 5[packed=true];                                                           // node identifier (unique within this region, e.g. nodes 0, 1, 3, 5, 7 , 11, 13, 17 ... 41 ...)
+    repeated int32 ids = 6[packed=true];                                                                // region identifier (unique within a type of region, e.g. surface 0, surface 1, ..., volume 0, ... )
+    repeated uint32 id_offsets = 7[packed=true];
+    repeated uint32 num_elements_with_id = 8[packed=true];
+    repeated uint32 id_to_index = 9[packed=true];
     //reserved
-    repeated double centers = 11[packed=true];//element barycenters, often computed as the average of node positions
-    repeated double measure = 12[packed=true];//element measure could be lengths (edges), areas (faces), or volumes(cells) values (scalar or nDim-component vector)
+    repeated double centers = 11[packed=true];                                                          // element barycenters, often computed as the average of node positions
+    repeated double measure = 12[packed=true];                                                          // element measure could be lengths (edges), areas (faces), or volumes(cells) values (scalar or nDim-component vector)
 }
-
