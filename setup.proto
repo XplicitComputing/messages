@@ -184,5 +184,5 @@ message Link
     bool constants = 14;                                                                                // interpolate constants?
     bool outputs = 15;                                                                                  // interpolate outputs?
     bool extras = 16;                                                                                   // interpolate extras?
-	//reserved
+    //reserved
 }

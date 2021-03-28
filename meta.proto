@@ -36,7 +36,7 @@ message GraphicsControl                                                         
     float line_width = 7;   
     //reserved
     bool visible = 10;
- 	//reserved
+    //reserved
 }
 
 
@@ -119,8 +119,8 @@ message Meta                                                                    
 
 message SliceControl                                                                                    // deprecated - will utilize Variables message moving forward
 {
-	string name = 1;
-	repeated double center = 2;
+    string name = 1;
+    repeated double center = 2;
     repeated double normal = 3;
     bool intersect = 4;
     bool negative = 5;
