@@ -1,24 +1,31 @@
+/*
 // Do Not Remove this Comment:
 //
 // MESSAGES™ by XPLICIT COMPUTING, INC
 // GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
 //
-// Please see file README.html for usage and license info. README.html must be copied along with 
-// these *.proto, unaltered as part of the fair-use license agreement. Direct questions or 
-// concerns to: info@xplicitcomputing.com
+// Please see file README.html for usage and license info. README.html must be copied along
+// with these *.proto, unaltered as part of the fair-use license agreement. Direct questions
+// or concerns to: info@xplicitcomputing.com
 //
-// Generally speaking, it is okay to customize these definitions by adding additional entries. 
-// To maintain xcompute-compatibility, please do not change existing entries but assign new 
+// Generally speaking, it is okay to customize these definitions by adding additional entries.
+// To maintain xcompute-compatibility, please do not change existing entries but assign new
 // ones with indexes as 100 or more.
+*/
 
 
 
 syntax = "proto3";
+
 package Messages;
+
 import "vector.proto";
 
 
-message Zone{                                                                                           // compatible with xcompute Region
+
+
+message Zone                                                                                            // compatible with xcompute Region
+{
     string name = 1;
     int32 id = 2;
     uint32 dimensionality = 3;
@@ -28,15 +35,14 @@ message Zone{                                                                   
     string comments = 7;
     string info = 8;
     Extrema bounds = 10;
-    repeated uint32 specific_elements = 11;// optional (if used, ignore offset)
-    repeated float terminal_position = 12;
-    repeated float reference_values = 13; //enum: min, max, mean, median, mode, rms
+    repeated float terminal_position = 11;
+    repeated uint32 specific_elements = 12;                                                             // optional (if used, ignore offset)
 }
 
 
-// Note: message 'Elements' is defined in vector.proto to utilize arena/packed allocation
 
-message Topology{                                                                                       // compatible with xcompute Geometry
+message Topology                                                                                        // compatible with xcompute Geometry
+{                                                                                                       // Note:  message 'Elements' is defined in vector.proto to utilize arena/packed allocation
     string name = 1;
     uint32 type = 2;
     uint32 ndim = 3;
@@ -64,17 +70,20 @@ message Topology{                                                               
 
 
 
-message GridControl{                                                                                    // deprecated - will utilize Variables message moving forward
+message GridControl                                                                                     // deprecated - will utilize Variables message moving forward
+{
     uint32 basis = 1;
-    repeated int32 size = 2;
+    repeated uint32 size = 2;
     repeated double spacing = 3;
     repeated double grading = 4;
     //reserved
     Extrema bounds = 10;
-
 }
 
-message MeshControl{                                                                                    // deprecated - will utilize Variables message moving forward
+
+
+message MeshControl                                                                                     // deprecated - will utilize Variables message moving forward
+{
     uint64 target_n = 1;
     uint32 max_iterations = 2;
     double size_ratio = 3;
@@ -102,13 +111,13 @@ message MeshControl{                                                            
     uint64 background_n = 30;
 }
 
-message TreeControl{                                                                                    // deprecated - will utilize Variables message moving forward
+
+
+message TreeControl                                                                                     // deprecated - will utilize Variables message moving forward
+{
     uint32 min_depth = 1;
     uint32 max_depth = 2;
     uint64 max_size = 3;
     //reserved
     Extrema bounds = 10;
 }
-
-
-
