@@ -75,11 +75,11 @@ if(NOT "${pb_incl} " STREQUAL " ")
     set(PROTOBUF_INCLUDE_DIR "${pb_incl}")
 endif()
 
-message("target architecture: ${CMAKE_SYSTEM_PROCESSOR}" )
-
 find_package(Protobuf REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -mfpmath=sse -msse2 -march=native -fPIC")
+message("target architecture: ${CMAKE_SYSTEM_PROCESSOR}" )
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -march=native -fPIC")
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse -msse2")
 endif()
