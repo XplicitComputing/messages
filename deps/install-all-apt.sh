@@ -1,6 +1,6 @@
 #!/bin/bash
-sudo ./install-deps-apt.sh
-sudo ./install-protobuf.sh
+sudo ./install-deps-apt.sh --dpfx=/usr/local
+sudo ./install-protobuf.sh --dpfx=/usr/local
 sudo ./install-plugin-c.sh
 sudo ./install-plugin-go.sh
 sudo ./install-plugin-dart.sh
