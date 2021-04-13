@@ -96,7 +96,7 @@ message UIndices
 message Elements                                                                                        // defined here to take advantage of packed arena allocation (only enabled within this proto file)
 {
     uint64 offset = 1;                                                                                  // use to append (insert location to prior entries)
-    repeated bytes types = 2[packed=true];                                                              // type convention (see xcompute-server documentation, enums for tri3, tet4, quad4, ... , tet 10, ...)
+    repeated bytes types = 2;                                                              // type convention (see xcompute-server documentation, enums for tri3, tet4, quad4, ... , tet 10, ...)
     repeated uint32 strides = 3[packed=true];                                                           // the number of nodes in this specific element type
     repeated uint32 offsets = 4[packed=true];                                                           // accumulated strides for all nodes that constitute the elements
     repeated uint32 indices = 5[packed=true];                                                           // node identifier (unique within this region, e.g. nodes 0, 1, 3, 5, 7 , 11, 13, 17 ... 41 ...)
