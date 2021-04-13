@@ -59,7 +59,7 @@ cmake-build-release
 debug
 release
 bindings
-
+Testing
 
 # Build properties
 .buildopts

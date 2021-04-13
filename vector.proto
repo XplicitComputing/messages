@@ -100,7 +100,7 @@ message Elements                                                                
     repeated uint32 strides = 3[packed=true];                                                           // the number of nodes in this specific element type
     repeated uint32 offsets = 4[packed=true];                                                           // accumulated strides for all nodes that constitute the elements
     repeated uint32 indices = 5[packed=true];                                                           // node identifier (unique within this region, e.g. nodes 0, 1, 3, 5, 7 , 11, 13, 17 ... 41 ...)
-    repeated uint32 ids = 6[packed=true];                                                                // region identifier (unique within a type of region, e.g. surface 0, surface 1, ..., volume 0, ... )
+    repeated int32 ids = 6[packed=true];                                                                // region identifier (unique within a type of region, e.g. surface 0, surface 1, ..., volume 0, ... )
     repeated uint32 id_offsets = 7[packed=true];
     repeated uint32 num_elements_with_id = 8[packed=true];
     repeated uint32 id_to_index = 9[packed=true];
