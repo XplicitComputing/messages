@@ -2,6 +2,14 @@
 
 
 LANGUAGES='cpp csharp java javascript objc python ruby php' # go dart julia perl c r rust scala swift
+
+have_c=$(which protoc-c 2>/dev/null || echo false)
+if [[ "${have_c}" != "false" ]]; then
+    have_c=true
+    LANGUAGES='c cpp csharp java javascript objc python ruby php' # go dart julia perl r rust scala swift
+fi
+
+
 if [ "${XC_BUILD_TREE}" = "" ]; then
     XC_BUILD_TREE=.
 fi
@@ -87,6 +95,12 @@ protoc  --proto_path=. \
         --csharp_out=${BDIR}/csharp \
         --php_out=${BDIR}/php \
         vector.proto setup.proto spatial.proto meta.proto
+
+if [[ "${have_c}" == "true" ]]; then
+protoc-c --proto_path=. \
+         --c_out=${BDIR}/c \
+         vector.proto setup.proto spatial.proto meta.proto
+fi
 
 
 [ "$iact" = off ] || read -p "Press [enter] to continue."
