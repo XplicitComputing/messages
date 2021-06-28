@@ -2,25 +2,41 @@
 
 What is Messages? 
 
-Messages (libxcmessages) is a schema designed for engineers and scientists that enables numerical and related data to be shared across high-performance computing sessions and programming languages. It requires a <a href=https://developers.google.com/protocol-buffers/docs/downloads>protoc 3 compiler</a>.
+Messages (libxcmessages) is a schema designed for engineers and scientists that enables numerical and related data to be shared across high-performance computing sessions and programming languages. It is built on top of Google's a <a href=https://developers.google.com/protocol-buffers/docs/downloads>Protocol Buffer 3 technology (aka protobuf)</a>, generating headers and libraries for down-stream coding. In Google's words, protobuf is like XML but faster and more efficient. End-users can use the generated language bindings directly in their projects (by linking against compiled libraries or by including the generated implementation files).
 
-A message is defined to be some transmit-able idea, useful for a specific context (though actually quite flexible given how multiple messages can interact). Messages are a collection of 18 practical concepts for computer-aided engineering. It could be coalesced data for a particular property, the description of a physical model as its algorithms, the specific setup of a system, etc.. Ideally, each message concept is characteristic and orthogonal to other messages, constructing a basis set with a few practical message types (to-be-defined and learned). Messages permit embedding sub-message members, which makes complex obect-oriented concepts possible. In other cases, vectorized data takes advantage of packed repeated fields to permit parallel operations and direct copying. In order to communicate across a spectrum of programming languages/environments, the layout and names (and types) of the known data fields must be defined and convention maintained to promote high-performance interoperability. This schema leverages machine-generated code as the accessors (get/set functions) for integrated engineering environments such as xcompute-server and xcompute-client.
+Our library consists of 18 practical concepts for computer-aided engineering. The standard spec includes coalesced data for a particular property, the description of a physical model as its algorithms, the specific setup of a system, and such. Each message concept been designed to be orthogonal to other messages, constructing a basis set from a minimum of practical message types. Messages permit embedding sub-message members, which makes complex obect-oriented concepts possible. 
 
-## 0. getting started
+## file & wire definitions and utilities
 
+In order to communicate across a spectrum of programming environments, the layout and names (and types) of the known data fields must be defined and convention maintained to promote high-performance interoperability. This schema leverages machine-generated code as the accessors (get/set functions) for integrated engineering environments such as xcompute-server and xcompute-client.
 
-18 useful messages are distributed into four proto files:
+Useful messages are distributed into four proto files:
+
 - `vector.proto` - numeric arrays using packed arena allocation (compatible with xco files)
-
 - `spatial.proto` - elements and regions for a geometry (compatible with xcg files) 
-
 - `setup.proto` - domain setup, models, parameters, associations (compatible with xcs files)  
-
 - `meta.proto` - meta-data and user-graphics for a specific system (compatible with xcm files) 
 
 
 These definitions are then fed into a protoc compiler to generate a linkable static library and bindings for the following languages: C++, Objective-C, C#, PHP, Python, Java, Javascript, Ruby, Dart, and Go. 
 
+### unified data: vector.proto
+
+With vector.proto, vectorized data takes advantage of packed repeated fields to permit parallel operations and direct copying, representing the underlying bytes according to IEEE-754 in contiguous memory. This information is routinely transmitted across client and server sessions as single and double precision, respectively.
+
+### server-side: setup.proto, spatial.proto
+
+Numerical domains (aka "systems") are serialized and deserialized according to setup.proto, providing object-oriented utilies for saving and transmitting almost any system modeling and processing efforts. Unless exported to client, this information usually stays on server-side as protected IP.
+
+Numerical topologies (aka "geometries") are defined in spatial.proto, describing the element connectivity between nodes using indicies. Unless exported to client, this information usually stays on server-side as protected IP.
+
+### client-side: meta.proto
+
+Once a numerical system is set up, user-facing data is staged on the server (under system.visuals) for transmission. The file meta.proto defines a single MTU skeletal "meta-message" is broadcast to all connected hosts, whereby the recepients are responsible for looking into this skelton and requesting any needed visuals data in subsequent calls. It is possible to utilize the definitions in meta.proto to save/load the user-specific graphics state as a sort of opaque media format (for offline review, controlled sharing, etc). Because of these characteristic attributes, saved client-side meta content can be considered an optional "meta-media-profile".
+
+## 0. getting started
+
+Protobufs might be a little odd or difficult at first, but once one becomes accustomed to their usage, they are quite straight-forward to implement. There is no magic -- its just a code generator that builds headers/code to be called and compiled into your software project.
 
 ### 1. installing dependencies
 
