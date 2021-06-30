@@ -1,118 +1,270 @@
 cmake_minimum_required(VERSION 3.12)
-##############################################
-#               XCOMPUTE-MESSAGES            #
-##############################################
+####################################################
+#                XCOMPUTE-MESSAGES                 #
+####################################################
+
+
+
+# ---- 8>< ---- Setup ---------------------------------------------------------------------------------- 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
 
 project(xcmessages)
 
-if(NOT "${CMAKE_CXX_STANDARD}")
-    set(CMAKE_CXX_STANDARD 20)
-endif()
+
+# define output paths
+#
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/static)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/shared)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 
+# geo-location
+#
 set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 
-execute_process(
-        COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:FILEPATH= | cut -d'=' -f2"
-        OUTPUT_VARIABLE pb_lib
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-if("${pb_lib} " STREQUAL " ")
-    execute_process(
-            COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
-            OUTPUT_VARIABLE pb_lib
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    if("${pb_lib} " STREQUAL " ")
-        execute_process(
-                COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:FILEPATH= | cut -d'=' -f2"
+
+
+# debug helper
+#
+#set(CMAKE_VERBOSE_MAKEFILE ON)
+
+
+
+# ---- 8>< ---- Probe for Protobuf Pathspec ------------------------------------------------------------ 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
+
+execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:FILEPATH= | cut -d'=' -f2"
                 OUTPUT_VARIABLE pb_lib
                 OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        if("${pb_lib} " STREQUAL " ")
-            execute_process(
-                    COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
+)
+if ("${pb_lib} " STREQUAL " ")
+    execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
                     OUTPUT_VARIABLE pb_lib
                     OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if ("${pb_lib} " STREQUAL " ")
+        execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:FILEPATH= | cut -d'=' -f2"
+                        OUTPUT_VARIABLE pb_lib
+                        OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if ("${pb_lib} " STREQUAL " ")
+            execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
+                            OUTPUT_VARIABLE pb_lib
+                            OUTPUT_STRIP_TRAILING_WHITESPACE
             )
         endif()
     endif()
 endif()
 
-execute_process(
-        COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:PATH= | cut -d'=' -f2"
-        OUTPUT_VARIABLE pb_incl
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-if("${pb_incl} " STREQUAL " ")
-    execute_process(
-            COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
-            OUTPUT_VARIABLE pb_incl
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    if("${pb_incl} " STREQUAL " ")
-        execute_process(
-                COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:FILE= | cut -d'=' -f2"
+
+execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:PATH= | cut -d'=' -f2"
                 OUTPUT_VARIABLE pb_incl
                 OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        if("${pb_incl} " STREQUAL " ")
-            execute_process(
-                    COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
+)
+if ("${pb_incl} " STREQUAL " ")
+    execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
                     OUTPUT_VARIABLE pb_incl
                     OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if ("${pb_incl} " STREQUAL " ")
+        execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:FILE= | cut -d'=' -f2"
+                        OUTPUT_VARIABLE pb_incl
+                        OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if ("${pb_incl} " STREQUAL " ")
+            execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
+                            OUTPUT_VARIABLE pb_incl
+                            OUTPUT_STRIP_TRAILING_WHITESPACE
             )
         endif()
     endif()
 endif()
 
-if(NOT "${pb_lib} " STREQUAL " ")
+
+if (NOT "${pb_lib} " STREQUAL " ")
     set(PROTOBUF_LIBRARY "${pb_lib}")
     set(Protobuf_LIBRARY "${pb_lib}")
 endif()
-if(NOT "${pb_incl} " STREQUAL " ")
+if (NOT "${pb_incl} " STREQUAL " ")
     set(Protobuf_INCLUDE_DIR "${pb_incl}")
     set(PROTOBUF_INCLUDE_DIR "${pb_incl}")
 endif()
 
+
+message("protobuf pathspec: ${PROTOBUF_INCLUDE_DIR}")
+
+
+
+# ---- 8>< ---- Package Dependencies ------------------------------------------------------------------- 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
+
 find_package(Protobuf REQUIRED)
 
-message("target architecture: ${CMAKE_SYSTEM_PROCESSOR}" )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -march=native -fPIC")
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse -msse2")
+
+# ---- 8>< ---- Flags ---------------------------------------------------------------------------------- 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
+
+# c++ standard
+#
+if (NOT "${CMAKE_CXX_STANDARD}")
+    set(CMAKE_CXX_STANDARD 20)
 endif()
-if(NOT DEFINED APPLE)
+
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -Os")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
+
+
+
+if (NOT DEFINED APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wall -Wextra -Werror -Wno-unknown-pragmas -Wno-pragmas -Wno-unknown-warning-option -Wno-unused-parameter -Wno-deprecated-declarations")
 
-set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS} -g -Os")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse -msse2")
+endif()
 
-message("* * * * * * * *  generating xcompute protocol buffers * * * * * * * * ")
-message("include path: ${PROTOBUF_INCLUDE_DIR}")
-include_directories(${PROTOBUF_INCLUDE_DIR})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -march=native -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wall -Wextra  -pedantic-errors -Werror -Wno-unknown-pragmas -Wno-pragmas -Wno-unknown-warning-option -Wno-unused-parameter -Wno-deprecated-declarations")
+
+
+
+# ---- 8>< ---- Include Pathspec ----------------------------------------------------------------------- 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
+
+# ------------------------------------------------ #
+#      project includes                            #
+# ------------------------------------------------ #
+
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# protocol buffer static libraries
-if(DEFINED ENV{PROTOBUF_LIBDIR})#yay - use env variable path
-    set(PB_STATIC_LIB_PATH $ENV{PROTOBUF_LIBDIR}/libprotobuf.a)
-    message("found PB_STATIC_LIB_PATH path: ")
+
+# ------------------------------------------------ #
+#      system includes                             #
+# ------------------------------------------------ #
+
+include_directories(${PROTOBUF_INCLUDE_DIR})
+
+
+
+# ---- 8>< ---- Library Pathspec ----------------------------------------------------------------------- 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
+
+# ------------------------------------------------ #
+#      protobuf library                            #
+# ------------------------------------------------ #
+
+if (DEFINED ENV{PROTOBUF_LIBDIR})                                                           # yay - use env variable path
+    set(PB_STATIC_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.a)
+    set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.so)
+
+    message("found PB_STATIC_LIB, pathspec: ${PB_STATIC_LIB}")
 else()
-    set(PB_STATIC_LIB_PATH "/usr/local/lib/libprotobuf.a")#static backup path
-    message("PB_STATIC_LIB_PATH not set - trying default path:")
+    set(PB_STATIC_LIB "/usr/local/lib/libprotobuf.a")                                       # back-up path
+    set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.so")
+
+    message("PB_STATIC_LIB not set - trying default pathspec: ${PB_STATIC_LIB}")
 endif()
-message(${PB_STATIC_LIB_PATH})
+
+
+
+# ---- 8>< ---- Code Generation ------------------------------------------------------------------------ 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
+
+message("* * * * * * * * generating xcompute protocol buffers * * * * * * * * ")
 
 
 file(GLOB ProtoFiles "${CMAKE_CURRENT_SOURCE_DIR}/*.proto")
 protobuf_generate_cpp(ProtoSources ProtoHeaders ${ProtoFiles})
 
-add_library(xcmessages STATIC ${ProtoSources} ${ProtoHeaders})
-target_link_libraries(xcmessages ${PB_STATIC_LIB_PATH})
 
 
-#set(CMAKE_VERBOSE_MAKEFILE ON)
+# ---- 8>< ---- Library Creation ----------------------------------------------------------------------- 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+
+
+message("target architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+
+
+
+# ~~ [[ Object libraries ]] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+
+# ------------------------------------------------ #
+#      libxcmessages                               #
+# ------------------------------------------------ #
+
+add_library(message-objs OBJECT
+            ${ProtoHeaders}
+            ${ProtoSources}
+)
+
+
+
+# ~~ [[ Shared lib definitions & Properties ]] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+
+# shared-libs need -fPIC
+#
+set_target_properties(message-objs PROPERTIES
+                      POSITION_INDEPENDENT_CODE 1
+)
+
+
+add_library(xcmessages-shared SHARED
+            $<TARGET_OBJECTS:message-objs>
+)
+set_target_properties(xcmessages-shared PROPERTIES
+                      OUTPUT_NAME "xcmessages"
+)
+
+
+
+# ~~ [[ Static lib definitions & Properties ]] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+
+add_library(xcmessages-static STATIC
+            $<TARGET_OBJECTS:message-objs>
+)
+set_target_properties(xcmessages-static PROPERTIES
+                      OUTPUT_NAME "xcmessages"
+)
+
+
+
+# ~~ [[ Link shared libs ]] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+
+target_link_libraries(xcmessages-shared ${PB_SHARED_LIB})
+
+
+
+# ~~ [[ Link static libs ]] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+
+target_link_libraries(xcmessages-static ${PB_STATIC_LIB})
+
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+
+
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
+# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #

@@ -50,10 +50,10 @@ done
 
 
 
+echo "Compiling protobuf message bindings for:  ${LANGUAGES}"
 if [[ -z "${quiet}" ]]; then
-    echo "Compiling protocol buffer messages for: ${LANGUAGES}"
+    [ "$iact" = off ] || read -p "Press [enter] to continue."
 fi
-[ "$iact" = off ] || read -p "Press [enter] to continue."
 
 
 
@@ -103,4 +103,6 @@ protoc-c --proto_path=. \
 fi
 
 
-[ "$iact" = off ] || read -p "Press [enter] to continue."
+if [[ -z "${quiet}" ]]; then
+    [ "$iact" = off ] || read -p "Press [enter] to continue."
+fi
