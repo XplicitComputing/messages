@@ -63,7 +63,8 @@ if [[ -z "${external_init}" ]]; then
     # if .buildopts exists, use it
     [ -f .buildopts ] && . .buildopts
 
-    cmake .
+    echo == xcmessages CMAKE_FLAGS: ${CMAKE_FLAGS}
+    cmake ${CMAKE_FLAGS} .
 
     # parallel build make - find ncpu
     ncpu=1 #default
