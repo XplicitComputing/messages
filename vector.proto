@@ -26,6 +26,7 @@ message File
     string name = 1;
     bytes payload = 2;
     bool is_local = 3;
+    bool is_exported = 4;
 } 
 
 

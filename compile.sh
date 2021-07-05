@@ -50,10 +50,10 @@ done
 
 
 
+echo "Compiling protobuf message bindings for:  ${LANGUAGES}"
 if [[ -z "${quiet}" ]]; then
-    echo "Compiling protocol buffer messages for: ${LANGUAGES}"
+    [ "$iact" = off ] || read -p "Press [enter] to continue."
 fi
-[ "$iact" = off ] || read -p "Press [enter] to continue."
 
 
 
@@ -63,7 +63,8 @@ if [[ -z "${external_init}" ]]; then
     # if .buildopts exists, use it
     [ -f .buildopts ] && . .buildopts
 
-    cmake .
+    echo == xcmessages CMAKE_FLAGS: ${CMAKE_FLAGS}
+    cmake ${CMAKE_FLAGS} .
 
     # parallel build make - find ncpu
     ncpu=1 #default
@@ -103,4 +104,6 @@ protoc-c --proto_path=. \
 fi
 
 
-[ "$iact" = off ] || read -p "Press [enter] to continue."
+if [[ -z "${quiet}" ]]; then
+    [ "$iact" = off ] || read -p "Press [enter] to continue."
+fi
