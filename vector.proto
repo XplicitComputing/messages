@@ -59,6 +59,7 @@ message Vector32                                                                
     //reserved
     uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
     repeated float values = 10[packed=true];
+    repeated int32 size_hint = 11[packed=true];
     //reserved
 }
 
@@ -75,6 +76,7 @@ message Vector64                                                                
     //reserved
     uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
     repeated double values = 10[packed=true];
+    repeated int32 size_hint = 11[packed=true];
     //reserved
 }
 
