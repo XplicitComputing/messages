@@ -1,12 +1,12 @@
 #!/bin/bash
 
 
-LANGUAGES='cpp csharp java javascript objc python ruby php' # go dart julia perl c r rust scala swift
+LANGUAGES='cpp csharp java javascript objc php python ruby' # dart go julia perl r rust scala swift
 
 have_c=$(which protoc-c 2>/dev/null || echo false)
 if [[ "${have_c}" != "false" ]]; then
     have_c=true
-    LANGUAGES='c cpp csharp java javascript objc python ruby php' # go dart julia perl r rust scala swift
+    LANGUAGES='c cpp csharp java javascript objc php python ruby' # dart go julia perl r rust scala swift
 fi
 
 
@@ -86,22 +86,23 @@ fi
 EscBDIR=$(echo "${XC_BUILD_TREE}/bindings" | sed -e 's/\//\\\//g')
 directories=`echo "${LANGUAGES}" | sed -e "s/[^ ]* */${EscBDIR}\/&/g"`
 mkdir -p $directories
-protoc  --proto_path=. \
-        --cpp_out=${BDIR}/cpp \
-        --python_out=${BDIR}/python \
-        --java_out=${BDIR}/java \
-        --js_out=${BDIR}/javascript,import_style=commonjs,binary:. \
-        --ruby_out=${BDIR}/ruby \
-        --objc_out=${BDIR}/objc \
-        --csharp_out=${BDIR}/csharp \
-        --php_out=${BDIR}/php \
-        vector.proto setup.proto spatial.proto meta.proto
 
 if [[ "${have_c}" == "true" ]]; then
 protoc-c --proto_path=. \
          --c_out=${BDIR}/c \
          vector.proto setup.proto spatial.proto meta.proto
 fi
+
+protoc  --proto_path=. \
+        --cpp_out=${BDIR}/cpp \
+        --csharp_out=${BDIR}/csharp \
+        --java_out=${BDIR}/java \
+        --js_out=${BDIR}/javascript,import_style=commonjs,binary:. \
+        --objc_out=${BDIR}/objc \
+        --php_out=${BDIR}/php \
+        --python_out=${BDIR}/python \
+        --ruby_out=${BDIR}/ruby \
+        vector.proto setup.proto spatial.proto meta.proto
 
 
 if [[ -z "${quiet}" ]]; then
