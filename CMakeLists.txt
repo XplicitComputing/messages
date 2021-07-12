@@ -165,13 +165,19 @@ include_directories(${PROTOBUF_INCLUDE_DIR})
 
 if (DEFINED ENV{PROTOBUF_LIBDIR})                                                           # yay - use env variable path
     set(PB_STATIC_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.a)
-    set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.so)
-
-    message("found PB_STATIC_LIB, pathspec: ${PB_STATIC_LIB}")
+    if (DEFINED APPLE)
+        set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.dylib)
+    else()
+        set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.so)
+    endif()
+    message("found env var PB_STATIC_LIB pathspec: ${PB_STATIC_LIB}")
 else()
     set(PB_STATIC_LIB "/usr/local/lib/libprotobuf.a")                                       # back-up path
-    set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.so")
-
+    if (DEFINED APPLE)
+        set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.dylib")
+    elseif()
+        set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.so")
+    endif()
     message("PB_STATIC_LIB not set - trying default pathspec: ${PB_STATIC_LIB}")
 endif()
 
