@@ -20,20 +20,17 @@ if [ -z "${dpfx}" ]; then
     echo For development builds, try : '--dpfx=${HOME}/xcompute' or deps dir of your choosing
     exit 1
 fi
-echo "Installing compiler and autotools..."
-sudo apt install clang++-10 cmake automake autoconf autogen libtool checkinstall wget curl unzip
+echo "Installing compiler and build tools..."
+sudo apt install clang clang-10 libstdc++-10-dev
+sudo apt install cmake automake autoconf autogen libtool checkinstall wget curl unzip
 echo "Your current C compiler is:"
 which cc
 cc --version
 echo "Your current C++ compiler is:"
 which c++
 c++ --version
-echo "Consider setting your default compiler to clang-10 before proceeding with XC builds:"
-echo "Please set your default C compiler to clang-10 :"
-#sudo update-alternatives --config cc
+echo "Attempting to set your default C/C++ compilers to clang-10 :"
 sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-10 60
-echo "Please set your default C++ compiler to clang++-10 :"
-#sudo update-alternatives --config c++
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-10 60
 echo "Your current C++ compiler is:"
 which c++
