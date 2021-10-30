@@ -20,7 +20,7 @@ Messages are distributed in four proto files, used as needed in each context:
 - `meta.proto` - meta-data and user-graphics for a specific system (compatible with xcm files) 
 
 
-Google's Protoc 3 compiler generates a linkable library and bindings for the following languages: C++, Objective-C, C#, PHP, Python, Java, Javascript, Ruby, Dart, and Go. Many other 3rd-party language bindings are available (see xcmessage.pdf).
+Google's Protoc 3 compiler generates a linkable library and bindings for the following languages: C++, Objective-C, C#, PHP, Python, Java, Javascript, Ruby, Dart, and Go. Many other 3rd-party language bindings are available (see xcmessages.pdf).
 
 ### 0.1.1 data: vector.proto
 
