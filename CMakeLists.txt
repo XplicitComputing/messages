@@ -127,7 +127,11 @@ endif()
 
 
 if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64-v3")
+    if (NOT DEFINED APPLE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64-v3")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=core-avx2")
+    endif()
 endif()
 
 
