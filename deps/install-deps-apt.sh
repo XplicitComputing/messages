@@ -47,4 +47,4 @@ which c++
 c++ --version
 
 read -p "Press [enter] to proceed with Protobuf3 installation..."
-sudo ./install-protobuf.sh --prefix=${dpfx}
+./install-protobuf.sh --prefix=${dpfx}
