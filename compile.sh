@@ -17,14 +17,9 @@ BDIR=${XC_BUILD_TREE}/bindings
 
 
 quiet=
-cmpargs=
 external_init=
 while [ $# -gt 0 ]; do
     case "$1" in
-        CC=*)
-            cmpargs="${cmpargs} $1"
-            ;;
-
         clean)
             echo "cleaning messages..."
             if [[ -f Makefile ]]; then
