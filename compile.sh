@@ -26,6 +26,7 @@ while [ $# -gt 0 ]; do
             ;;
 
         clean)
+            echo "cleaning messages..."
             if [[ -f Makefile ]]; then
                 make clean
             fi
@@ -60,9 +61,6 @@ fi
 # prep cmake environment in current directory
 if [[ -z "${external_init}" ]]; then
 
-    # if .buildopts exists, use it
-    [ -f .buildopts ] && . .buildopts
-
     echo == xcmessages CMAKE_FLAGS: ${CMAKE_FLAGS}
     cmake ${CMAKE_FLAGS} .
 
@@ -76,8 +74,6 @@ if [[ -z "${external_init}" ]]; then
     nrs=1           # CPUs reserved for non-build
     ncpu=$(( (ncpu>nrs)? ncpu-nrs : 1 ))
 
-    # build the protocol buffers that are used by xcompute directly
-    #utils/cmakeprep.sh ${cmpargs} .
     make -j${ncpu}
 fi
 
