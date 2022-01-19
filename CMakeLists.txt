@@ -115,29 +115,20 @@ if (NOT "${CMAKE_CXX_STANDARD}")
     set(CMAKE_CXX_STANDARD 20)
 endif()
 
+message("== Target arch :  ${CMAKE_SYSTEM_PROCESSOR}")
+message("== CXXFLAGS env:  ${CMAKE_CXX_FLAGS}")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -Os")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
-
-
 
 if (NOT DEFINED APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 endif()
 
-
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-    if (NOT DEFINED APPLE)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64-v3")
-    else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=core-avx2")
-    endif()
-endif()
-
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wall -Wextra  -pedantic-errors -Werror -Wno-unknown-pragmas -Wno-pragmas -Wno-unknown-warning-option -Wno-unused-parameter -Wno-deprecated-declarations")
 
+message("== CXXFLAGS use:  ${CMAKE_CXX_FLAGS}")
 
 
 # ---- 8>< ---- Include Pathspec ----------------------------------------------------------------------- 8>< ---- #
