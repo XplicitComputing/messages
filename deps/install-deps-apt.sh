@@ -30,6 +30,9 @@ echo "Installing compiler and build tools..."
 sudo apt install clang-12 libstdc++-10-dev
 sudo apt install cmake automake autoconf autogen libtool checkinstall wget curl unzip
 
+echo "Install application dev dependencies..."
+sudo apt install libncurses-dev # not used directly by "messages".
+
 echo "Your current C compiler is:"
 which cc
 cc --version
