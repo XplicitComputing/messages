@@ -31,6 +31,15 @@ message File
 
 
 
+message DirentNode
+{
+    string dirname = 1;
+    repeated string files = 2;
+    repeated DirentNode subdirs = 3;
+}
+
+
+
 message Revision
 {
     uint64 major_rev = 1;
