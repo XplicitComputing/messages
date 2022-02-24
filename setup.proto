@@ -78,9 +78,9 @@ message Command                                                                 
     bool args_are_set = 2;
     bool is_ready = 3;
     uint64 exec_count = 4;
-    uint64 effective_size = 5;
+    uint64 simd_size = 5;
     uint64 version = 6;
-    uint64 id = 7;                                                                                      // unique runtime identifier (assigned and only valid within a server session)
+    int64 id = 7;                                                                                      // unique runtime identifier (assigned and only valid within a server session)
     uint64 n_kernel = 8;
     float progress = 9;
     string msg = 10;
@@ -88,11 +88,8 @@ message Command                                                                 
     repeated Vector64 data = 12;
     repeated Command before = 13;                                                                       // optional, to be called from within bound function
     repeated Command after = 14;                                                                        // optional, to be called from within bound function
-    repeated uint32 region_type = 15;                                                                   // if assigned, used to identify specific zones for conditions, etc
-    repeated int32 region_id = 16;                                                                      // if assigned, used to identify specific zones for conditions, etc
-    repeated string argument_types = 17;                                                                // bound argument type names to operate (name of class or type)
-    repeated string argument_descriptions = 18;                                                         // matching argument type descriptions (used by UI)
-
+    uint32 region_type = 15;                                                                   // if assigned, used to identify specific zones for conditions, etc
+    int32 region_id = 16;                                                                      // if assigned, used to identify specific zones for conditions, etc
 }
 
 
@@ -120,7 +117,7 @@ message Script                                                                  
 
 message Rule
 {
-    string pk = 1;                                                                                      // serialized property-key <property \t modifier \t ...>
+    string pk = 1;                                                                                      // serialized property-key <property|modifier|...>
     repeated string algorithms = 2;                                                                     // names of algorithms to be associated
     repeated uint32 priority = 3;                                                                       // optional - larger numbers are more important
 }

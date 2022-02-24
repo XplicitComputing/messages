@@ -21,19 +21,18 @@ import "vector.proto";
 
 
 
-message Zone                                                                                            // compatible with xcompute Region
+message Zone                                                                                            // compatible with xcompute Region (aka zone or patch)
 {
     string name = 1;
     int32 id = 2;
-    uint32 dimensionality = 3;
+    uint32 dimensionality = 3;//0:node-group, 1:edge-loop, 2:face-surface, 3:cell-volume
     Revision revision = 4;
-    uint64 num_elements = 5;
-    uint64 offset = 6;
+    repeated uint32 elements = 5;//set of element indices (as ordered in Messages::Elements) in geometry-index space that define this zone/patch/region, ranging from [0,E]
+    //reserved
     string comments = 7;
     string info = 8;
     Extrema bounds = 10;
-    repeated float terminal_position = 11;
-    repeated uint32 specific_elements = 12;                                                             // optional (if used, ignore offset)
+    repeated float terminal_coord = 11;//in symbol icon's coordinates [0,1]
 }
 
 
@@ -49,11 +48,9 @@ message Topology                                                                
     //reserved
     Elements nodes = 10;
     Elements edges = 11;
-    Elements interior_edges = 12;
-    Elements faces = 13;
-    Elements interior_faces = 14;
-    Elements cells = 15; 
-    //reserveed
+    Elements faces = 12;
+    Elements cells = 13;
+    //reserved
     repeated Zone groups = 20;
     repeated Zone loops = 21;
     repeated Zone surfaces = 22;
@@ -77,6 +74,12 @@ message GridControl                                                             
     Extrema bounds = 10;
 }
 
+message SignedDistanceField
+{
+    GridControl grid_control = 1;
+    repeated uint32 sdf_indices = 2;//1:1 mapping between sdf_indices and sdf_values
+    repeated double sdf_values = 3;
+}
 
 
 message MeshControl                                                                                     // deprecated - will utilize Variables message moving forward
@@ -100,6 +103,7 @@ message MeshControl                                                             
     //reserved
     bool include_background = 18;
     bool keep_existing_points = 19;
+    bool auto_fit_domain = 20;
     //reserved
     bool x_symmetry = 24;
     bool y_symmetry = 25;
