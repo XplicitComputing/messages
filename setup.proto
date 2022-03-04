@@ -85,7 +85,7 @@ message Command                                                                 
     float progress = 9;
     string msg = 10;
     //reserved  
-    repeated Vector64 data = 12;
+    Record64 data = 12;
     repeated Command before = 13;                                                                       // optional, to be called from within bound function
     repeated Command after = 14;                                                                        // optional, to be called from within bound function
     uint32 region_type = 15;                                                                   // if assigned, used to identify specific zones for conditions, etc

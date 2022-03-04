@@ -43,6 +43,8 @@ message Topology                                                                
     uint32 type = 2;
     uint32 ndim = 3;
     uint32 basis = 4;
+    string filename = 5;
+    Revision revision = 6;
     //reserved
     repeated double resolution = 8;
     //reserved
@@ -50,16 +52,6 @@ message Topology                                                                
     Elements edges = 11;
     Elements faces = 12;
     Elements cells = 13;
-    //reserved
-    repeated Zone groups = 20;
-    repeated Zone loops = 21;
-    repeated Zone surfaces = 22;
-    repeated Zone volumes = 23;
-    //reserved
-    repeated uint32 locations = 26;
-    //reserved
-    string filename = 30;
-    Revision revision = 31;
 }
 
 
