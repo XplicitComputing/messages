@@ -135,8 +135,8 @@ message Model                                                                   
     repeated string compatible_conditions = 7;                                                          // relevant algorithm/function names that are applied to one ore more regions or initialize
     //reserved
     repeated Model sub_models = 9;
-    repeated Vector64 data = 10;                                                                        // high-level constants manipulated by user
-    repeated Rule rules = 11;
+    Record64 default_data = 10;                                                                         // default constants, unless otherwise specified (by region)
+    repeated Rule rules = 11;                                                                           // how each PK can be calculated (by algorithm name)
     repeated Rule mutex_stack = 12;
 }
 
