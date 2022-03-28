@@ -37,4 +37,4 @@ echo "The current C++ compiler is:"
 which c++
 c++ --version
 read -p "Press [enter] to proceed with Protobuf3 installation..."
-sudo ./install-protobuf.sh --prefix=${dpfx}
+./install-protobuf.sh --prefix=${dpfx}
