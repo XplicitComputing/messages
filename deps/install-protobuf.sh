@@ -14,6 +14,11 @@
 #   ./install-protobuf.sh CXX=clang++               # Pass CXX through to package build.
 #
 
+RED='\033[1;31m'        # bold red
+YLW='\033[1;33m'        # bold yellow
+NC='\033[0m'            # No Color
+YLW_WARNING="${RED}[${YLW}WARNING${RED}]${NC}"
+
 PKG_PROTOBUFDEV=libprotobuf-dev                 # dev package on Ubuntu/Debian
 TAG=3.8.0                                   # Known recent release tag
 PREFIX=/usr/local   # Install target prefix
@@ -51,21 +56,26 @@ echo Branch tag $TAG
 echo Install target $PREFIX
 
 echo "---- Installing Protocol Buffers ----"
-sleep 1
 
-#echo "It's best practice to first remove existing libprotobuf-dev..."
-#dpkg -l ${PKG_PROTOBUFDEV}
-#[ $? = 0 ] && sudo apt remove ${PKG_PROTOBUFDEV}
-echo "Done prepping. Now unzipping..."
-sleep 1
+dpkg -l ${PKG_PROTOBUFDEV}
+rc_dpkg=$?
+if [ $rc_dpkg -eq 0 ]; then
+    echo -e ${YLW_WARNING}: a different version of ${YLW}${PKG_PROTOBUFDEV}${NC} is installed on your machine
+    echo Currently using $(which protoc)
+    echo Please make sure that the right version is found in PATH at build-time.
+    sleep 2
+fi
 
-#unzip protobuf*.zip
-#[ -d protobuf ] || git clone https://github.com/protocolbuffers/protobuf.git
-wget https://github.com/protocolbuffers/protobuf/releases/download/v${TAG}/protobuf-all-${TAG}.tar.gz
+cat <<- _end_text > protobuf.md5
+cc4f50740430d9488312e5e48bc94d68  protobuf-all-3.8.0.tar.gz
+_end_text
+md5sum -c protobuf.md5
+rc_md5=$?
+if [ $rc_md5 -ne 0 ]; then
+    wget https://github.com/protocolbuffers/protobuf/releases/download/v${TAG}/protobuf-all-${TAG}.tar.gz
+fi
 tar -xf protobuf-*.tar.gz
 cd protobuf-${TAG}
-#[ "${TAG}" ] && git checkout ${TAG}
-#git submodule update --init --recursive
 
 ./autogen.sh
 ./configure --prefix=${PREFIX} ${CFGARGS}
@@ -76,16 +86,16 @@ make check -j$(nproc)
 xcuid=$(stat -c '%u' ${PREFIX})
 if [ "${xcuid}_" = "0_" ]; then
     PRIV=sudo
-    RED='\033[0;31m'
-    NC='\033[0m' # No Color
-    echo -e "Using ${RED}sudo${NC} to install as ${RED}root${NC}."
+    echo -e "Using ${YLW}sudo${NC} to install as ${YLW}root${NC}."
 fi
+
 set -x
 ${PRIV} make install
 # ldconfig for libprotobuf needs 'autoconf --disable-shared';
 # tells autoconf/libtool to not build shared libraries.
 [ -n "${PRIV}" ] && ${PRIV} ldconfig
 cd ..
+set +x
 
 if [ "$CLEANUP" ]; then
     echo "Cleaning..."
@@ -94,3 +104,7 @@ fi
 export PATH=${PREFIX}/bin:$PATH
 which protoc
 protoc --version
+if [ $rc_dpkg -eq 0 ]; then
+    echo -e ${YLW_WARNING}: remember to avoid system installed version of ${YLW}${PKG_PROTOBUFDEV}${NC}
+    dpkg -l ${PKG_PROTOBUFDEV} | grep protobuf
+fi
