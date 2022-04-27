@@ -6,7 +6,8 @@
 import unittest
 from copy import deepcopy
 import hashlib
-import sys
+import tempfile
+import os, sys
 
 
 def msgv3_init():
@@ -73,7 +74,7 @@ class TestMessages(unittest.TestCase):
         self.assertEqual(msg.values, [1, 2, 3, 4, 5, 6, 7, 8, 9])
 
     def test_serialize(self):
-        "serialize to string, deserialize from string"
+        "serialize to string, deserialize from string, validate SHA1"
 
         # serialization
         msg1 = msgv3_init()
@@ -88,14 +89,52 @@ class TestMessages(unittest.TestCase):
         msg2.ParseFromString(serial)
         self.assertEqual(msg1, msg2)
 
+    def test_serialize_file(self):
+        "serialize to file, deserialize from file"
+
+        # create file with zero length
+        handle, path = tempfile.mkstemp(suffix=".xco", prefix="msgtest_")
+        os.close(handle)
+        fsize = os.stat(path).st_size
+        self.assertEqual(fsize, 0)
+
+        # create msg1 and write to file
+        msg1 = msgv6_init()  # msg1 = vector.Vector64(), and more
+        serial1 = msg1.SerializeToString()
+        with open(path, "wb") as fout:
+            fout.write(msg1.SerializeToString())
+
+        # sanity check: validate against SHA1 for msgv6
+        s1 = hashlib.sha1()
+        s1.update(serial1)
+        m1sha1 = s1.hexdigest()
+        self.assertEqual(m1sha1, msgv6_sha1)
+
+        # file size should match serialized msg1
+        fsize = os.stat(path).st_size
+        self.assertEqual(fsize, len(serial1))
+
+        # create msg2 and read from file
+        msg2 = vector.Vector64()
+        with open(path, "rb") as fin:
+            serial2 = fin.read()
+        msg2.ParseFromString(serial2)
+
+        # serialized stings should match, message structures should match
+        self.assertEqual(serial1, serial2)
+        self.assertEqual(msg1, msg2)
+
+        # remove file
+        os.remove(path)
+
     def test_copy_ref(self):
-        "copy by reference - two refernces, same object"
-        msg0 = msgv3_init()
-        msg1 = msg0
-        msg1.values.append(9)
-        self.assertEqual(msg0.values[3], 9)
-        self.assertEqual(len(msg0.values), 4)
-        self.assertEqual(len(msg0.values), len(msg1.values))
+        "copy by reference - two references, same object"
+        msg1 = msgv3_init()
+        msg2 = msg1
+        msg2.values.append(9)
+        self.assertEqual(msg2.values[3], 9)
+        self.assertEqual(len(msg1.values), 4)
+        self.assertEqual(len(msg1.values), len(msg2.values))
 
     def test_copy_deep(self):
         "deep copies - two objects"
