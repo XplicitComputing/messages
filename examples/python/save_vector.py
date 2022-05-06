@@ -26,16 +26,15 @@ def fill_data(msg, args):
     w_max = args.w_max
     for n in range(N):
         t = n / (N - 1)
-        channel1 = math.sin(w_max * t * t)
-        channel2 = math.cos(w_max * t * t)
-        msg.values.extend([channel1, channel2])
+        channel0 = math.sin(w_max * t * t)
+        channel1 = math.cos(w_max * t * t)
+        msg.values.extend([channel0, channel1])
     msg.comment = f"w_max={w_max} N={N} C={channels} {timestr()}"
     print("done.")
 
 
 def save(msg, fname):
     "Serialize 'msg' and save as file 'fname'."
-    print("saving:", fname)
     try:
         serial = msg.SerializeToString()
         with open(fname, "wb") as sout:
