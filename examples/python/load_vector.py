@@ -6,8 +6,6 @@ import argparse
 import sys
 import vector_pb2 as vector
 
-channels = 2  # components
-
 
 def load(msg, fname):
     "Deserialize 'msg' from file 'fname'."
@@ -32,7 +30,7 @@ def load(msg, fname):
 
 def main():
     parser = argparse.ArgumentParser(description=about)
-    parser.add_argument("fname", type=str, help="output filename")
+    parser.add_argument("fname", type=str, help="input filename")
 
     args = parser.parse_args()
 
