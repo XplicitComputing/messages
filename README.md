@@ -1,5 +1,5 @@
 
-This module was spun out of the larger xcompute project in August 2020. It is scheduled for public release January 2022. 
+This module was spun out of the larger xcompute project in August 2020. It is scheduled for public release Q3 2022. 
 
 # 0. Introducing Messages
 
