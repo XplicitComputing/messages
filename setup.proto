@@ -4,10 +4,14 @@
 // MESSAGES™ by XPLICIT COMPUTING, INC
 // GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
 //
-// Please see file README.html for usage and license info. README.html must be copied along
-// with these *.proto, unaltered as part of the fair-use license agreement. Direct questions
-// or concerns to: info@xplicitcomputing.com
+// Copyright 2020-2022 Xplicit Computing, Inc.
 //
+// Please see file README.md for usage and license info. README.md must be copied along
+// with these *.proto as part of the license agreement. Direct questions or concerns to:
+// info@xplicitcomputing.com
+//
+// SPDX-License-Identifier: BSD-3-Clause
+// OSI-License-URL: https://opensource.org/licenses/BSD-3-Clause
 */ 
 
 
@@ -19,7 +23,6 @@ package Messages;
 import "vector.proto";
 import "spatial.proto";
 import "meta.proto";
-
 
 
 
@@ -43,7 +46,6 @@ message Variables                                                               
     repeated string string_descriptions = 16;
     //reserved
 }
-
 
 
 message Function                                                                                        // compatible with xcompute algorithm (operation/code that has not been bound yet)
@@ -71,7 +73,6 @@ message Function                                                                
 }
 
 
-
 message Command                                                                                         // compatible with xcompute instruction  (a function instance bound to arguments... data, regions, etc)
 {
     Function function = 1;
@@ -91,7 +92,6 @@ message Command                                                                 
     uint32 region_type = 15;                                                                   // if assigned, used to identify specific zones for conditions, etc
     int32 region_id = 16;                                                                      // if assigned, used to identify specific zones for conditions, etc
 }
-
 
 
 message Script                                                                                          // compatible with xcompute solver
@@ -114,14 +114,12 @@ message Script                                                                  
 }
 
 
-
 message Rule
 {
     string pk = 1;                                                                                      // serialized property-key <property|modifier|...>
     repeated string algorithms = 2;                                                                     // names of algorithms to be associated
     repeated uint32 priority = 3;                                                                       // optional - larger numbers are more important
 }
-
 
 
 message Model                                                                                           // compatible with xcompute model
@@ -177,7 +175,6 @@ message System                                                                  
     repeated Model models = 11;                                                                         // physical / mathematical models (groups of algorithms)
     repeated Vector64 constants = 12;                                                                   // physics.data
     repeated Command conditions = 13;                                                                   // special commands applied as constraints and conditions
-    
 }
 
 

@@ -4,10 +4,14 @@
 // MESSAGES™ by XPLICIT COMPUTING, INC
 // GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
 //
-// Please see file README.html for usage and license info. README.html must be copied along
-// with these *.proto, unaltered as part of the fair-use license agreement. Direct questions
-// or concerns to: info@xplicitcomputing.com
+// Copyright 2020-2022 Xplicit Computing, Inc.
 //
+// Please see file README.md for usage and license info. README.md must be copied along
+// with these *.proto as part of the license agreement. Direct questions or concerns to:
+// info@xplicitcomputing.com
+//
+// SPDX-License-Identifier: BSD-3-Clause
+// OSI-License-URL: https://opensource.org/licenses/BSD-3-Clause
 */
 
 
@@ -18,7 +22,6 @@ package Messages;
 
 import "vector.proto";
 import "spatial.proto";
-
 
 
 
@@ -35,7 +38,6 @@ message GraphicsControl                                                         
     bool visible = 10;
     //reserved
 }
-
 
 
 message Representation
@@ -55,7 +57,6 @@ message Representation
 }
 
 
-
 message Visual
 {
     Zone region = 1;
@@ -71,7 +72,6 @@ message Visual
     //reserved
     repeated Vector32 extras = 15;                                                                      // optional data such as displacement vectors and positions (if not nodal positions)
 }
-
 
 
 message Meta                                                                                            // metaobject backbone -- created and staged in server visuals (for transmission) to populate client metaobjects
@@ -113,7 +113,6 @@ message Meta                                                                    
 }
 
 
-
 message SliceControl                                                                                    // deprecated - will utilize Variables message moving forward
 {
     string name = 1;
@@ -123,7 +122,6 @@ message SliceControl                                                            
     bool negative = 5;
     bool positive = 6;
 }
-
 
 
 message CameraControl

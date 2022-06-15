@@ -4,11 +4,15 @@
 // MESSAGES™ by XPLICIT COMPUTING, INC
 // GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
 //
-// Please see file README.html for usage and license info. README.html must be copied along
-// with these *.proto, unaltered as part of the fair-use license agreement. Direct questions
-// or concerns to: info@xplicitcomputing.com
+// Copyright 2020-2022 Xplicit Computing, Inc.
 //
-*/
+// Please see file README.md for usage and license info. README.md must be copied along
+// with these *.proto as part of the license agreement. Direct questions or concerns to:
+// info@xplicitcomputing.com
+//
+// SPDX-License-Identifier: BSD-3-Clause
+// OSI-License-URL: https://opensource.org/licenses/BSD-3-Clause
+*/ 
 
 
 
@@ -17,7 +21,6 @@ syntax = "proto3";
 package Messages;
 
 option cc_enable_arenas = true;                                                                         // faster memory allocation
-
 
 
 
@@ -30,14 +33,12 @@ message File
 } 
 
 
-
 message DirentNode
 {
     string dirname = 1;
     repeated string files = 2;
     repeated DirentNode subdirs = 3;
 }
-
 
 
 message Revision
@@ -47,7 +48,6 @@ message Revision
 }
 
 
-
 message Extrema                                                                                         // domain bounds
 {
     uint32 dims = 1;
@@ -55,7 +55,6 @@ message Extrema                                                                 
     repeated double max = 3[packed=true];
     bool is_set = 4;
 }
-
 
     
 message Vector32                                                                                        // IEEE-754-compliant FP32 vector with embedded info, used extensively on client-side (and server visuals staging)
@@ -74,7 +73,6 @@ message Vector32                                                                
 }
 
 
-
 message Vector64                                                                                        // IEEE-754-compliant FP64 vector with embedded info, used extensively on server-side (and client input forms)
 {
     string name = 1;
@@ -89,6 +87,7 @@ message Vector64                                                                
     repeated uint32 size_hint = 11;
     //reserved
 }
+
 
 message Record64
 {
@@ -110,7 +109,6 @@ message UIndices
     uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
     repeated uint32 values = 10[packed=true];
 }
-
 
 
 message Elements                                                                                        // defined here to take advantage of packed arena allocation (only enabled within this proto file)
