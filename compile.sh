@@ -2,11 +2,13 @@
 
 
 LANGUAGES='cpp csharp java javascript objc php python ruby' # dart go julia perl r rust scala swift
+PROTOFILES='vector.proto setup.proto spatial.proto meta.proto'
+PB_STEMS=$(echo $PROTOFILES | sed s/\.proto//g)
 
 have_c=$(which protoc-c 2>/dev/null || echo false)
 if [[ "${have_c}" != "false" ]]; then
     have_c=true
-    LANGUAGES='c cpp csharp java javascript objc php python ruby' # dart go julia perl r rust scala swift
+    LANGUAGES="c ${LANGUAGES}"
 fi
 
 
@@ -26,7 +28,10 @@ while [ $# -gt 0 ]; do
                 make clean
             fi
             rm -rf CMakeFiles CMakeCache.txt cmake_install.cmake Makefile
-            rm -rf ${BDIR}/${LANGUAGES}
+            for lang in ${LANGUAGES}; do
+                rm -rf ${BDIR}/${lang}
+            done
+            [ -d ${BDIR} ] && rmdir ${BDIR}
             exit 0
             ;;
 
@@ -51,8 +56,6 @@ if [[ -z "${quiet}" ]]; then
     [ "$iact" = off ] || read -p "Press [enter] to continue."
 fi
 
-
-
 # prep cmake environment in current directory
 if [[ -z "${external_init}" ]]; then
 
@@ -69,9 +72,14 @@ if [[ -z "${external_init}" ]]; then
     nrs=1           # CPUs reserved for non-build
     ncpu=$(( (ncpu>nrs)? ncpu-nrs : 1 ))
 
+    for stem in ${PB_STEMS}; do
+        protoc --cpp_out . -I . ${stem}.proto
+        #sed --in-place 's \bfinal\b /*final*/ ' ${stem}.pb.h   # in case removing 'final' is desired.
+    done
+    rm -rf CMakeFiles CMakeCache.txt
+
     make -j${ncpu}
 fi
-
 
 # build the protobuf bindings that will be used by users and developers to integrate
 EscBDIR=$(echo "${XC_BUILD_TREE}/bindings" | sed -e 's/\//\\\//g')
