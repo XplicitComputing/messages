@@ -1,3 +1,4 @@
+
 This module was spun out of the larger xcompute project in August 2020. It is scheduled for public release January 2022. 
 
 # 0. Introducing Messages
@@ -30,7 +31,7 @@ With `vector.proto`, vectorized data takes advantage of packed repeated fields t
 
 Numerical domains (aka "systems") are serialized and deserialized according to `setup.proto`, providing object-oriented utilies for saving and transmitting almost any system modeling and processing efforts. Unless exported to client, this information usually stays on server-side as protected IP.
 
-Numerical topologies (aka "geometries") are defined in `spatial.proto`, describing the element connectivity between nodes using indicies. Unless exported to client, this information usually stays on server-side as protected IP.
+umerical topologies (aka "geometries") are defined in `spatial.proto`, describing the element connectivity between nodes using indicies. Unless exported to client, this information usually stays on server-side as protected IP.
 
 ### 0.1.3 client-side: meta.proto
 
@@ -44,7 +45,8 @@ Protobufs might be a little odd or difficult at first, but once one becomes accu
 
 Download and install Google Protobuf 3 with the script:
 ```
-sudo sh deps/install-protobuf.sh
+cd deps
+./install-protobuf.sh
 ```
 
 For special installation, see: https://github.com/protocolbuffers/protobuf/blob/master/src/README.md
@@ -60,7 +62,7 @@ Protobuf3 should have been installed in the previous step. Assure protocol buffe
 ```
 protoc --version
 ```
-And check path:
+And check its path:
 ```
 which protoc
 ```
@@ -92,7 +94,7 @@ std::ofstream outfile(path); // create an output file stream with given path
 msg.SerializeToOstream(&outfile); // serialize a prepared Messages::Vector64
 outfile.close(); // finish the file and release resource
 ```
-Serialized data can then be transmit over file-and-wire to another computer session, where it is then de-serialized (parsed) using the paired load function such as std:: input file stream:
+Serialized data can then be transmitted over file-and-wire to another computer session, where it is then de-serialized (parsed) using the paired load function such as std:: input file stream:
 ```
 std::ifstream infile(path); // create an input file stream
 Messages::Vector64 msg; // create an empty message container
@@ -103,6 +105,16 @@ infile.close(); // finish the file and release resource
 
 Please see `xcmessages.pdf` for thorough introduction and examples.
 
-## 3. license and fair-use agreement
+## 3. license and fair use
 
-These four proto files and generated library/bindings are licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License. You are free to use these components for personal, academic, commercial, and/or research use. No warranty is implied nor provided unless otherwise stated in a separate engineering support agreement. As part of the license agreement, this document must remain alongside any provided *.proto definitions and not be altered in any way. 
+- SPDX-License-Identifier: BSD-3-Clause
+- OSI-License-URL: https://opensource.org/licenses/BSD-3-Clause
+
+These four proto files, the generated library/bindings, and this README file are provided under the BSD 3-Clause License.
+You are free to use these components for personal, academic, commercial, and/or research use.  No warranty is implied nor provided unless otherwise stated in a separate engineering support agreement.  As part of the license agreement, this README file must remain alongside any provided *.proto definitions.
+
+A copy of the BSD 3-Clause License resides in the LICENSE file of this software. It can also be found online at OSI-License-URL.
+
+Custom extensions to the schema are permitted for private use.  (See "Building custom bindings" in `xcmessages.pdf`.)
+However, to foster schema consistency across the Messages user community, please share proposed public schema and documentation updates with the maintainers at info@xplicitcomputing.com.
+
