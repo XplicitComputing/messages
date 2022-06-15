@@ -31,7 +31,7 @@ With `vector.proto`, vectorized data takes advantage of packed repeated fields t
 
 Numerical domains (aka "systems") are serialized and deserialized according to `setup.proto`, providing object-oriented utilies for saving and transmitting almost any system modeling and processing efforts. Unless exported to client, this information usually stays on server-side as protected IP.
 
-umerical topologies (aka "geometries") are defined in `spatial.proto`, describing the element connectivity between nodes using indicies. Unless exported to client, this information usually stays on server-side as protected IP.
+Numerical topologies (aka "geometries") are defined in `spatial.proto`, describing the element connectivity between nodes using indicies. Unless exported to client, this information usually stays on server-side as protected IP.
 
 ### 0.1.3 client-side: meta.proto
 
