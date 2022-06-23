@@ -2,7 +2,7 @@
 
 
 LANGUAGES='cpp csharp java javascript objc php python ruby' # dart go julia perl r rust scala swift
-PROTOFILES='vector.proto setup.proto spatial.proto meta.proto'
+PROTOFILES='vector.proto concept.proto spatial.proto meta.proto'
 PB_STEMS=$(echo $PROTOFILES | sed s/\.proto//g)
 
 have_c=$(which protoc-c 2>/dev/null || echo false)
@@ -89,7 +89,7 @@ mkdir -p $directories
 if [[ "${have_c}" == "true" ]]; then
 protoc-c --proto_path=. \
          --c_out=${BDIR}/c \
-         vector.proto setup.proto spatial.proto meta.proto
+         vector.proto concept.proto spatial.proto meta.proto
 fi
 
 protoc  --proto_path=. \
@@ -101,7 +101,7 @@ protoc  --proto_path=. \
         --php_out=${BDIR}/php \
         --python_out=${BDIR}/python \
         --ruby_out=${BDIR}/ruby \
-        vector.proto setup.proto spatial.proto meta.proto
+        vector.proto concept.proto spatial.proto meta.proto
 
 
 if [[ -z "${quiet}" ]]; then

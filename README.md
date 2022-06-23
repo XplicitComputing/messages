@@ -17,8 +17,8 @@ Messages are distributed in four proto files, used as needed in each context:
 
 - `vector.proto` - packed float and integer arrays (compatible with xco files)
 - `spatial.proto` - elements and regions for a geometry (compatible with xcg files) 
-- `setup.proto` - domain setup, models, parameters, associations (compatible with xcs files)  
-- `meta.proto` - meta-data and user-graphics for a specific system (compatible with xcm files) 
+- `concept.proto` - domain setup, models, parameters, associations (compatible with xcs files)
+- `meta.proto` - meta-data and user-graphics for a specific system (compatible with xcm files)
 
 
 Google's Protoc 3 compiler generates a linkable library and bindings for the following languages: C++, Objective-C, C#, PHP, Python, Java, Javascript, Ruby, Dart, and Go. Many other 3rd-party language bindings are available (see xcmessages.pdf).
@@ -27,9 +27,9 @@ Google's Protoc 3 compiler generates a linkable library and bindings for the fol
 
 With `vector.proto`, vectorized data takes advantage of packed repeated fields to permit parallel operations and direct copying, representing the underlying bits according to IEEE-754 in contiguous memory. This information is routinely transmitted across client and server sessions as single and double precision, respectively. In xcmessages.pdf see examples on how to implement `Messages::Vector` zero-copy semantics and parallel iteration.
 
-### 0.1.2 server-side: setup.proto, spatial.proto
+### 0.1.2 server-side: concept.proto, spatial.proto
 
-Numerical domains (aka "systems") are serialized and deserialized according to `setup.proto`, providing object-oriented utilies for saving and transmitting almost any system modeling and processing efforts. Unless exported to client, this information usually stays on server-side as protected IP.
+Numerical domains (aka "systems") are serialized and deserialized according to `concept.proto`, providing object-oriented utilies for saving and transmitting almost any system modeling and processing efforts. Unless exported to client, this information usually stays on server-side as protected IP.
 
 Numerical topologies (aka "geometries") are defined in `spatial.proto`, describing the element connectivity between nodes using indicies. Unless exported to client, this information usually stays on server-side as protected IP.
 
@@ -73,14 +73,14 @@ There should be a corresponding set of `libprotobuf` in `/usr/local/lib/` and he
 Invoke the protoc compiler for the desired output language (including the name of the output folder following equals sign) against proto files to yield libxcmessages.a and bindings. For example, to generate only c++ accessors for vector.proto:
 
 ```
-protoc --cpp_out=cpp vector.proto 
+protoc --cpp_out=cpp vector.proto
 ```
 Header and source files with `*.pb.h` and `*.pb.cc` extensions are generated (to be included in your larger project).
 
 Multiple languages and proto files can be compiled at once, like so:
 
 ```
-protoc --cpp_out=cpp --csharp_out=csharp –objc_out=objc --ruby_out=ruby --python_out=python --java_out=java --js_out=javascript vector.proto setup.proto spatial.proto meta.proto
+protoc --cpp_out=cpp --csharp_out=csharp –objc_out=objc --ruby_out=ruby --python_out=python --java_out=java --js_out=javascript vector.proto concept.proto spatial.proto meta.proto
 ```
 
 ### 1.4. basic save & load

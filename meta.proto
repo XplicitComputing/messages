@@ -99,7 +99,7 @@ message Meta                                                                    
     Revision version = 21;  
     Extrema bounds = 22;
     GraphicsControl appearance = 24;
-    repeated int64 children = 25;                                                                       // uid's (only good within a given session. see setup.proto for persistent relationships)
+    repeated int64 children = 25;                                                                       // uid's (only good within a given session. see concept.proto for persistent relationships)
     repeated int32 groups = 26;                                                                         // region id's
     repeated int32 loops = 27;                                                                          // region id's
     repeated int32 surfaces = 28;                                                                       // region id's
