@@ -107,7 +107,7 @@ message Script                                                                  
     //reserved
     Variables variables = 10;
     //reserved  
-    repeated Command sequence = 12;
+    repeated Command Sequence = 12;
     //reserved
     Script before = 14;
     Script after = 15;
@@ -165,7 +165,7 @@ message Link
 message System                                                                                          // compatible with xcompute system
 {
     Meta meta = 1;                                                                                      // name and other basic info, some of which is non-persistent 
-    Script script = 2;                                                                                  // serialized solver defined by a sequence of instructions
+    repeated Script script = 2;                                                                         // serialized solver defined by a sequence of instructions
     //reserved
     repeated string children = 5;                                                                       // sub-system names (exact matches)
     repeated string references = 6;                                                                     // external file references, such as *.xcg geometry (Messages::Topology)
