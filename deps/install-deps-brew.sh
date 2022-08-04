@@ -28,15 +28,5 @@ cc --version
 echo "Your current C++ compiler is:"
 which c++
 c++ --version
-#echo "Consider setting your default compiler to clang-12 before proceeding with XC builds:"
-#echo "Please set your default C compiler to clang-12 :"
-#sudo update-alternatives --config cc
-#sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-12 60
-#echo "Please set your default C++ compiler to clang++-12 :"
-#sudo update-alternatives --config c++
-#sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 60
-#echo "Your current C++ compiler is:"
-#which c++
-#c++ --version
 read -p "Press [enter] to proceed with Protobuf3 installation..."
 ./install-protobuf.sh --prefix=${dpfx}

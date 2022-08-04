@@ -7,13 +7,21 @@ cat <<EOText
 * * * * * * * *  XC-MESSAGES BUILD ENVIRONMENT * * * * * * * *
 
 This script installs the Ubuntu or Debian packages needed to build
-XC-Messages from source code.
+XC-Messages from source code.  The build environment is assumed to one
+of these distro releases: Debian 11 or later, or Ubuntu 20.04 or later.
 
-The current build environment OS is assumed to be Ubuntu 20.04.
-XC-Messages is currently built using the clang++-12 compiler to allow
-exploitation of numerics-oriented x86-64 microarchitectures.
-(CXXFLAGS="-march=x86-64-v3" is supported by the clang-12 and gcc-11
-compiler families.)
+For best performance, XC-Messages should be built using the
+microarchitecture that best approaches the numerics support of the
+target CPU. This is often done by:
+  export CXXFLAGS="-march=<microarchitecture>"
+Possible microarchitecture values include:
+* 'haswell' (AVX2) or 'cascadelake' (AVX512) 
+* 'x86-64-v3' (AVX2) or 'x86-64-v4' (AVX512)
+* 'native' (what compiler deems appropriate for its host machine)
+
+The GCC and Clang toolchains usually should default to what the distro
+release provides. But because the source code is written for C++20,
+the compiler nees to be g++-10 or later or clang-11 or later.
 
 Rather than using the package manager's version of Google Protobuf,
 XC-Messages currently depends on and builds Protobuf version 3.8.0.
@@ -40,7 +48,7 @@ getargs() {
     if [ -z "${dpfx}" ]; then
         echo missing "dependencies prefix: --dpfx=..."
         echo For final product build, try: --dpfx=/usr/local/xcompute
-        echo For development builds, try : '--dpfx=${HOME}/xcompute'
+        echo For development builds, try : '--dpfx=${HOME}/xcdeps'
         echo ... or deps dir of your choosing
         exit 1
     fi
@@ -50,18 +58,11 @@ preface
 getargs $*
 
 echo "Installing compiler and autotools..."
-sudo apt install clang clang-12
+sudo apt install clang
 sudo apt install cmake automake autoconf autogen libtool checkinstall wget curl unzip zlib1g-dev
 echo "Your current C compiler is:"
 which cc
 cc --version
-echo "Your current C++ compiler is:"
-which c++
-c++ --version
-echo "Please set the C compiler to clang-12 before proceeding with XC builds:"
-sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-12 60
-echo "Please set the C++ compiler to clang++-12:"
-sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 60
 echo "The current C++ compiler is:"
 which c++
 c++ --version
