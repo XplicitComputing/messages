@@ -1,8 +1,9 @@
 #!/bin/bash
 
 
-LANGUAGES='cpp csharp java javascript objc php python ruby' # dart go julia perl r rust scala swift
-PROTOFILES='vector.proto concept.proto spatial.proto meta.proto'
+LANGUAGES="cpp csharp java javascript objc php python ruby"           # dart go julia perl r rust scala swift
+PROTOFILES="vector.proto concept.proto spatial.proto meta.proto"
+
 PB_STEMS=$(echo $PROTOFILES | sed s/\.proto//g)
 
 have_c=$(which protoc-c 2>/dev/null || echo false)
@@ -52,7 +53,9 @@ done
 
 
 echo "Compiling protobuf message bindings for:  ${LANGUAGES}"
-[ "${iact}" ] && read -p "Press [enter] to continue."
+if [ ! -z "${iact}" ]; then
+    read -p "Press [enter] to continue."
+fi
 
 # prep cmake environment in current directory
 if [[ -z "${external_init}" ]]; then
@@ -87,7 +90,7 @@ mkdir -p $directories
 if [[ "${have_c}" == "true" ]]; then
 protoc-c --proto_path=. \
          --c_out=${BNDR}/c \
-         vector.proto concept.proto spatial.proto meta.proto
+        ${PROTOFILES}
 fi
 
 protoc  --proto_path=. \
@@ -99,7 +102,9 @@ protoc  --proto_path=. \
         --php_out=${BNDR}/php \
         --python_out=${BNDR}/python \
         --ruby_out=${BNDR}/ruby \
-        vector.proto concept.proto spatial.proto meta.proto
+        ${PROTOFILES}
 
 
-[ "${iact}" ] && read -p "Press [enter] to continue."
+if [ ! -z "${iact}" ]; then
+    read -p "Press [enter] to continue."
+fi
