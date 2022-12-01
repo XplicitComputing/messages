@@ -19,9 +19,9 @@ Possible microarchitecture values include:
 * 'x86-64-v3' (AVX2) or 'x86-64-v4' (AVX512)
 * 'native' (what compiler deems appropriate for its host machine)
 
-The GCC and Clang toolchains usually should default to what the distro
-release provides. But because the source code is written for C++20,
-the compiler nees to be g++-10 or later or clang-11 or later.
+The recommended GCC and Clang toolchain versions are the defaults for
+the target distro releases, such as GCC 10 on Debian 11 and Clang 10 on
+Ubuntu 20.04; these particular versions provide partial support for C++20.
 
 Rather than using the package manager's version of Google Protobuf,
 XC-Messages currently depends on and builds Protobuf version 3.8.0.
