@@ -39,22 +39,7 @@ message Zone                                                                    
 }
 
 
-message Topology                                                                                        // compatible with xcompute Geometry
-{                                                                                                       // Note:  message 'Elements' is defined in vector.proto to utilize arena/packed allocation
-    string name = 1;
-    uint32 type = 2;
-    uint32 ndim = 3;
-    uint32 basis = 4;
-    string filename = 5;
-    Revision revision = 6;
-    //reserved
-    repeated double resolution = 8;
-    //reserved
-    Elements nodes = 10;
-    Elements edges = 11;
-    Elements faces = 12;
-    Elements cells = 13;
-}
+
 
 
 message GridControl                                                                                     // deprecated - will utilize Variables message moving forward
@@ -65,6 +50,9 @@ message GridControl                                                             
     repeated double grading = 4;
     //reserved
     Extrema bounds = 10;
+    bool symmetry_x = 20;
+    bool symmetry_y = 21;
+    bool symmetry_z = 22;
 }
 
 
@@ -114,4 +102,27 @@ message TreeControl                                                             
     uint64 max_size = 3;
     //reserved
     Extrema bounds = 10;
+}
+
+message Topology                                                                                        // compatible with xcompute Geometry
+{                                                                                                       // Note:  message 'Elements' is defined in vector.proto to utilize arena/packed allocation
+    string name = 1;
+    uint32 type = 2;
+    uint32 ndim = 3;
+    uint32 basis = 4;
+    string filename = 5;
+    Revision revision = 6;
+    string info = 7;
+    //reserved
+    Elements nodes = 10;
+    Elements edges = 11;
+    Elements faces = 12;
+    Elements cells = 13;
+    //reserved
+    SignedDistanceField sdf = 16;
+    //reserved
+    GridControl grid_control = 20;
+    MeshControl mesh_control = 21;
+    TreeControl tree_control = 22;
+
 }

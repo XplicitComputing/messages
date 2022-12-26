@@ -57,7 +57,7 @@ message Representation
 }
 
 
-message Visual
+message Visual //TODO deprecated
 {
     Zone region = 1;
     GraphicsControl control = 2;

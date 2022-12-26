@@ -118,6 +118,6 @@ message Elements                                                                
     repeated int32 element_ids = 3[packed=true];                                                                // region identifier (unique within a type of region, e.g. surface 0, surface 1, ..., volume 0, ... )
     repeated uint32 node_indices = 4[packed=true];                                                           // node indices (unique within this region, e.g. nodes 0, 1, 3, 5, 7 , 11, 13, 17 ... 41 ...)
     //reserved
-    repeated double element_centers = 10[packed=true];                                                          // element barycenters, often computed as the average of node positions
-    repeated double element_measures = 11[packed=true];                                                          // element measure could be lengths (edges), areas (faces), or volumes (cells) values (scalar or nDim-component vector)
+    repeated double element_centers = 10[packed=true];                                                          // element barycenters, often computed as the average of node positions -- only required for nodes (optional for other element types)
+    repeated double element_measures = 11[packed=true];                                                          // optional. element measure could be lengths (edges), areas (faces), or volumes (cells) values (scalar or nDim-component vector)
 }
