@@ -19,12 +19,14 @@ else
     read -p "Press [enter] to continue."
 
     # make links to required library and (for convenience)
-    ln -f ../../lib/static/libxcmessages.a libxcmessages.a
-    ln -f ../../vector.pb.h vector.pb.h
+    ln -f ../../../lib/static/libxcmessages.a libxcmessages.a
+    ln -f ../..../bindings/cpp/vector.pb.h vector.pb.h
 
+    # Note:  your LD_LIBRARY_PATH has to be appropriately set to find libprotobuf.{so,a}
     # invoke c++ compiler on save source to create app:
     c++ save_vector.cpp -o save_vector libxcmessages.a -lprotobuf
 
+    # Note:  your LD_LIBRARY_PATH has to be appropriately set to find libprotobuf.{so,a}
     # invoke c++ compiler on load source to create app:
     c++ load_vector.cpp -o load_vector libxcmessages.a -lprotobuf
 
