@@ -3,14 +3,14 @@
 
 if [[ ! -z "${GOOGLE_ROOT}" ]]; then
 
-    ln -fs ../../vector.pb.h
+    ln -fs ../../../bindings/cpp/vector.pb.h
 
     if [[ "$TOOLCHAIN" == "Clang" ]]; then
-        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs save_vector.cpp -o save_vector -L../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
-        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs load_vector.cpp -o load_vector -L../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs save_vector.cpp -o save_vector -L../../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        clang++ -stdlib=libc++ -lc++abi -lsupc++ -lc++fs load_vector.cpp -o load_vector -L../../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
     else
-        g++ save_vector.cpp -o save_vector -L../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
-        g++ load_vector.cpp -o load_vector -L../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        g++ save_vector.cpp -o save_vector -L../../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
+        g++ load_vector.cpp -o load_vector -L../../../lib/static -lxcmessages -L${GOOGLE_ROOT}/lib -lprotobuf
     fi
 
 else
