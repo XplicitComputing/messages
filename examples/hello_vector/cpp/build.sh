@@ -20,7 +20,7 @@ else
 
     # make links to required library and (for convenience)
     ln -f ../../../lib/static/libxcmessages.a libxcmessages.a
-    ln -f ../..../bindings/cpp/vector.pb.h vector.pb.h
+    ln -f ../../../bindings/cpp/vector.pb.h vector.pb.h
 
     # Note:  your LD_LIBRARY_PATH has to be appropriately set to find libprotobuf.{so,a}
     # invoke c++ compiler on save source to create app:
