@@ -4,6 +4,7 @@
 # ---- PROCESS CMDLINE --------------------------------------- #
 
 quiet=false
+force_quiet=false
 while [ $# -gt 0 ]; do
     # echo arg $1
     case "$1" in
