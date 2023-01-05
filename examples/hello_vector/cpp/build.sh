@@ -5,10 +5,12 @@
 
 quiet=false
 force_quiet=false
+TC=false
 while [ $# -gt 0 ]; do
     # echo arg $1
     case "$1" in
         TC=*)
+            TC=true
             TOOLCHAIN=${1/TC=/}
             ;;
         -q)
@@ -18,11 +20,12 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+echo "${TC} >>>>>>>>"
 
 
 # ---- TRY TO INFER SOMETHING FROM USER'S ENVIRONMENT -------- #
 
-if [[ -z "${TC}" ]]; then
+if [[ "${TC}" == "false" ]]; then
     TC=${TOOLCHAIN}
 
     # we have a 'TOOLCHAIN' env.var set, then we are a non-default setup, and know what we want!
