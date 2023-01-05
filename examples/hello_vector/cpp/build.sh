@@ -82,7 +82,7 @@ fi
 ln -fs ../../../bindings/cpp/vector.pb.h
 ln -fs ../../../lib/static/libxcmessages.a
 
-if [[ "${force_quiet}" == "false" ]]; then
+if [[ "${force_quiet}" == "false" ]] || [[ "${quiet}" == "false" ]]; then
     set -x
 fi
 
