@@ -20,7 +20,6 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
-echo "${TC} >>>>>>>>"
 
 
 # ---- TRY TO INFER SOMETHING FROM USER'S ENVIRONMENT -------- #
