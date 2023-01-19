@@ -149,15 +149,11 @@ message Coupling
     Zone target_region = 6;                                                                             // ---t
     uint32 sampling_mode = 7;                                                                           // enum(0:8): Unspecified, One-to-One, Nearest, Immersed, Pro
     uint32 show_index = 8;
-    repeated double way_points = 9;                                                                     // s---wo---w1---w2---t
+    repeated string dofs = 9;                                                                     // s---wo---w1---w2---t
     Representation representation = 10;
     bool enabled = 11;                                                                                  // s----Z Z----t
     bool forward = 12;                                                                                  // s---------->t
     bool reverse = 13;                                                                                  // s<----------t
-    bool dofs = 14;                                                                                     // interpolate degrees-of-freedom?
-    bool constants = 15;                                                                                // interpolate constants?
-    bool outputs = 16;                                                                                  // interpolate outputs?
-    bool extras = 17;                                                                                   // interpolate extras?
     //reserved
 }
 
