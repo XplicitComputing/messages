@@ -115,8 +115,13 @@ if (NOT "${CMAKE_CXX_STANDARD}")
     set(CMAKE_CXX_STANDARD 20)
 endif()
 
-message("== Target arch :  ${CMAKE_SYSTEM_PROCESSOR}")
-message("== CXXFLAGS env:  ${CMAKE_CXX_FLAGS}")
+if (NOT (DEFINED ENV{XC_CMAKE_VERBOSE_BUILD}))
+    message("== Target arch :  ${CMAKE_SYSTEM_PROCESSOR}")
+    message("== CXXFLAGS env:  ${CMAKE_CXX_FLAGS}")
+elseif ($ENV{XC_CMAKE_VERBOSE_BUILD})
+    message("== Target arch :  ${CMAKE_SYSTEM_PROCESSOR}")
+    message("== CXXFLAGS env:  ${CMAKE_CXX_FLAGS}")
+endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -Os")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
@@ -128,7 +133,12 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wall -Wextra  -pedantic-errors -Werror -Wno-unknown-pragmas -Wno-pragmas -Wno-unknown-warning-option -Wno-unused-parameter -Wno-deprecated-declarations")
 
-message("== CXXFLAGS use:  ${CMAKE_CXX_FLAGS}")
+if (NOT (DEFINED ENV{XC_CMAKE_VERBOSE_BUILD}))
+    message("== CXXFLAGS use:  ${CMAKE_CXX_FLAGS}")
+elseif ($ENV{XC_CMAKE_VERBOSE_BUILD})
+    message("== CXXFLAGS use:  ${CMAKE_CXX_FLAGS}")
+endif()
+
 
 
 # ---- 8>< ---- Include Pathspec ----------------------------------------------------------------------- 8>< ---- #
@@ -187,7 +197,11 @@ endif()
 # ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
 
 
-message("* * * * * * * * generating xcompute protocol buffers * * * * * * * * ")
+if (NOT (DEFINED ENV{XC_CMAKE_VERBOSE_BUILD}))
+    message("* * * * * * * * generating xcompute protocol buffers * * * * * * * * ")
+elseif ($ENV{XC_CMAKE_VERBOSE_BUILD})
+    message("* * * * * * * * generating xcompute protocol buffers * * * * * * * * ")
+endif()
 
 
 file(GLOB ProtoFiles "${CMAKE_CURRENT_SOURCE_DIR}/*.proto")
