@@ -117,6 +117,9 @@ message Rule
     string pk = 1;                                                                                      // serialized property-key <property|modifier|...>
     repeated string algorithms = 2;                                                                     // names of algorithms to be associated
     repeated uint32 priority = 3;                                                                       // optional - larger numbers are more important
+    repeated double limit = 4;
+    repeated uint32 failed_nodes = 5;
+    repeated double failed_values = 6;
 }
 
 
@@ -162,6 +165,7 @@ message System                                                                  
 {
     Meta meta = 1;                                                                                      // name and other basic info, some of which is non-persistent 
     repeated Script script = 2;                                                                         // serialized solver defined by a sequence of instructions
+    repeated Rule requirements = 3;
     //reserved
     repeated string children = 5;                                                                       // sub-system names (exact matches)
     repeated string referenced_files = 6;                                                                     // external file references, such as *.xcg geometry (Messages::Topology)
