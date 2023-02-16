@@ -1,13 +1,14 @@
+# Messages
 
-This submodule was spun out of the xcompute project in August 2020 and publicly released on 11 July 2022. 
-
-# 0. Introducing Messages
+Managed by XC-Development Division
 
 What is Messages? 
 
 Messages (libxcmessages) is a file & wire schema designed for engineers and scientists that enables numerical and related data to be shared across high-performance computing sessions and programming environments. It utilizes Google's <a href=https://developers.google.com/protocol-buffers/docs/downloads>Protocol Buffer 3 technology (aka protobuf)</a> to generate universal headers and libraries for encoding and decoding. In Google's words, protobuf is like XML but faster and more efficient. End-users can use the generated language bindings directly in their projects (by linking against compiled libraries or by including the generated implementation files).
 
 Our library consists of ~18 practical concepts for computer-aided engineering. The standard spec includes coalesced data for a particular property, the topologies of discrete geometries, the description of a physical model as its algorithms, the specific setup of a system, and so on. Each message concept is designed to be orthogonal to other message concepts, constructing a practical basis set from a minimum of practical message types. Messages permit embedding sub-message members, which makes complex obect-oriented concepts possible.
+
+This submodule was spun out of the xcompute project in August 2020 and publicly released on 11 July 2022. 
 
 ## 0.1. file & wire definitions and utilities
 
