@@ -173,7 +173,9 @@ if (DEFINED ENV{PROTOBUF_LIBDIR})                                               
 
     if (DEFINED APPLE)
         set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.dylib)
-    else()
+    elseif(DEFINED CYGWIN)
+        set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.dll.a)
+    elseif(DEFINED UNIX)
         set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.so)
     endif()
 
@@ -184,7 +186,9 @@ else()
 
     if (DEFINED APPLE)
         set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.dylib")
-    elseif()
+    elseif(DEFINED CYGWIN)
+        set(PB_SHARED_LIB "/lib/libprotobuf.dll.a")
+    elseif(DEFINED UNIX)
         set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.so")
     endif()
 
