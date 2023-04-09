@@ -112,7 +112,7 @@ message Topology                                                                
     Elements faces = 12;
     Elements cells = 13;
     //reserved
-    SignedDistanceField sdf = 16;
+    SparseMatrix sdf = 16;
     //reserved
     GridControl grid_control = 20;
     MeshControl mesh_control = 21;
