@@ -89,6 +89,14 @@ message Vector64                                                                
 }
 
 
+message SparseMatrix
+{
+    repeated uint32 size_hint = 1;
+    repeated uint32 indices = 2;//1:1 mapping between indices and values
+    repeated double values = 3;
+}
+
+
 message Record64
 {
     string name = 1;

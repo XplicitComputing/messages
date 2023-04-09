@@ -56,13 +56,6 @@ message GridControl                                                             
 }
 
 
-message SignedDistanceField
-{
-    GridControl grid_control = 1;
-    repeated uint32 sdf_indices = 2;//1:1 mapping between sdf_indices and sdf_values
-    repeated double sdf_values = 3;
-}
-
 
 message MeshControl                                                                                     // deprecated - will utilize Variables message moving forward
 {
