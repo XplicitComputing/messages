@@ -112,6 +112,7 @@ message Topology                                                                
     Elements faces = 12;
     Elements cells = 13;
     //reserved
+    repeated Vector64 data = 15;
     SparseMatrix sdf = 16;
     //reserved
     GridControl grid_control = 20;
