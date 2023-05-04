@@ -4,7 +4,7 @@
 // MESSAGES™ by XPLICIT COMPUTING, INC
 // GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
 //
-// Copyright 2020-2022 Xplicit Computing, Inc.
+// Copyright 2020-2023 Xplicit Computing, Inc.
 //
 // Please see file README.md for usage and license info. README.md must be copied along
 // with these *.proto as part of the license agreement. Direct questions or concerns to:
@@ -68,7 +68,7 @@ message Vector32                                                                
     //reserved
     uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
     repeated float values = 10[packed=true];
-    repeated uint32 size_hint = 11;
+    repeated uint32 size_hint = 11[packed=true];
     //reserved
 }
 
@@ -84,18 +84,29 @@ message Vector64                                                                
     //reserved
     uint64 offset = 9;                                                                                  // use to append (insert location to prior entries)
     repeated double values = 10[packed=true];
-    repeated uint32 size_hint = 11;
+    repeated uint32 size_hint = 11[packed=true];
     //reserved
 }
 
 
 message SparseMatrix
 {
-    repeated uint32 size_hint = 1;
-    repeated uint32 indices = 2;//1:1 mapping between indices and values
-    repeated double values = 3;
+    repeated uint32 size_hint = 1[packed=true];
+    repeated uint32 indices = 2[packed=true];//1:1 mapping between indices and values
+    repeated double values = 3[packed=true];
+    string name = 4;
 }
 
+
+message Rule // two forms: numerical or algorithmic requirement
+{   //e.g. pk () value or
+    string pk = 1;                                                                                      // serialized property-key <property|modifier|...>
+    repeated string algorithms = 2;                                                                     // names of algorithms to be associated
+    repeated uint32 operator = 3[packed=true];                                                                       // either: comparator enum (requirement), or relative priority number in queue
+    repeated double value = 4[packed=true];
+    repeated uint32 failed_nodes = 5[packed=true];
+    repeated double failed_values = 6[packed=true];
+}
 
 message Record64
 {
@@ -103,7 +114,9 @@ message Record64
     string owner = 2;
     Revision revision = 3;
     //reserved
+    repeated Rule requirements = 9;
     repeated Vector64 data = 10;
+    repeated SparseMatrix matrix = 11;
 }
 
 

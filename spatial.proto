@@ -4,7 +4,7 @@
 // MESSAGES™ by XPLICIT COMPUTING, INC
 // GOOGLE PROTOCOL BUFFER 3 DEFINITIONS
 //
-// Copyright 2020-2022 Xplicit Computing, Inc.
+// Copyright 2020-2023 Xplicit Computing, Inc.
 //
 // Please see file README.md for usage and license info. README.md must be copied along
 // with these *.proto as part of the license agreement. Direct questions or concerns to:
@@ -111,8 +111,7 @@ message Topology                                                                
     Elements edges = 11;
     Elements faces = 12;
     Elements cells = 13;
-    //reserved
-    repeated Vector64 data = 15;
+    Record64 data = 15;
     SparseMatrix sdf = 16;
     //reserved
     GridControl grid_control = 20;
