@@ -100,8 +100,8 @@ message SparseMatrix
 
 message Rule // two forms: numerical or algorithmic requirement
 {   //e.g. pk ( != | == | < | > ) value, else: execute algorithm(s)
-    string pk = 1;                                                                                      // serialized property-key <property|modifier|...>
-    uint32 operator = 2;                                                                       // either: comparator enum (requirement), or relative priority number in queue
+    string pk = 1;                                                                       // serialized property-key <property|modifier|...>
+    uint32 op = 2;                                                                       // either: comparator enum (requirement), or relative priority number in queue
     double value = 3;
     repeated string algorithms = 4;// names of algorithms to be associated
     repeated uint32 failed_nodes = 5[packed=true];

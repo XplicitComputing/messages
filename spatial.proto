@@ -42,7 +42,7 @@ message Zone                                                                    
 
 
 
-message GridControl                                                                                     // deprecated - will utilize Variables message moving forward
+message GridControl                                                                                    
 {
     uint32 basis = 1;
     repeated uint32 size = 2;
@@ -57,7 +57,7 @@ message GridControl                                                             
 
 
 
-message MeshControl                                                                                     // deprecated - will utilize Variables message moving forward
+message MeshControl                                                                     
 {
     uint64 target_n = 1;
     uint32 max_iterations = 2;
@@ -88,7 +88,7 @@ message MeshControl                                                             
 }
 
 
-message TreeControl                                                                                     // deprecated - will utilize Variables message moving forward
+message TreeControl                                                                       
 {
     uint32 min_depth = 1;
     uint32 max_depth = 2;
