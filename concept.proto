@@ -134,13 +134,12 @@ message Coupling
     string target_system = 2;                                                                           // ---t
     uint64 source_uid = 3;                                                                              // uid is only valid within a given session
     uint64 target_uid = 4;                                                                              // uid is only valid within a given session
-    uint32 source_dimensionality = 5;                                                                             // s---
-    uint32 target_dimensionality = 6;
-    int32 source_region_id = 7;                                                                             // s---
-    int32 target_region_id = 8;                                                            // ---t
+    Zone source_region = 5;                                                                             // s---
+    Zone target_region = 6;                                                                             // ---t
+    //reserved
     uint32 sampling_mode = 9;                                                                           // enum(0:8): default, 1:1, nearest, distance, least-square, projected, view-factor, immersed
     string name = 10;
-    repeated string dofs = 11;                                                                     // s---wo---w1---w2---t
+    repeated string dofs = 11;                                                                          // s---wo---w1---w2---t
     Representation representation = 12;
     bool enabled = 13;                                                                                  // s----Z Z----t
     bool forward = 14;                                                                                  // s---------->t
