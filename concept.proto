@@ -21,6 +21,7 @@ syntax = "proto3";
 package Messages;
 
 import "vector.proto";
+import "spatial.proto";
 import "meta.proto";
 
 
