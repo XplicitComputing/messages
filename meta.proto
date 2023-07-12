@@ -104,10 +104,10 @@ message Meta                                                                    
     repeated int32 loops = 27;                                                                          // region id's
     repeated int32 surfaces = 28;                                                                       // region id's
     repeated int32 volumes = 29;                                                                        // region id's
-    repeated float model_transform = 30;                                                               // double16 (glm::dmat4) transformation matrix
+    repeated double model_transform = 30;                                                               // double16 (glm::dmat4) transformation matrix
     repeated string properties = 31;                                                                    // serialized property-keys, used to request Vector32 or Vector64 data
     repeated Visual media = 32;                                                                         // optional visual media populated by server
-    repeated double symbol_transform = 33;
+    repeated float symbol_transform = 33;
 }
 
 
