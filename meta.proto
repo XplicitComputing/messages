@@ -79,7 +79,7 @@ message Meta                                                                    
     string name = 1;                                                                                    // unique identifier that persists between sessions
     uint64 uid = 2;                                                                                     // unique id for each system assigned, valid only within a given session
     string directory = 3;
-    string icon = 4;    
+    string symbol = 4;    
     string owner = 5;
     string comments = 6;
     string series = 7;
@@ -107,7 +107,7 @@ message Meta                                                                    
     repeated float model_transform = 30;                                                               // double16 (glm::dmat4) transformation matrix
     repeated string properties = 31;                                                                    // serialized property-keys, used to request Vector32 or Vector64 data
     repeated Visual media = 32;                                                                         // optional visual media populated by server
-    Extrema icon_placement = 33;
+    repeated double symbol_transform = 33;
 }
 
 
