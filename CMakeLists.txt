@@ -24,6 +24,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 
 
+# platform paths
+if (DEFINED ENV{HOMEBREW_PREFIX})
+    set(BREW "$ENV{HOMEBREW_PREFIX}")
+endif()
 
 # debug helper
 #
@@ -150,11 +154,8 @@ endif()
 # ------------------------------------------------ #
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-if (DEFINED ENV{HOMEBREW_PREFIX})
-    set(HOMEBREW_PREFIX "$ENV{HOMEBREW_PREFIX}")
-    include_directories($ENV{HOMEBREW_PREFIX}/include)
-else()
-    set(HOMEBREW_PREFIX "/usr/local")
+if (DEFINED BREW)
+    include_directories(${BREW}/include)
 endif()
 
 
@@ -191,7 +192,7 @@ else()
     set(PB_STATIC_LIB "/usr/local/lib/libprotobuf.a")                                       # back-up path
 
     if (DEFINED APPLE)
-        set(PB_SHARED_LIB "${HOMEBREW_PREFIX}/lib/libprotobuf.dylib")
+        set(PB_SHARED_LIB "${BREW}/lib/libprotobuf.dylib")
     elseif(DEFINED CYGWIN)
         set(PB_SHARED_LIB "/lib/libprotobuf.dll.a")
     elseif(DEFINED UNIX)
