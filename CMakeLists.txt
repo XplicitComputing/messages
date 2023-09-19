@@ -153,6 +153,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 if (DEFINED ENV{HOMEBREW_PREFIX})
     set(HOMEBREW_PREFIX "$ENV{HOMEBREW_PREFIX}")
     include_directories($ENV{HOMEBREW_PREFIX}/include)
+else()
+    set(HOMEBREW_PREFIX "/usr/local")
 endif()
 
 
