@@ -5,14 +5,22 @@
 # Build and install Protocol Buffer library from Github source.
 # options:
 #   --tag=      Checkout code at a tag on current branch (default to $TAG).
-#   --prefix=   Install directory prefix (default to $PREFIX)
+#   --prefix=   Install directory prefix (default to $PREFIX).
+#   --dpfx=     Same as "--prefix=".
 #   --noclean   Do not remove build directory after build and install.
 #   --getmd5    Read archived file by tag, determine MD5 sum.
 #   --md5=      Specify MD5 sum for tagged file.
 #
 # Examples:
-#   ./install-protobuf.sh --prefix=/opt/xcompute    # Set install target to /opt/xcompute
-#   ./install-protobuf.sh CXX=clang++               # Pass CXX through to package build.
+#   ./install-protobuf-brew.sh --prefix=/opt/xcompute    # Set install target to /opt/xcompute
+#   ./install-protobuf-brew.sh CXX=clang++               # Pass CXX through to package build.
+#
+# To install protobuf 3.20.3 on macOS with Apple clang 14, try this:
+#   ./install-protobuf-brew.sh --dpfx=$HOME/xcdeps --skipcheck --tag=3.20.3 \
+#     --md5=a1e8f594f998576180ff1efa49007f54
+# (Change prefix value as appropriate.)
+# Use "--skipcheck" because included GoogleTests fail to come with Apple clang 14.
+# But installed protobuf assets apparently work.
 #
 
 # requires Bash 3.0 (for i in {x..y})
@@ -28,7 +36,10 @@ CLEANUP=1
 CFGARGS="CFLAGS=-fPIC CXXFLAGS=-fPIC"
 TAG=3.8.0               # Default protobuf release for early XC Messages
 PBMD5=cc4f50740430d9488312e5e48bc94d68  # v3.8.0
+#TAG=3.20.3
+#PBMD5=a1e8f594f998576180ff1efa49007f54  # v3.20.3
 GETMD5=
+SKIPCHECK=
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -42,7 +53,10 @@ while [ $# -gt 0 ]; do
          PBMD5="${1#*=}"
         ;;
       --getmd5)
-      GETMD5=y
+        GETMD5=y
+        ;;
+      --skipcheck)      # skip 'make check' for some toolchain version; GoogleTest has issues with them
+        SKIPCHECK=y
         ;;
       --noclean)
         CLEANUP=
@@ -139,7 +153,11 @@ cd protobuf-${TAG}
 ./configure --prefix=${PREFIX} ${CFGARGS}
 ncpu=$(sysctl -n hw.ncpu)
 make -j${ncpu}
-make check -j${npcu}
+if [ \! ${SKIPCHECK} ]; then
+    make check -j${npcu}
+else
+    echo Skipping 'make check' for ${TAG}
+fi
 
 # check if target needs 'sudo'; execute according
 xcuid=$(stat -c '%u' ${PREFIX})
