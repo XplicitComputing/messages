@@ -77,7 +77,7 @@ if [[ -z "${external_init}" ]]; then
         protoc --cpp_out . -I . ${stem}.proto
         #sed --in-place 's \bfinal\b /*final*/ ' ${stem}.pb.h   # in case removing 'final' is desired.
     done
-    rm -rf CMakeFiles CMakeCache.txt
+    # rm -rf CMakeFiles CMakeCache.txt
 
     make -j${ncpu}
 fi

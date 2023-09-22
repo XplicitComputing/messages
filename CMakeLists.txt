@@ -150,6 +150,12 @@ endif()
 # ------------------------------------------------ #
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+if (DEFINED ENV{HOMEBREW_PREFIX})
+    set(HOMEBREW_PREFIX "$ENV{HOMEBREW_PREFIX}")
+    include_directories($ENV{HOMEBREW_PREFIX}/include)
+else()
+    set(HOMEBREW_PREFIX "/usr/local")
+endif()
 
 
 # ------------------------------------------------ #
@@ -185,7 +191,7 @@ else()
     set(PB_STATIC_LIB "/usr/local/lib/libprotobuf.a")                                       # back-up path
 
     if (DEFINED APPLE)
-        set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.dylib")
+        set(PB_SHARED_LIB "${HOMEBREW_PREFIX}/lib/libprotobuf.dylib")
     elseif(DEFINED CYGWIN)
         set(PB_SHARED_LIB "/lib/libprotobuf.dll.a")
     elseif(DEFINED UNIX)
