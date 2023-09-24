@@ -1,6 +1,6 @@
 # Messages
 
-Managed by XC-Development Division
+Managed by XC-Development Team
 
 What is Messages? 
 
