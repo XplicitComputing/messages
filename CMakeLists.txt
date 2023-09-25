@@ -26,11 +26,12 @@ set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 
 # platform paths
 if (DEFINED APPLE)
-    if (NOT DEFINED ENV{HOMEBREW_PREFIX})
-        set(HOMEBREW_PREFIX "/usr/local")       # macOS x86-64
-        # for macOS Apple Silicon, export HOMEBREW_PREFIX=/opt/homebrew
+    if (DEFINED ENV{HOMEBREW_PREFIX})
+        set(BREW "$ENV{HOMEBREW_PREFIX}")       # use environment variable
+    else()
+        set(HOMEBREW_PREFIX "/usr/local")       # macOS x86-64; use env var for Apple Silicon
+        set(BREW "${HOMEBREW_PREFIX}")          # use local variable
     endif()
-    set(BREW "$ENV{HOMEBREW_PREFIX}")
 endif()
 
 # debug helper
