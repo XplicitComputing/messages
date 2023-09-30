@@ -24,7 +24,7 @@ the target distro releases, such as GCC 10 on Debian 11 and Clang 10 on
 Ubuntu 20.04; these particular versions provide partial support for C++20.
 
 Rather than using the package manager's version of Google Protobuf,
-XC-Messages currently depends on and builds Protobuf version 3.8.0.
+XC-Messages currently depends on and builds Protobuf version 3.20.3.
 To allow multiple versions to exist, you can specify a target install
 directory prefix by "--dpfx".
 
@@ -63,7 +63,7 @@ sudo apt install cmake automake autoconf autogen libtool checkinstall wget curl 
 echo "Your current C compiler is:"
 which cc
 cc --version
-echo "The current C++ compiler is:"
+echo "Your current C++ compiler is:"
 which c++
 c++ --version
 read -p "Press [enter] to proceed with Protobuf3 installation..."
