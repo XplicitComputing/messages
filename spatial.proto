@@ -49,10 +49,12 @@ message GridControl
     repeated double spacing = 3;
     repeated double grading = 4;
     //reserved
+    uint64 target_n = 9;
     Extrema bounds = 10;
-    bool symmetry_x = 20;
-    bool symmetry_y = 21;
-    bool symmetry_z = 22;
+    repeated bool symmetries = 11;
+    bool interior = 12;
+    bool exterior = 13;
+    bool shell = 14;
 }
 
 
@@ -80,9 +82,7 @@ message MeshControl
     bool keep_existing_points = 19;
     bool auto_fit_domain = 20;
     //reserved
-    bool x_symmetry = 24;
-    bool y_symmetry = 25;
-    bool z_symmetry = 26;
+    repeated bool symmetries = 24;
     //reserved
     uint64 background_n = 30;
 }
