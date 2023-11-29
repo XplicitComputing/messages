@@ -126,6 +126,8 @@ message Model                                                                   
     Record64 default_data = 10;                                                                         // default constants, unless otherwise specified (by region)
     repeated Rule rules = 11;                                                                           // how each PK can be calculated (by algorithm name)
     repeated Rule mutex_stack = 12;
+    //reserved
+    SparseMatrix markov_matrix = 15;
 }
 
 
