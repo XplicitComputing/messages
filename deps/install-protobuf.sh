@@ -34,10 +34,10 @@ PKG_PROTOBUFDEV=libprotobuf-dev                 # dev package on Ubuntu/Debian
 PREFIX=/usr/local       # Install target prefix
 CLEANUP=1
 CFGARGS="CFLAGS=-fPIC CXXFLAGS=-fPIC"
-TAG=3.8.0               # Default protobuf release for early XC Messages
-PBMD5=cc4f50740430d9488312e5e48bc94d68  # v3.8.0
-#TAG=3.20.3
-#PBMD5=a1e8f594f998576180ff1efa49007f54  # v3.20.3
+#TAG=3.8.0               # Default protobuf release for early XC Messages
+#PBMD5=cc4f50740430d9488312e5e48bc94d68  # v3.8.0
+TAG=3.20.3
+PBMD5=a1e8f594f998576180ff1efa49007f54  # v3.20.3
 GETMD5=
 SKIPCHECK=
 
