@@ -82,6 +82,7 @@ message MeshControl
     bool keep_existing_points = 19;
     bool auto_fit_domain = 20;
     //reserved
+    double boundary_layer_thickness = 23;
     repeated bool symmetries = 24;
     //reserved
     uint64 background_n = 30;
