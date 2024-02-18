@@ -91,10 +91,11 @@ message Vector64                                                                
 
 message SparseMatrix
 {
-    repeated uint32 size_hint = 1[packed=true];
-    repeated uint32 indices = 2[packed=true];//1:1 mapping between indices and values
-    repeated double values = 3[packed=true];
-    string name = 4;
+    string name = 1;
+    repeated uint32 size_hint = 2[packed=true];
+    repeated uint32 indices = 3[packed=true];//1:1 mapping between indices and values
+    repeated double values = 4[packed=true];
+    Extrema bounds = 5;
 }
 
 
