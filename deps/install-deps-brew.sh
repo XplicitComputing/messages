@@ -28,8 +28,6 @@ XC-Messages currently depends on and builds Protobuf version 3.20.3.
 To allow multiple versions to exist, you can specify a target install
 directory prefix by "--dpfx".
 
-Ubuntu/Debian packages will be installed using "sudo".
-
 EOText
 }
 
