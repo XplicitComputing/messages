@@ -48,7 +48,7 @@ message GridControl
     repeated uint32 size = 2;
     repeated double spacing = 3;
     repeated double grading = 4;
-    //reserved
+    int32 length_units_enum = 8;					//0-7: mm, cm, m, km, in, ft, yd, mi
     uint64 target_n = 9;
     Extrema bounds = 10;
     repeated bool symmetries = 11;
@@ -71,7 +71,7 @@ message MeshControl
     double curv_exponent = 8;
     double node_radius = 9;
     Extrema bounds = 10;
-    //reserved
+    int32 length_units_enum = 11;					//0-7: mm, cm, m, km, in, ft, yd, mi
     bool interior = 12;
     bool exterior = 13;
     bool shell = 14;
@@ -95,6 +95,8 @@ message TreeControl
     uint32 max_depth = 2;
     uint64 max_size = 3;
     //reserved
+    int32 length_units_enum = 8;					//0-7: mm, cm, m, km, in, ft, yd, mi
+    //reserved
     Extrema bounds = 10;
 }
 
@@ -113,7 +115,7 @@ message Topology                                                                
     Elements faces = 12;
     Elements cells = 13;
     Record64 data = 15;
-    SparseMatrix sdf = 16;
+    repeated SparseMatrix sparse_data = 16;
     //reserved
     GridControl grid_control = 20;
     MeshControl mesh_control = 21;
