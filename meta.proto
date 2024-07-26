@@ -77,7 +77,7 @@ message Visual //TODO deprecated
 message Meta                                                                                            // metaobject backbone -- created and staged in server visuals (for transmission) to populate client metaobjects
 {
     string name = 1;                                                                                    // unique identifier that persists between sessions
-    uint64 uid = 2;                                                                                     // unique id for each system assigned, valid only within a given session
+    int64 uid = 2;                                                                                     // unique id for each system assigned, valid only within a given session
     string directory = 3;
     string symbol = 4;    
     string owner = 5;
@@ -85,10 +85,10 @@ message Meta                                                                    
     string series = 7;
     string sys_info = 8;
     string geom_info = 9;
-    uint64 parent = 10;
-    uint64 created = 11;                                                                                // unix time
-    uint64 saved = 12;
-    uint64 modified = 13;
+    int64 parent = 10;
+    int64 created = 11;                                                                                // unix time
+    int64 saved = 12;
+    int64 modified = 13;
     uint64 iteration = 14;
     uint64 save_interval = 15;
     bool enabled = 16;

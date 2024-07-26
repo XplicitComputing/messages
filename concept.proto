@@ -98,7 +98,7 @@ message Script                                                                  
     string name = 1;
     string msg = 2;
     string source_code = 3;
-    uint64 uid = 4;                                                                                     // same as system uid, if assigned
+    int64 uid = 4;                                                                                     // same as system uid, if assigned
     uint32 device = 5;
     uint32 status = 6;
     uint32 order = 7;
@@ -135,8 +135,8 @@ message Coupling
 {
     string source_system = 1;                                                                           // s---
     string target_system = 2;                                                                           // ---t
-    uint64 source_uid = 3;                                                                              // uid is only valid within a given session
-    uint64 target_uid = 4;                                                                              // uid is only valid within a given session
+    int64 source_uid = 3;                                                                              // uid is only valid within a given session
+    int64 target_uid = 4;                                                                              // uid is only valid within a given session
     Zone source_region = 5;                                                                             // s---
     Zone target_region = 6;                                                                             // ---t
     //reserved
