@@ -160,8 +160,8 @@ message System                                                                  
     repeated string referenced_files = 6;                                                                     // external file references, such as *.xcg geometry (Messages::Topology)
     repeated File embedded_files = 7;                                                                   // files such as symbol and supporting documentation
     repeated string notes = 8;
-    repeated Coupling contacts = 9;    
-    repeated Coupling links = 10;                                                                           // manual user-defined couplings between regions
+    repeated Coupling couplings = 9;                                                                    // links and contacts between regions
+    //reserved
     repeated Model models = 11;                                                                         // physical / mathematical models (groups of algorithms)
     Record64 physical_constants = 12;                                                                   // physics.data and system requirements
     repeated Command conditions = 13;                                                                   // special commands applied as constraints and conditions
