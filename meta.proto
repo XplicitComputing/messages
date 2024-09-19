@@ -136,6 +136,7 @@ message CameraControl
     float znear = 10;
     float zfar = 11;
     float aov = 12;                                                                                     // angle of view of focal lens (perspective mode)
+    repeated uint32 resolution = 13;
     //reserved
     bool perspective = 15;
     bool smooth = 16;
