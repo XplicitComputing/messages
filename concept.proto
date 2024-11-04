@@ -155,16 +155,17 @@ message System                                                                  
 {
     Meta meta = 1;                                                                                      // name and other basic info, some of which is non-persistent 
     repeated Script script = 2;                                                                         // serialized solver defined by a sequence of instructions
-    //reserved
-    repeated string children = 5;                                                                       // sub-system names (exact matches)
-    repeated string referenced_files = 6;                                                                     // external file references, such as *.xcg geometry (Messages::Topology)
-    repeated File embedded_files = 7;                                                                   // files such as symbol and supporting documentation
-    repeated string notes = 8;
-    repeated Coupling couplings = 9;                                                                    // links and contacts between regions
-    //reserved
+    repeated double local_transform = 3;                                                              	// double16 (glm::dmat4) local transformation matrix
+    repeated double local_rate = 4;                                                              		// double16 (glm::dmat4) local transformation matrix
+    repeated double local_accel = 5;                                                              		// double16 (glm::dmat4) local transformation matrix
+    repeated string children = 6;                                                                       // sub-system names (exact matches)
+    repeated string referenced_files = 7;                                                               // external file references, such as *.xcg geometry (Messages::Topology)
+    repeated File embedded_files = 8;                                                                   // files such as symbol and supporting documentation
+    repeated string notes = 9;
+    repeated Coupling couplings = 10;                                                                    // links and contacts between regions
     repeated Model models = 11;                                                                         // physical / mathematical models (groups of algorithms)
     Record64 physical_constants = 12;                                                                   // physics.data and system requirements
-    repeated Command conditions = 13;                                                                   // special commands applied as constraints and conditions
+    repeated Command conditions = 13;                                                                   // special algorithm commands applied as constraints and conditions
 }
 
 
