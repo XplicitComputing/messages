@@ -96,6 +96,7 @@ message TreeControl
     uint32 max_depth = 2;
     uint64 max_size = 3;
     //reserved
+    uint32 ref_dimensionality = 7;                  //reference mesh element dimensionality: build from nodes(0), edges(1), faces(2), or cells(3)
     int32 length_units_enum = 8;					//0-7: mm, cm, m, km, in, ft, yd, mi
     //reserved
     Extrema bounds = 10;
