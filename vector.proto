@@ -30,6 +30,9 @@ message File
     bytes payload = 2;
     bool is_local = 3;
     bool is_exported = 4;
+        //reserved
+    uint64 time_created = 10;
+    uint64 time_modified = 11; 
 } 
 
 
