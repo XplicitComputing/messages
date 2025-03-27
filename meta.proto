@@ -62,7 +62,7 @@ message Visual
     Zone region = 1;
     GraphicsControl control = 2;
     Representation representation = 3;
-    uint32 element_count = 4;
+    //reserved
     repeated uint32 points = 5;
     repeated uint32 lines = 6;
     repeated uint32 triangles = 7;

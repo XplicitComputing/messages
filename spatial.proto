@@ -30,8 +30,8 @@ message Zone                                                                    
     int32 id = 2;
     uint32 dimensionality = 3;//0:node-group, 1:edge-loop, 2:face-surface, 3:cell-volume
     Revision revision = 4;
-    repeated uint32 elements = 5;//set of element indices (as ordered in Messages::Elements) in geometry-index space that define this zone/patch/region, ranging from [0,E]
-    //reserved
+    repeated uint32 elements = 5;//optional set of element indices (else, all by this id)
+    uint32 element_count = 6;
     string comments = 7;
     string info = 8;
     Extrema bounds = 10;
