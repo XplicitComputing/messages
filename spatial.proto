@@ -36,7 +36,6 @@ message Zone                                                                    
     string info = 8;
     Extrema bounds = 10;
     repeated float terminal_coord = 11;//in symbol icon's coordinates [0,1]
-    bool is_exposed = 12;//is the region exposed as a terminal to the end user?
 }
 
 
