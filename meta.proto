@@ -69,7 +69,6 @@ message Visual
     repeated uint32 indices_per_element = 8;                                                            // only used on composite elements (e.g. QUAD4 represented using triangles)
     repeated uint32 elements_to_indices = 9;                                                            // only used on composite elements (e.g. QUAD4 represented using triangles)
     repeated uint32 indices_to_elements = 10;                                                           // only used on composite elements (e.g. QUAD4 represented using triangles)
-    string resource_name = 11;
     repeated Vector32 extras = 15;                                                                      // optional data such as displacement vectors and positions (if not nodal positions)
 }
 

@@ -34,6 +34,7 @@ message Zone                                                                    
     uint32 element_count = 6;
     string comments = 7;
     string info = 8;
+    string resource_name = 9;
     Extrema bounds = 10;
     repeated float terminal_coord = 11;//in symbol icon's coordinates [0,1]
 }
