@@ -98,6 +98,7 @@ message Meta                                                                    
     Revision revision = 20;
     Revision version = 21;  
     Extrema bounds = 22;
+    string url = 23;
     GraphicsControl appearance = 24;
     repeated int64 children = 25;                                                                       // uid's (only good within a given session. see concept.proto for persistent relationships)
     repeated int32 groups = 26;                                                                         // region id's
