@@ -1,16 +1,10 @@
 #!/bin/bash
 
 
-LANGUAGES="cpp csharp java javascript objc php python ruby"           # dart go julia perl r rust scala swift
+LANGUAGES="c cpp csharp java javascript objc php python ruby"           # dart go julia perl r rust scala swift
 PROTOFILES="vector.proto concept.proto spatial.proto meta.proto"
 
 PB_STEMS=$(echo $PROTOFILES | sed s/\.proto//g)
-
-have_c=$(which protoc-c 2>/dev/null || echo false)
-if [[ "${have_c}" != "false" ]]; then
-    have_c=true
-    LANGUAGES="c ${LANGUAGES}"
-fi
 
 
 if [ "${MSGS_BUILD_TREE}" = "" ]; then
@@ -87,14 +81,9 @@ EscBNDR=$(echo "${MSGS_BUILD_TREE}/bindings" | sed -e 's/\//\\\//g')
 directories=`echo "${LANGUAGES}" | sed -e "s/[^ ]* */${EscBNDR}\/&/g"`
 mkdir -p $directories
 
-if [[ "${have_c}" == "true" ]]; then
-protoc-c --proto_path=. \
-         --c_out=${BNDR}/c \
-        ${PROTOFILES}
-fi
-
 protoc  --proto_path=. \
         --cpp_out=${BNDR}/cpp \
+        --c_out=${BNDR}/c \
         --csharp_out=${BNDR}/csharp \
         --java_out=${BNDR}/java \
         --js_out=${BNDR}/javascript,import_style=commonjs,binary:. \
@@ -103,8 +92,9 @@ protoc  --proto_path=. \
         --python_out=${BNDR}/python \
         --ruby_out=${BNDR}/ruby \
         ${PROTOFILES}
-
+#todo can add Go and Kotlin plugin/outputs
 
 if [ ! -z "${iact}" ]; then
     read -p "Press [enter] to continue."
 fi
+
