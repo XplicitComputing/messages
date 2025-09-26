@@ -49,7 +49,7 @@ message Representation
     bool use_default_key = 5;
     bool color_out_of_range = 6;
     bool use_magnitude = 7;
-    bool show_displacement = 8;
+    //
     float displacement_multiplier = 9;
     repeated float range = 10;
     //reserved

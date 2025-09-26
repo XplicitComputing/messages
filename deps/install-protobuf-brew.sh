@@ -177,3 +177,9 @@ fi
 export PATH=${PREFIX}/bin:$PATH
 which protoc
 protoc --version
+
+
+# install optional protoc plugins
+./install-plugin-c.sh
+./install-plugin-go.sh
+./install-plugin-dart.sh

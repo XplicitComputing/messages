@@ -186,3 +186,8 @@ if [ $rc_dpkg -eq 0 ]; then
     echo -e ${YLW_WARNING}: remember to avoid system installed version of ${YLW}${PKG_PROTOBUFDEV}${NC}
     dpkg -l ${PKG_PROTOBUFDEV} | grep protobuf
 fi
+
+# install optional protoc plugins
+./install-plugin-c.sh
+./install-plugin-go.sh
+./install-plugin-dart.sh

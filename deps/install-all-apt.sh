@@ -26,6 +26,3 @@ getargs() {
 getargs $*
 
 ./install-deps-apt.sh --dpfx=${dpfx}
-./install-plugin-c.sh
-./install-plugin-go.sh
-./install-plugin-dart.sh
