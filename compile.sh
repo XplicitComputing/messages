@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 
 LANGUAGES="c cpp csharp java javascript objc php python ruby"           # dart go julia perl r rust scala swift
 PROTOFILES="vector.proto concept.proto spatial.proto meta.proto"
