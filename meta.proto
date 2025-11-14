@@ -109,6 +109,8 @@ message Meta                                                                    
     repeated string properties = 33;                                                                    // serialized property-keys, used to request Vector32 or Vector64 data
     repeated Visual media = 34;                                                                         // optional visual media populated by server
     repeated float symbol_transform = 35;
+    //reserved
+    uint32 length_unit = 40;                                                                            // as defined in common/space.hpp: mm=0, cm=1, m=2, km=3, in=4, ft=5, yd=6, mi=7
 }
 
 

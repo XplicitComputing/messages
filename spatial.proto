@@ -111,6 +111,7 @@ message Topology                                                                
     string filename = 5;
     Revision revision = 6;
     string info = 7;
+    uint32 length_unit = 8;                                                                            // as defined in common/space.hpp: mm=0, cm=1, m=2, km=3, in=4, ft=5, yd=6, mi=7
     //reserved
     Elements nodes = 10;
     Elements edges = 11;
