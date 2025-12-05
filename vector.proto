@@ -118,6 +118,7 @@ message Record64
     string owner = 2;
     Revision revision = 3;
     //reserved
+    uint32 length_units = 8;                        // 0-7: mm, cm, m, km, in, ft, yd, mi (defined in common/space.h)
     repeated Rule requirements = 9;
     repeated Vector64 data = 10;
     repeated SparseMatrix matrix = 11;

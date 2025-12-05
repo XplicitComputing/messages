@@ -110,7 +110,7 @@ message Meta                                                                    
     repeated Visual media = 34;                                                                         // optional visual media populated by server
     repeated float symbol_transform = 35;
     //reserved
-    uint32 length_unit = 40;                                                                            // as defined in common/space.hpp: mm=0, cm=1, m=2, km=3, in=4, ft=5, yd=6, mi=7
+    uint32 length_units = 40;                   // 0-7: mm, cm, m, km, in, ft, yd, mi (defined in common/space.h)                                                                     // as defined in common/space.hpp: mm=0, cm=1, m=2, km=3, in=4, ft=5, yd=6, mi=7
 }
 
 

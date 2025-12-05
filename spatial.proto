@@ -72,7 +72,7 @@ message MeshControl
     double curv_exponent = 8;
     double node_radius = 9;
     Extrema bounds = 10;
-    int32 length_units_enum = 11;					//0-7: mm, cm, m, km, in, ft, yd, mi
+    uint32 length_units = 11;					//0-7: mm, cm, m, km, in, ft, yd, mi (defined in common/space.h)
     bool interior = 12;
     bool exterior = 13;
     bool shell = 14;
@@ -97,7 +97,7 @@ message TreeControl
     uint64 max_size = 3;
     //reserved
     uint32 ref_dimensionality = 7;                  //reference mesh element dimensionality: build from nodes(0), edges(1), faces(2), or cells(3)
-    int32 length_units_enum = 8;					//0-7: mm, cm, m, km, in, ft, yd, mi
+    uint32 length_units = 8;					//0-7: mm, cm, m, km, in, ft, yd, mi (defined in common/space.h)
     //reserved
     Extrema bounds = 10;
 }
@@ -111,7 +111,6 @@ message Topology                                                                
     string filename = 5;
     Revision revision = 6;
     string info = 7;
-    uint32 length_unit = 8;                                                                            // as defined in common/space.hpp: mm=0, cm=1, m=2, km=3, in=4, ft=5, yd=6, mi=7
     //reserved
     Elements nodes = 10;
     Elements edges = 11;
