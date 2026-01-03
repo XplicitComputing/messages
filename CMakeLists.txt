@@ -103,7 +103,9 @@ endif()
 
 
 message("protobuf pathspec: ${PROTOBUF_INCLUDE_DIR}")
-
+#force static libraries as default (if possible)
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".lib")
+set(BUILD_SHARED_LIBS OFF)
 
 
 # ---- 8>< ---- Package Dependencies ------------------------------------------------------------------- 8>< ---- #
@@ -285,7 +287,7 @@ set_target_properties(xcmessages-static PROPERTIES
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 
-target_link_libraries(xcmessages-shared ${PB_SHARED_LIB})
+target_link_libraries(xcmessages-shared PRIVATE ${PB_SHARED_LIB})
 
 
 
@@ -293,7 +295,7 @@ target_link_libraries(xcmessages-shared ${PB_SHARED_LIB})
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 
-target_link_libraries(xcmessages-static ${PB_STATIC_LIB})
+target_link_libraries(xcmessages-static PRIVATE ${PB_STATIC_LIB})
 
 
 
