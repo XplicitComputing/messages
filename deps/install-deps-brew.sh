@@ -64,4 +64,4 @@ echo "Your current C++ compiler is:"
 which c++
 c++ --version
 read -p "Press [enter] to proceed with Protobuf3 installation..."
-./install-protobuf-brew.sh --prefix=${dpfx} --tag=3.20.3 --md5=a1e8f594f998576180ff1efa49007f54
+./install-protobuf.sh --prefix=${dpfx} --tag=3.20.3 --md5=a1e8f594f998576180ff1efa49007f54

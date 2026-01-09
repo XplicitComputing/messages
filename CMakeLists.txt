@@ -3,14 +3,8 @@ cmake_minimum_required(VERSION 3.12)
 #                XCOMPUTE-MESSAGES                 #
 ####################################################
 
-
-
-# ---- 8>< ---- Setup ---------------------------------------------------------------------------------- 8>< ---- #
-# ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
-
-
 project(xcmessages)
-
+set(LOCAL /usr/local) #modify depending on dpfx install location
 
 # define output paths
 #
@@ -23,16 +17,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 #
 set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 
-
-# platform paths
-if (DEFINED APPLE)
-    if (DEFINED ENV{HOMEBREW_PREFIX})
-        set(BREW "$ENV{HOMEBREW_PREFIX}")       # use environment variable
-    else()
-        set(HOMEBREW_PREFIX "/usr/local")       # macOS x86-64; use env var for Apple Silicon
-        set(BREW "${HOMEBREW_PREFIX}")          # use local variable
-    endif()
-endif()
 
 # debug helper
 #
@@ -102,10 +86,12 @@ if (NOT "${pb_incl} " STREQUAL " ")
 endif()
 
 
-message("protobuf pathspec: ${PROTOBUF_INCLUDE_DIR}")
+
 #force static libraries as default (if possible)
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".lib")
 set(BUILD_SHARED_LIBS OFF)
+
+
 
 
 # ---- 8>< ---- Package Dependencies ------------------------------------------------------------------- 8>< ---- #
@@ -161,15 +147,14 @@ endif()
 # ------------------------------------------------ #
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-if (DEFINED BREW)
-    include_directories(${BREW}/include)
-endif()
 
 
 # ------------------------------------------------ #
 #      system includes                             #
 # ------------------------------------------------ #
 
+#include_directories(${LOCAL}/include)
+#include_directories(${LOCAL}/include/xcompute)
 include_directories(${PROTOBUF_INCLUDE_DIR})
 
 
@@ -187,7 +172,7 @@ if (DEFINED ENV{PROTOBUF_LIBDIR})                                               
 
     if (DEFINED APPLE)
         set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.dylib)
-    elseif(DEFINED CYGWIN)
+    elseif(DEFINED WIN32)
         set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.dll.a)
     elseif(DEFINED UNIX)
         set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.so)
@@ -196,20 +181,22 @@ if (DEFINED ENV{PROTOBUF_LIBDIR})                                               
     message("found env var PB_STATIC_LIB pathspec: ${PB_STATIC_LIB}")
 
 else()
-    set(PB_STATIC_LIB "/usr/local/lib/libprotobuf.a")                                       # back-up path
+    set(PB_STATIC_LIB "${LOCAL}/lib/libprotobuf.a")                                       # back-up path
 
     if (DEFINED APPLE)
-        set(PB_SHARED_LIB "${BREW}/lib/libprotobuf.dylib")
-    elseif(DEFINED CYGWIN)
-        set(PB_SHARED_LIB "/lib/libprotobuf.dll.a")
+        set(PB_SHARED_LIB "${LOCAL}/lib/libprotobuf.dylib")
+    elseif(DEFINED WIN32)
+        set(PB_SHARED_LIB "${LOCAL}/lib/libprotobuf.dll.a")
     elseif(DEFINED UNIX)
-        set(PB_SHARED_LIB "/usr/local/lib/libprotobuf.so")
+        set(PB_SHARED_LIB "${LOCAL}/lib/libprotobuf.so")
     endif()
 
-    message("PB_STATIC_LIB not set - trying default pathspec: ${PB_STATIC_LIB}")
+
 endif()
 
-
+message("PROTOBUF_INCLUDE_DIR: ${PROTOBUF_INCLUDE_DIR}")
+message("PB_STATIC_LIB: ${PB_STATIC_LIB}")
+message("PB_SHARED_LIB: ${PB_SHARED_LIB}")
 
 # ---- 8>< ---- Code Generation ------------------------------------------------------------------------ 8>< ---- #
 # ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
