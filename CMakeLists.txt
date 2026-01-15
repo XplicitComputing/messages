@@ -4,7 +4,13 @@ cmake_minimum_required(VERSION 3.12)
 ####################################################
 
 project(xcmessages)
-set(LOCAL /usr/local) #modify depending on dpfx install location
+if (NOT DEFINED LOCAL)
+  set(LOCAL /usr/local) #modify depending on dpfx install location
+endif()
+
+if(DEFINED ENV{CMAKE_PREFIX_PATH})
+  list(PREPEND CMAKE_PREFIX_PATH "$ENV{CMAKE_PREFIX_PATH}")
+endif()
 
 # define output paths
 #
@@ -28,70 +34,9 @@ set(PROJECT_ROOT "${CMAKE_SOURCE_DIR}")
 # ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
 
 
-execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:FILEPATH= | cut -d'=' -f2"
-                OUTPUT_VARIABLE pb_lib
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-if ("${pb_lib} " STREQUAL " ")
-    execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
-                    OUTPUT_VARIABLE pb_lib
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    if ("${pb_lib} " STREQUAL " ")
-        execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:FILEPATH= | cut -d'=' -f2"
-                        OUTPUT_VARIABLE pb_lib
-                        OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        if ("${pb_lib} " STREQUAL " ")
-            execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_LIBRARY:UNINITIALIZED= | cut -d'=' -f2"
-                            OUTPUT_VARIABLE pb_lib
-                            OUTPUT_STRIP_TRAILING_WHITESPACE
-            )
-        endif()
-    endif()
-endif()
-
-
-execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:PATH= | cut -d'=' -f2"
-                OUTPUT_VARIABLE pb_incl
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-if ("${pb_incl} " STREQUAL " ")
-    execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep Protobuf_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
-                    OUTPUT_VARIABLE pb_incl
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    if ("${pb_incl} " STREQUAL " ")
-        execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:FILE= | cut -d'=' -f2"
-                        OUTPUT_VARIABLE pb_incl
-                        OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        if ("${pb_incl} " STREQUAL " ")
-            execute_process(COMMAND bash -c "[ -f ${PROJECT_ROOT}/CMakeCache.txt ] && cat ${PROJECT_ROOT}/CMakeCache.txt | grep PROTOBUF_INCLUDE_DIR:UNINITIALIZED= | cut -d'=' -f2"
-                            OUTPUT_VARIABLE pb_incl
-                            OUTPUT_STRIP_TRAILING_WHITESPACE
-            )
-        endif()
-    endif()
-endif()
-
-
-if (NOT "${pb_lib} " STREQUAL " ")
-    set(PROTOBUF_LIBRARY "${pb_lib}")
-    set(Protobuf_LIBRARY "${pb_lib}")
-endif()
-if (NOT "${pb_incl} " STREQUAL " ")
-    set(Protobuf_INCLUDE_DIR "${pb_incl}")
-    set(PROTOBUF_INCLUDE_DIR "${pb_incl}")
-endif()
-
-
-
 #force static libraries as default (if possible)
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".lib")
 set(BUILD_SHARED_LIBS OFF)
-
-
 
 
 # ---- 8>< ---- Package Dependencies ------------------------------------------------------------------- 8>< ---- #
@@ -99,7 +44,6 @@ set(BUILD_SHARED_LIBS OFF)
 
 
 find_package(Protobuf REQUIRED)
-
 
 
 # ---- 8>< ---- Flags ---------------------------------------------------------------------------------- 8>< ---- #
@@ -135,7 +79,7 @@ if (NOT (DEFINED ENV{XC_CMAKE_VERBOSE_BUILD}))
 elseif ($ENV{XC_CMAKE_VERBOSE_BUILD})
     message("== CXXFLAGS use:  ${CMAKE_CXX_FLAGS}")
 endif()
-
+message("== CMAKE_PREFIX_PATH var:  ${CMAKE_PREFIX_PATH}")
 
 
 # ---- 8>< ---- Include Pathspec ----------------------------------------------------------------------- 8>< ---- #
@@ -153,10 +97,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 #      system includes                             #
 # ------------------------------------------------ #
 
-#include_directories(${LOCAL}/include)
+include_directories(${LOCAL}/include)
 #include_directories(${LOCAL}/include/xcompute)
-include_directories(${PROTOBUF_INCLUDE_DIR})
-
 
 
 # ---- 8>< ---- Library Pathspec ----------------------------------------------------------------------- 8>< ---- #
@@ -191,10 +133,9 @@ else()
         set(PB_SHARED_LIB "${LOCAL}/lib/libprotobuf.so")
     endif()
 
-
 endif()
 
-message("PROTOBUF_INCLUDE_DIR: ${PROTOBUF_INCLUDE_DIR}")
+message("Protobuf_INCLUDE_DIR: ${Protobuf_INCLUDE_DIR}")
 message("PB_STATIC_LIB: ${PB_STATIC_LIB}")
 message("PB_SHARED_LIB: ${PB_SHARED_LIB}")
 
