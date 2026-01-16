@@ -9,7 +9,10 @@
 #include <string>
 #include <vector>
 
-
+//Note: to simplify this example's linking, OpenMP is optional
+//in CMakeLists.txt, set(CXX_FLAGS -fopenmp)
+//will then activate this _OPENMP flag:
+//#define _OPENMP 
 
 
 std::string name{ "test.xco" };        // file name
@@ -51,7 +54,9 @@ void fill_data(Messages::Vector64& msg)
     // allocate the protobuf vector ahead of time (if not adding one at a time)
     buffer_vals.Resize(C * N, 0.0);                                                                 // N elements, initialized to value 0.0
 
+#ifdef _OPENMP
 #pragma omp parallel for
+#endif
     for (auto n = 0; n < N; n++)
     {
         auto t = double(n) / double(N - 1);                                                         // parameterize t=0:1
