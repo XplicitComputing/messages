@@ -47,12 +47,11 @@ done
 
 # if running macOS, set local path to depspfx (dpfx)
 if [[ $OSTYPE == darwin* ]]; then
-  cmpp=$CMAKE_PREFIX_PATH     # assign initally to a local variable
   if [[ "$depspfx" ]]; then
-      cmpp="$depspfx:$cmpp"
+      CMAKE_PREFIX_PATH="${depspfx}:${CMAKE_PREFIX_PATH}"
       CMAKE_FLAGS="-DLOCAL=${depspfx} ${CMAKE_FLAGS}"
   fi
-  export CMAKE_PREFIX_PATH="$cmpp"
+  export CMAKE_PREFIX_PATH
   echo CMAKE_PREFIX_PATH $CMAKE_PREFIX_PATH
   echo CMAKE_FLAGS $CMAKE_FLAGS
 fi

@@ -67,10 +67,6 @@ endif()
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -ggdb -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
 
-#if (NOT DEFINED APPLE)
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-#endif()
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD} -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes -Wall -Wextra  -pedantic-errors -Werror -Wno-unknown-pragmas -Wno-pragmas -Wno-unknown-warning-option -Wno-unused-parameter -Wno-deprecated-declarations")
 
@@ -109,35 +105,7 @@ include_directories(${LOCAL}/include)
 #      protobuf library                            #
 # ------------------------------------------------ #
 
-if (DEFINED ENV{PROTOBUF_LIBDIR})                                                           # yay - use env variable path
-    set(PB_STATIC_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.a)
-
-    if (DEFINED APPLE)
-        set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.dylib)
-    elseif(DEFINED WIN32)
-        set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.dll.a)
-    elseif(DEFINED UNIX)
-        set(PB_SHARED_LIB $ENV{PROTOBUF_LIBDIR}/libprotobuf.so)
-    endif()
-
-    message("found env var PB_STATIC_LIB pathspec: ${PB_STATIC_LIB}")
-
-else()
-    set(PB_STATIC_LIB "${LOCAL}/lib/libprotobuf.a")                                       # back-up path
-
-    if (DEFINED APPLE)
-        set(PB_SHARED_LIB "${LOCAL}/lib/libprotobuf.dylib")
-    elseif(DEFINED WIN32)
-        set(PB_SHARED_LIB "${LOCAL}/lib/libprotobuf.dll.a")
-    elseif(DEFINED UNIX)
-        set(PB_SHARED_LIB "${LOCAL}/lib/libprotobuf.so")
-    endif()
-
-endif()
-
 message("Protobuf_INCLUDE_DIR: ${Protobuf_INCLUDE_DIR}")
-message("PB_STATIC_LIB: ${PB_STATIC_LIB}")
-message("PB_SHARED_LIB: ${PB_SHARED_LIB}")
 
 # ---- 8>< ---- Code Generation ------------------------------------------------------------------------ 8>< ---- #
 # ---- 8>< --------------------------------------------------------------------------------------------- 8>< ---- #
@@ -175,7 +143,7 @@ add_library(message-objs OBJECT
             ${ProtoHeaders}
             ${ProtoSources}
 )
-
+target_link_libraries(message-objs PRIVATE protobuf::libprotobuf)
 
 
 # ~~ [[ Shared lib definitions & Properties ]] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -215,7 +183,7 @@ set_target_properties(xcmessages-static PROPERTIES
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 
-target_link_libraries(xcmessages-shared PRIVATE ${PB_SHARED_LIB})
+target_link_libraries(xcmessages-shared PRIVATE protobuf::libprotobuf)
 
 
 
@@ -223,7 +191,7 @@ target_link_libraries(xcmessages-shared PRIVATE ${PB_SHARED_LIB})
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 
-target_link_libraries(xcmessages-static PRIVATE ${PB_STATIC_LIB})
+target_link_libraries(xcmessages-static PRIVATE protobuf::libprotobuf)
 
 
 
