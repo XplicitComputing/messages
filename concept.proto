@@ -106,7 +106,7 @@ message Script                                                                  
     //reserved
     Variables variables = 10;
     //reserved  
-    repeated Command Sequence = 12;
+    repeated Command sequence = 12;
     //reserved
     Script before = 14;
     Script after = 15;
