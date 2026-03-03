@@ -20,9 +20,6 @@ syntax = "proto3";
 
 package Messages;
 
-option cc_enable_arenas = true;                                                                         // faster memory allocation
-
-
 
 message File
 {

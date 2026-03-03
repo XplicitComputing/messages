@@ -24,6 +24,15 @@ import "vector.proto";
 
 
 
+message Shape
+{
+	repeated Shape dependencies = 1;
+	uint32 opcode = 2;
+	uint32 element_index = 3;
+	double value = 4;
+}
+
+
 message Zone                                                                                            // compatible with xcompute Region (aka zone or patch)
 {
     string name = 1;
@@ -110,12 +119,13 @@ message Topology                                                                
     uint32 basis = 4;
     string filename = 5;
     Revision revision = 6;
-    string info = 7;                                                                        // as defined in common/space.hpp: mm=0, cm=1, m=2, km=3, in=4, ft=5, yd=6, mi=7
+    string info = 7;                                                                        // as defined in common/space.hpp: mm=0, cm=1, m=2, km=3, in=4, ft=5, yd=6, mi=7    
     //reserved
     Elements nodes = 10;
     Elements edges = 11;
     Elements faces = 12;
     Elements cells = 13;
+    Shape implicit_shape = 14;			//shape operators corresponding to aforementioned elements (SDF primitives)
     Record64 data = 15;
     repeated SparseMatrix sparse_data = 16;
     //reserved
