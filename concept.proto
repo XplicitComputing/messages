@@ -69,6 +69,8 @@ message Function                                                                
     bool push_front = 17;
     bool dont_flatten = 18;
     //reserved
+    repeated string optional_types = 20;
+    repeated string optional_descriptions = 21;
 }
 
 
