@@ -54,6 +54,7 @@ message Extrema                                                                 
     repeated double min = 2[packed=true];
     repeated double max = 3[packed=true];
     bool is_set = 4;
+    uint32 coordinate_space = 5;
 }
 
     
