@@ -66,3 +66,7 @@ Testing
 .idea/
 *.cbp
 
+# Byte-compiled / optimized / DLL files for Python
+__pycache__/
+*.py[codz]
+*$py.class
