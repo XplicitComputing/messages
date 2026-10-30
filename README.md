@@ -1,8 +1,22 @@
+<div align="center">
+
+<img src="xc-messages.png" alt="XC-Messages" width="256">
+
 # Messages
 
-Managed by XC-Development Team
+**A file & wire schema for sharing numerical data across high-performance computing sessions and programming environments.**
 
-What is Messages? 
+_Managed by XC-Development Team_
+
+</div>
+
+<p align="center">
+  <img src="go-figure.png" alt="XC-Messages carved into a stone stele, unearthed from the ground" width="640">
+</p>
+
+<p align="center"><em>Figure — XC-Messages carved into a stone stele, recently unearthed: evidence that file & wire schemas outlive their civilizations.</em></p>
+
+## What is Messages?
 
 Messages (libxcmessages) is a file & wire schema designed for engineers and scientists that enables numerical and related data to be shared across high-performance computing sessions and programming environments. It utilizes Google's <a href=https://developers.google.com/protocol-buffers/docs/downloads>Protocol Buffer 3 technology (aka protobuf)</a> to generate universal headers and libraries for encoding and decoding. In Google's words, protobuf is like XML but faster and more efficient. End-users can use the generated language bindings directly in their projects (by linking against compiled libraries or by including the generated implementation files).
 
