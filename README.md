@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="xc-messages.png" alt="XC-Messages" width="128">
+<img src="xc-messages.png" alt="XC-Messages" width="200">
 
 # Messages
 
